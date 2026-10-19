@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test)",
+      "Bash(npm ci)",
+      "Bash(npx tsx:*)",
+      "Bash(npx remotion:*)",
+      "Bash(node tools/:*)",
+      "Bash(node lib/:*)",
+      "Bash(ffprobe:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(wc:*)"
+    ],
+    "deny": [
+      "Read(./szenen/*/dist/*.html)",
+      "Read(./szenen/*/dist/**/*.svg)",
+      "Read(./szenen/*/protokoll.tsv)",
+      "Read(./szenen/*/sfx-cues.json)",
+      "Read(./lib/teilesaetze/**)",
+      "Read(./lib/sfx/roh/**)",
+      "Read(./lib/sfx/final/**)",
+      "Read(./lib/sfx/prototyp/**)",
+      "Read(./lib/sfx/protokoll-sfx.tsv)",
+      "Read(./figuren/vorlage_*.svg)",
+      "Read(./figuren/import.tsv)",
+      "Read(./ton/messung.json)",
+      "Read(./out/**/*.html)",
+      "Read(./out/**/*.tsv)",
+      "Read(./package-lock.json)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR\"/scripts/sitzung-start.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

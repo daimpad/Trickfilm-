@@ -1,0 +1,37 @@
+# Trickfilm
+
+Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen. Bewegung ist eine reine Zeitfunktion, Figuren entstehen aus Rigs, Geräusche aus den Bewegungsereignissen, Stimme und Untertitel aus gemessenen Aufnahmen. Der Render ist deterministisch: Gleiche Eingabe ergibt dasselbe Bild.
+
+Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md).
+
+## Schnellstart
+
+```bash
+npm ci                                  # Abhängigkeiten, exakt gepinnt
+npm run pruefen                         # Typen, Tests, Geheimnisse und Verbotenes
+npm run studio                          # Remotion Studio im Browser
+npx remotion still Palette out/p.png    # Standbild der Testkarte
+npm run szene:neu -- FILM-01-slug       # neue Szene (ab Phase 2)
+```
+
+Voraussetzungen: Node ≥ 22, ffmpeg und ffprobe, die Schrift Arial oder Liberation Sans. Chromium kommt örtlich über `npx playwright install chromium`; in Claude-Code-Cloud-Sitzungen liegt es schon vor.
+
+## Stand
+
+Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet die Phase, in der es kommt, und endet mit Fehler.
+
+| Phase | Inhalt | Stand |
+|---|---|---|
+| 0 | Grundentscheidungen | fertig |
+| 1 | Grundgerüst, Tokens, Regeln, Prüflauf, SessionStart-Hook | fertig |
+| 2 | Bibliothek: Bewegung, Rigs, Requisiten, Build, Viewer | offen |
+| 3 | Figurenbaukasten | offen |
+| 4 | Geräusche | offen |
+| 5 | Demoszene `DEMO-01-buero` | offen |
+| 6 | Stimme und Untertitel | offen |
+| 7 | Render und Lieferung | offen |
+| 8 | Dokumentation | offen |
+
+## Lizenzen
+
+Remotion ist für Einzelpersonen und Firmen bis drei Personen frei; darüber braucht es eine Firmenlizenz. Einzelheiten und Prüfstand in [`docs/LIZENZEN.md`](docs/LIZENZEN.md).

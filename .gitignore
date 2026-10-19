@@ -1,0 +1,14 @@
+# Renderergebnisse und Abhängigkeiten gehören nie ins Repository.
+out/
+node_modules/
+.remotion/
+ton/roh-lokal/
+*.local.*
+
+# Geheimnisse bleiben in der Umgebung.
+.env
+.env.*
+
+# Betriebssystem
+.DS_Store
+Thumbs.db

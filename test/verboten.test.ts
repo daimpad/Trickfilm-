@@ -1,0 +1,39 @@
+// Prüft die Verbotsprüfung selbst: Verbotenes wird gefunden, Erlaubtes nicht.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { pruefeDatei } from '../tools/pruefen-verboten.ts';
+
+const regeln = (pfad: string, inhalt: string) => pruefeDatei(pfad, inhalt).map((b) => b.regel);
+
+test('Geheimnisse werden überall gefunden', () => {
+  const schluessel = 'sk_' + 'a1'.repeat(24);
+  assert.deepEqual(regeln('docs/notiz.md', `ELEVENLABS_API_KEY=${schluessel}`), ['Geheimnis: ElevenLabs-Schlüssel']);
+  assert.deepEqual(regeln('.env', ''), ['Geheimnis: .env-Datei']);
+  assert.deepEqual(regeln('ton/.env.local', ''), ['Geheimnis: .env-Datei']);
+  assert.deepEqual(regeln('tools/stimme.ts', 'const k = process.env.ELEVENLABS_API_KEY;'), []);
+});
+
+test('Zeitgeber und Zufall im Render werden gefunden, in Werkzeugen nicht', () => {
+  assert.deepEqual(regeln('lib/motion.js', 'const r = Math.random();'), ['Zufall ohne Seed']);
+  assert.deepEqual(regeln('szenen/X/animation.js', 'const t = Date.now();'), ['Uhrzeit im Bild']);
+  assert.deepEqual(regeln('tools/stimme.ts', 'const datum = new Date();'), []);
+  assert.deepEqual(regeln('lib/x.css', '@keyframes drehen { }'), ['CSS-Animation']);
+  assert.deepEqual(regeln('lib/x.js', "import { gsap } from 'gsap';"), ['verbotene Bibliothek']);
+});
+
+test('Farbliterale nur in den Tokens und in erzeugten Dateien', () => {
+  assert.deepEqual(regeln('lib/svg.js', "const f = '#B23A2B';"), ['Farbliteral außerhalb der Tokens']);
+  assert.deepEqual(regeln('tokens/tokens.js', "rot: '#B23A2B',"), []);
+  assert.deepEqual(regeln('szenen/X/dist/index.html', 'fill="#B23A2B"'), []);
+  assert.deepEqual(regeln('lib/svg.js', 'const anker = "seite.html#abschnitt";'), []);
+});
+
+test('Netzaufrufe im Render werden gefunden, der SVG-Namensraum nicht', () => {
+  assert.deepEqual(regeln('lib/stage.js', "await fetch('x');"), ['Netzaufruf im Render']);
+  assert.deepEqual(regeln('lib/stage.js', 'const u = "https://example.org/a.png";'), ['Netzaufruf im Render']);
+  assert.deepEqual(regeln('lib/stage.js', 'const ns = "http://www.w3.org/2000/svg";'), []);
+  assert.deepEqual(regeln('lib/viewer.template.html', '<link href="https://fonts.googleapis.com/css">'), [
+    'Webfont',
+    'Netzaufruf im Render',
+  ]);
+});

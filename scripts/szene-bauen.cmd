@@ -1,0 +1,5 @@
+@echo off
+rem Starter fuer Doppelklick (Windows): npm run szene:bauen, Argumente werden durchgereicht.
+cd /d "%~dp0.."
+call npm run szene:bauen -- %*
+pause
