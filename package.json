@@ -1,0 +1,50 @@
+{
+  "name": "trickfilm",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test \"test/**/*.test.js\" \"test/**/*.test.ts\"",
+    "verboten": "tsx tools/pruefen-verboten.ts",
+    "pruefen": "npm run typecheck && npm run test && npm run verboten",
+    "szene:neu": "node tools/noch-nicht.js 2 szene:neu",
+    "szene:bauen": "node tools/noch-nicht.js 2 szene:bauen",
+    "szene:kontaktbogen": "node tools/noch-nicht.js 2 szene:kontaktbogen",
+    "szene:protokoll": "node tools/noch-nicht.js 2 szene:protokoll",
+    "requisiten": "node tools/noch-nicht.js 2 requisiten",
+    "figuren:vorlagen": "node tools/noch-nicht.js 3 figuren:vorlagen",
+    "figuren:import": "node tools/noch-nicht.js 3 figuren:import",
+    "sfx:cues": "node tools/noch-nicht.js 4 sfx:cues",
+    "sfx:messen": "node tools/noch-nicht.js 4 sfx:messen",
+    "sfx:normalisieren": "node tools/noch-nicht.js 4 sfx:normalisieren",
+    "sfx:hoerprobe": "node tools/noch-nicht.js 4 sfx:hoerprobe",
+    "stimme": "node tools/noch-nicht.js 6 stimme",
+    "wortzeit": "node tools/noch-nicht.js 6 wortzeit",
+    "untertitel": "node tools/noch-nicht.js 6 untertitel",
+    "mischen": "node tools/noch-nicht.js 6 mischen",
+    "video": "node tools/noch-nicht.js 7 video",
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "galerie": "node tools/noch-nicht.js 7 galerie",
+    "drehbuch": "node tools/noch-nicht.js 7 drehbuch"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.535",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.535",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "playwright": "1.56.1",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

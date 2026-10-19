@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Starter für Doppelklick (Linux, macOS): npm run galerie, Argumente werden durchgereicht.
+cd "$(dirname "$0")/.." || exit 1
+npm run galerie -- "$@"
+status=$?
+read -r -p "Fertig (Status $status). Eingabetaste schließt das Fenster." _
+exit $status

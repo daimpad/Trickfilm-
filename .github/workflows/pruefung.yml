@@ -1,0 +1,48 @@
+# Prüflauf bei jedem Push und Pull Request (Abschnitt 13.3 der Werkstatt).
+# Szenen bauen, Cue-Listen und erzeugte Dateien vergleichen kommen mit den Phasen 2 bis 4 hinzu.
+name: Prüfung
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pruefung:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten
+        run: npm ci --no-audit --no-fund
+
+      - name: Fassungen von remotion und @remotion/* gleich und exakt
+        run: |
+          node -e '
+            const p = require("./package.json");
+            const alle = { ...p.dependencies, ...p.devDependencies };
+            const r = Object.entries(alle).filter(([n]) => n === "remotion" || n.startsWith("@remotion/"));
+            const lose = Object.entries(alle).filter(([, v]) => !/^\d+\.\d+\.\d+$/.test(v));
+            if (lose.length) { console.error("FEHLER nicht exakt gepinnt:", lose); process.exit(1); }
+            if (new Set(r.map(([, v]) => v)).size !== 1) { console.error("FEHLER Remotion-Fassungen ungleich:", r); process.exit(1); }
+            console.log("Remotion", r[0][1], "in", r.length, "Paketen; alle Fassungen exakt.");
+          '
+
+      - name: Typen
+        run: npm run typecheck
+
+      - name: Bibliothekstests
+        run: npm test
+
+      - name: Geheimnisse und Verbotenes
+        run: npm run verboten
