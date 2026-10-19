@@ -86,6 +86,7 @@ Werkzeuge, die noch nicht gebaut sind, melden über `tools/noch-nicht.js`, in we
 - Rig-Zustand im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf; Spiegelung setzt das Rig, nie `-dir` in der Szene (2026-10-19).
 - Handziele über `rig.greife()`; ein Ziel außer Reichweite meldet der Build mit Bild und Abstand.
 - Haltungen, die IK nicht liefert (vor dem Körper halten), als Pose aus `rig.posen`.
+- Posen-Editor (`npm run editor`): erzeugt `out/editor/posen-editor.html`; sein Code (Schlüsselposen) gehört nach `geometry.js` und wird mit `posenZustand()` aus `lib/posen.js` gelesen.
 
 ## Ohne Rückfrage geschieht nicht
 

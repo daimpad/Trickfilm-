@@ -17,6 +17,7 @@
     "szene:bauen": "node lib/build.js",
     "szene:kontaktbogen": "node lib/kontaktbogen.js",
     "szene:protokoll": "node lib/protokoll.js",
+    "editor": "node tools/posen-editor.js",
     "requisiten": "node tools/requisiten-katalog.js",
     "figuren:erzeugen": "node tools/figuren-erzeugen.js",
     "figuren:testposen": "node tools/rig-testposen.js",

@@ -32,3 +32,12 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | `szenen/*/dist/` im Repository | nein: Prototyp, Standbilder und Kontaktbogen sind jederzeit neu erzeugbar und PNGs nicht bitgleich; `protokoll.tsv` bleibt im Repository und wird im Prüflauf verglichen | entschieden von Claude |
 | `satz-00` | wird aus der Rig-Spezifikation erzeugt (`npm run figuren:erzeugen`), nicht von Hand gezeichnet; Kopf und Hände weiß, Kleidung aus der Figurenpalette, damit keine Hauttöne als Token nötig sind | entschieden von Claude |
 | Referenzbilder `lib/props/KATALOG.png`, `figuren/testposen.png` | im Repository als Sichtungsstand, nicht im Prüflauf verglichen | entschieden von Claude |
+
+## 2026-10-19 · Posen-Editor
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Gegenstand | Posen einer Figur: Griffe, Handziele per IK, Schlüsselposen auf einer Zeitleiste | entschieden von Regie |
+| Bedienung | Ziehen auf der Bühne und Regler, Pfeiltasten für 1 px oder 8 px | entschieden von Regie |
+| Ausgabe | Code zum Kopieren für `geometry.js`, gelesen von `posenZustand()` | entschieden von Regie |
+| Ort | im Repository, `npm run editor` erzeugt eine Seite unter `out/editor/` (nicht im Repository) | entschieden von Regie |

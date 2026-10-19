@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Posen-Editor</title>
+<style>
+/* Posen-Editor: Griffe ziehen, Regler stellen, Schlüsselposen setzen, Code kopieren. Keine Übergänge. */
+:root { {{TOKENS_CSS}} }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 16px; background: var(--grund); color: var(--text); font-family: var(--schrift); font-size: 16px; }
+h1 { font-size: 24px; margin: 0 16px 0 0; }
+header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 8px; }
+select, input, button, textarea { font: inherit; color: var(--text); }
+button { padding: 4px 12px; border: 2px solid var(--kontur); background: var(--weiss); cursor: pointer; }
+button[aria-pressed="true"] { background: var(--text); color: var(--weiss); }
+.raster { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+@media (max-width: 1100px) { .raster { grid-template-columns: 1fr; } }
+#buehne { display: block; width: 100%; height: auto; background: var(--weiss); border: 4px solid var(--kontur); touch-action: none; }
+.hilfe { stroke: var(--hilfe); stroke-width: 2; stroke-dasharray: 8 8; fill: none; }
+.hilfe-text { fill: var(--hilfe); font-size: 24px; font-family: var(--schrift); }
+.griff { fill: var(--weiss); stroke: var(--kontur); stroke-width: 4; cursor: grab; }
+.griff.hand, .griff.fuss { fill: var(--akzent); }
+.griff.huefte { fill: var(--text); }
+.griff.gewaehlt { stroke: var(--akzent); stroke-width: 8; }
+.reich { fill: none; stroke: var(--akzent2); stroke-width: 3; stroke-dasharray: 10 8; }
+.reich.aus { stroke: var(--akzent); stroke-width: 6; }
+aside { background: var(--weiss); border: 2px solid var(--kontur); padding: 8px 12px; max-height: 80vh; overflow: auto; }
+aside h2 { font-size: 18px; margin: 12px 0 4px; }
+.regler { display: grid; grid-template-columns: 96px 1fr 56px; gap: 4px 8px; align-items: center; }
+.regler output { text-align: right; font-variant-numeric: tabular-nums; }
+.regler .breit { grid-column: span 2; }
+.zeile { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+#schluessel { display: flex; flex-wrap: wrap; gap: 8px; }
+#schluessel button.aktiv { background: var(--text); color: var(--weiss); }
+#code { width: 100%; min-height: 240px; font-family: monospace; font-size: 14px; border: 2px solid var(--kontur); padding: 8px; }
+#meldung { min-height: 24px; }
+.leise { opacity: 0.8; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Posen-Editor</h1>
+  <label>Archetyp <select id="archetyp"></select></label>
+  <label>Teilesatz <select id="teilesatz"></select></label>
+  <button id="blick" type="button" aria-pressed="false">Blick: rechts</button>
+  <label>Kleidung 1 <select id="kleidung1"></select></label>
+  <label>Kleidung 2 <select id="kleidung2"></select></label>
+  <label>Ausschnitt <select id="ausschnitt"><option value="nah">Figur nah</option><option value="buehne">ganze Bühne</option></select></label>
+  <label><input id="hilfen-an" type="checkbox" checked> Hilfslinien</label>
+  <button id="zuruecksetzen" type="button">Zurücksetzen</button>
+</header>
+<div class="raster">
+  <section>
+    <svg id="buehne" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Bühne mit Figur und Griffen">
+      <g id="hintergrund">{{HINTERGRUND}}</g>
+      <g id="hilfen"></g>
+      <g id="figur"></g>
+      <g id="ring"></g>
+      <g id="griffe"></g>
+    </svg>
+    <div class="zeile">
+      <label>t (s) <input id="zeit" type="number" min="0" step="0.1" value="0" style="width: 96px"></label>
+      <button id="setzen" type="button">Pose als Schlüssel bei t</button>
+      <button id="vorschau" type="button" aria-pressed="false">Vorschau</button>
+      <label><input id="schleife" type="checkbox"> Schleife</label>
+      <span id="meldung" role="status"></span>
+    </div>
+    <div id="schluessel" aria-label="Schlüsselposen"></div>
+    <p class="leise">Griffe ziehen: dunkel = Hüfte, weiß = Rumpf und Kopf, farbig = Hände und Füße. Ein Klick wählt einen Griff; Pfeiltasten verschieben ihn um 1 px, mit Umschalt um 8 px. Ein gezogener Arm folgt seinem Handziel (IK); ein Regler am Arm schaltet auf Winkel.</p>
+  </section>
+  <aside id="regler"></aside>
+</div>
+<h2>Code für geometry.js</h2>
+<div class="zeile">
+  <label>Figur <input id="prefix" value="A" size="3"></label>
+  <button id="kopieren" type="button">Kopieren</button>
+</div>
+<textarea id="code" readonly spellcheck="false" aria-label="Erzeugter Code"></textarea>
+{{IMPORTMAP}}
+<script type="application/json" id="start">{{START_JSON}}</script>
+<script type="module">
+import { RIGS } from 'tf:lib/rigs/index.js';
+import { TEILESAETZE } from 'tf:lib/teilesaetze/index.js';
+import { posenZustand } from 'tf:lib/posen.js';
+import { lokal, SPEZ } from 'tf:lib/rigs/basis.js';
+import { GRAFIK, SCHUTZZONE_Y } from 'tf:lib/stage.js';
+import { FARBEN, SEKUNDAER } from 'tf:tokens/tokens.js';
+
+const START = JSON.parse(document.getElementById('start').textContent);
+const NS = 'http://www.w3.org/2000/svg';
+const $ = (id) => document.getElementById(id);
+const svg = $('buehne');
+const RAD = Math.PI / 180;
+const r1 = (v) => Math.round(v * 10) / 10;
+const r0 = (v) => Math.round(v);
+const klemme = (v, a, b) => Math.max(a, Math.min(b, v));
+const kopie = (o) => JSON.parse(JSON.stringify(o));
+// Hüfthöhe je Archetyp in der Welt: Sitz bei 620, Stand 210 über dem Boden, Nähe tief im Bild.
+const HUEFTE_Y = { 'sitzend-profil': 620, 'stehend-profil': SPEZ.boden_y - 210, 'stehend-frontal': SPEZ.boden_y - 210, 'oberkoerper-nah': 900 };
+
+let r;            // Rig
+let z;            // aktueller Zustand
+let modus = {};   // je Arm 'ik' oder 'winkel'
+let ziele = {};   // je Arm Handziel in der Welt (bei IK)
+let beuge = {};   // je Arm Beugeseite
+let schluessel = [];
+let gewaehlt = null;
+let ziehen = null;
+let spielt = false;
+let palette = { kleidung1: START.palette?.kleidung1 ?? FARBEN.petrol, kleidung2: START.palette?.kleidung2 ?? FARBEN.primaerDunkel };
+let index = new Map();
+
+const glieder = () => ({
+  arme: r.ansicht === 'frontal' ? ['armL', 'armR'] : ['armF', 'armB'],
+  beine: r.ansicht === 'frontal' ? ['legL', 'legR'] : r.spez.beine === 'keine' ? [] : ['legF', 'legB'],
+});
+const massstab = () => r.spez.massstab * (z.massstab ?? 1);
+
+// ---------- Auswahllisten ----------
+for (const name of Object.keys(RIGS)) $('archetyp').append(new Option(name, name));
+const farbNamen = ['primaerDunkel', ...SEKUNDAER];
+for (const id of ['kleidung1', 'kleidung2']) {
+  for (const n of farbNamen) $(id).append(new Option(n, FARBEN[n]));
+  $(id).value = palette[id];
+  $(id).addEventListener('change', () => {
+    palette[id] = $(id).value;
+    zeichneFigur();
+    aktualisiere();
+  });
+}
+function fuelleTeilesaetze() {
+  $('teilesatz').innerHTML = '';
+  for (const [satz, archetypen] of Object.entries(TEILESAETZE)) if (archetypen[r.name]) $('teilesatz').append(new Option(satz, satz));
+  if (START.teilesatz && TEILESAETZE[START.teilesatz]?.[r.name]) $('teilesatz').value = START.teilesatz;
+}
+
+// ---------- Hilfslinien ----------
+function zeichneHilfen() {
+  const g = $('hilfen');
+  g.innerHTML = '';
+  if (!$('hilfen-an').checked) return;
+  const linie = (y, text) => {
+    g.insertAdjacentHTML('beforeend', `<line class="hilfe" x1="0" y1="${y}" x2="1920" y2="${y}"/><text class="hilfe-text" x="16" y="${y - 8}">${text} (y ${y})</text>`);
+  };
+  linie(SPEZ.boden_y, 'Boden');
+  linie(SPEZ.tisch_y, 'Tisch');
+  linie(SCHUTZZONE_Y, 'Schutzzone');
+  g.insertAdjacentHTML('beforeend', `<rect class="hilfe" x="${GRAFIK.x0}" y="${GRAFIK.y0}" width="${GRAFIK.x1 - GRAFIK.x0}" height="${GRAFIK.y1 - GRAFIK.y0}"/>`);
+}
+$('hilfen-an').addEventListener('change', zeichneHilfen);
+
+// ---------- Figur ----------
+function zeichneFigur() {
+  $('figur').innerHTML = r.markup('E', { teilesatz: $('teilesatz').value, palette, dir: z.dir });
+  index = new Map([...$('figur').querySelectorAll('[id]')].map((el) => [el.id, el]));
+}
+
+/** Sichtbarer Ausschnitt: ganze Bühne oder die Figur nah, im Seitenverhältnis 16:9. */
+function setzeAusschnitt() {
+  if ($('ausschnitt').value === 'buehne') {
+    svg.setAttribute('viewBox', '0 0 1920 1080');
+  } else {
+    const m = massstab();
+    const { x0, y0, x1, y1 } = r.rahmen;
+    let w = (x1 - x0) * m * 1.4;
+    let h = (y1 - y0) * m * 1.25;
+    if (w / h < 16 / 9) w = (h * 16) / 9;
+    else h = (w * 9) / 16;
+    const cx = z.x + (z.dir ?? 1) * ((x0 + x1) / 2) * m;
+    const cy = z.y + ((y0 + y1) / 2) * m;
+    svg.setAttribute('viewBox', `${r0(cx - w / 2)} ${r0(cy - h / 2)} ${r0(w)} ${r0(h)}`);
+  }
+  zeichneGriffe();
+}
+$('ausschnitt').addEventListener('change', setzeAusschnitt);
+/** Griffe behalten auf dem Schirm ihre Größe, gleich welcher Ausschnitt. */
+const griffMass = () => svg.viewBox.baseVal.width / 1920;
+
+function neuesRig(name, behalten = false) {
+  r = RIGS[name];
+  $('archetyp').value = name;
+  fuelleTeilesaetze();
+  const gespeichert = behalten ? null : lade(name);
+  z = { ...kopie(r.defaults), x: START.x ?? 960, y: START.y ?? HUEFTE_Y[name], dir: START.dir ?? 1 };
+  modus = {};
+  ziele = {};
+  beuge = {};
+  for (const arm of glieder().arme) {
+    modus[arm] = 'winkel';
+    beuge[arm] = r.ansicht === 'frontal' ? 1 : -1;
+  }
+  schluessel = [];
+  if (gespeichert) ({ z, modus, ziele, beuge, schluessel } = gespeichert);
+  zeichneFigur();
+  baueRegler();
+  aktualisiere();
+  setzeAusschnitt();
+}
+
+// IK-Arme folgen ihrem Ziel; danach schreibt apply() die Attribute.
+function loeseIK() {
+  for (const arm of glieder().arme) {
+    if (modus[arm] !== 'ik' || !ziele[arm]) continue;
+    z[arm] = r.greife(z, arm, ziele[arm], { beugeseite: beuge[arm], form: z[arm].form, hand: z[arm].hand });
+  }
+}
+
+function zeige(zustand) {
+  for (const [id, attr, wert] of r.apply('E', zustand)) index.get(id)?.setAttribute(attr, String(wert));
+}
+
+function aktualisiere() {
+  loeseIK();
+  zeige(z);
+  zeichneGriffe();
+  zeigeRegler();
+  zeigeCode();
+  speichere();
+}
+
+// ---------- Griffe ----------
+function griffPunkte() {
+  const g = r.gelenke(z);
+  const m = massstab();
+  const punkte = [{ typ: 'huefte', id: 'huefte', p: g.huefte }];
+  const rumpf = r.ansicht === 'frontal' ? { x: (g.armL.schulter.x + g.armR.schulter.x) / 2, y: (g.armL.schulter.y + g.armR.schulter.y) / 2 } : g.schulter;
+  punkte.push({ typ: 'rumpf', id: 'rumpf', p: rumpf });
+  const w = (z.torso + z.head) * RAD;
+  punkte.push({ typ: 'kopf', id: 'kopf', p: { x: g.nacken.x + (z.dir ?? 1) * Math.sin(w) * 40 * m, y: g.nacken.y - Math.cos(w) * 40 * m } });
+  for (const arm of glieder().arme) punkte.push({ typ: 'hand', id: arm, p: g[arm].hand });
+  for (const bein of glieder().beine) punkte.push({ typ: 'fuss', id: bein, p: g[bein].knoechel });
+  return punkte;
+}
+
+function zeichneGriffe() {
+  const g = $('griffe');
+  g.innerHTML = '';
+  if (spielt) return;
+  for (const { typ, id, p } of griffPunkte()) {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', p.x);
+    c.setAttribute('cy', p.y);
+    c.setAttribute('r', (typ === 'huefte' ? 14 : 12) * griffMass() * 1.4);
+    c.style.strokeWidth = String((gewaehlt === id ? 8 : 4) * griffMass() * 1.4);
+    c.setAttribute('class', `griff ${typ}${gewaehlt === id ? ' gewaehlt' : ''}`);
+    c.dataset.id = id;
+    c.dataset.typ = typ;
+    const titel = document.createElementNS(NS, 'title');
+    titel.textContent = { huefte: 'Hüfte verschieben', rumpf: 'Rumpf neigen', kopf: 'Kopf neigen', hand: `${id}: Handziel`, fuss: `${id}: Fuß` }[typ];
+    c.append(titel);
+    g.append(c);
+  }
+  zeichneRing();
+}
+
+function zeichneRing() {
+  const g = $('ring');
+  g.innerHTML = '';
+  if (!ziehen || ziehen.typ !== 'hand') return;
+  const gl = r.gelenke(z);
+  const arm = ziehen.id;
+  const reich = (r.spez.segmente.oberarm + r.spez.segmente.unterarm) * massstab();
+  const aus = r.pruefeReichweite(z).some((b) => b.arm === arm);
+  g.innerHTML = `<circle class="reich${aus ? ' aus' : ''}" cx="${gl[arm].schulter.x}" cy="${gl[arm].schulter.y}" r="${reich}"/>`;
+  $('meldung').textContent = aus ? `${arm}: Ziel außer Reichweite` : '';
+}
+
+function buehnenPunkt(e) {
+  const pt = svg.createSVGPoint();
+  pt.x = e.clientX;
+  pt.y = e.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return { x: r0(p.x), y: r0(p.y) };
+}
+
+/** Wirkung eines Griffs, der zum Weltpunkt p gezogen wird. */
+function zieheGriff(typ, id, p) {
+  const m = massstab();
+  if (typ === 'huefte') {
+    z.x = p.x;
+    z.y = p.y;
+  } else if (typ === 'rumpf') {
+    const d = lokal(z, p, m);
+    z.torso = r1(klemme(Math.atan2(d.x, -d.y) / RAD, -45, 45));
+  } else if (typ === 'kopf') {
+    const n = lokal(z, r.gelenke(z).nacken, m);
+    const d = lokal(z, p, m);
+    z.head = r1(klemme(Math.atan2(d.x - n.x, -(d.y - n.y)) / RAD - z.torso, -60, 60));
+  } else if (typ === 'hand') {
+    modus[id] = 'ik';
+    ziele[id] = p;
+  } else if (typ === 'fuss') {
+    const b = r.fuss(z, id, p);
+    z[id] = { upper: r1(b.upper), lower: r1(b.lower), foot: z[id].foot };
+  }
+}
+
+$('griffe').addEventListener('pointerdown', (e) => {
+  const c = e.target.closest('.griff');
+  if (!c) return;
+  e.preventDefault();
+  gewaehlt = c.dataset.id;
+  ziehen = { typ: c.dataset.typ, id: c.dataset.id };
+  svg.setPointerCapture(e.pointerId);
+  zeichneGriffe();
+});
+svg.addEventListener('pointermove', (e) => {
+  if (!ziehen) return;
+  zieheGriff(ziehen.typ, ziehen.id, buehnenPunkt(e));
+  aktualisiere();
+});
+svg.addEventListener('pointerup', () => {
+  ziehen = null;
+  $('ring').innerHTML = '';
+});
+document.addEventListener('keydown', (e) => {
+  if (!gewaehlt || !e.key.startsWith('Arrow') || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+  e.preventDefault();
+  const schritt = e.shiftKey ? 8 : 1;
+  const griff = griffPunkte().find((g) => g.id === gewaehlt);
+  const d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+  zieheGriff(griff.typ, griff.id, { x: r0(griff.p.x + d[0] * schritt), y: r0(griff.p.y + d[1] * schritt) });
+  aktualisiere();
+});
+
+// ---------- Regler ----------
+let regler = [];
+function baueRegler() {
+  const aside = $('regler');
+  aside.innerHTML = '';
+  regler = [];
+  const abschnitt = (titel) => {
+    const h = document.createElement('h2');
+    h.textContent = titel;
+    const d = document.createElement('div');
+    d.className = 'regler';
+    aside.append(h, d);
+    return d;
+  };
+  const schieber = (ziel, pfad, label, min, max, step = 1) => {
+    const l = document.createElement('label');
+    l.textContent = label;
+    const i = document.createElement('input');
+    Object.assign(i, { type: 'range', min, max, step });
+    const o = document.createElement('output');
+    i.addEventListener('input', () => {
+      setze(pfad, Number(i.value));
+      aktualisiere();
+    });
+    l.htmlFor = i.id = `r-${pfad.join('-')}`;
+    ziel.append(l, i, o);
+    regler.push({ pfad, i, o });
+  };
+  const k = abschnitt('Figur');
+  schieber(k, ['x'], 'x', 0, 1920);
+  schieber(k, ['y'], 'y (Hüfte)', 0, 1080);
+  schieber(k, ['torso'], 'Rumpf', -45, 45, 0.5);
+  schieber(k, ['head'], 'Kopf', -60, 60, 0.5);
+  if (r.ansicht === 'frontal') {
+    schieber(k, ['schulterL'], 'Schulter L', -12, 12, 0.5);
+    schieber(k, ['schulterR'], 'Schulter R', -12, 12, 0.5);
+  } else {
+    schieber(k, ['schulter'], 'Schulter', -12, 12, 0.5);
+  }
+  for (const arm of glieder().arme) {
+    const a = abschnitt(arm);
+    a.previousElementSibling.dataset.arm = arm;
+    schieber(a, [arm, 'upper'], 'Oberarm', -180, 180, 0.5);
+    schieber(a, [arm, 'lower'], 'Unterarm', -180, 180, 0.5);
+    schieber(a, [arm, 'hand'], 'Hand', -90, 90, 0.5);
+    const l = document.createElement('label');
+    l.textContent = 'Handform';
+    const s = document.createElement('select');
+    for (const f of SPEZ.handformen) s.append(new Option(f, f));
+    s.addEventListener('change', () => {
+      z[arm].form = s.value;
+      aktualisiere();
+    });
+    s.className = 'breit';
+    const lb = document.createElement('label');
+    lb.textContent = 'Ellbogen';
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'breit';
+    b.title = 'Beugeseite bei IK wechseln';
+    b.addEventListener('click', () => {
+      beuge[arm] = -beuge[arm];
+      aktualisiere();
+    });
+    a.append(l, s, lb, b);
+    regler.push({ form: arm, s, b });
+  }
+  for (const bein of glieder().beine) {
+    const a = abschnitt(`${bein}`);
+    schieber(a, [bein, 'upper'], 'Oberschenkel', -100, 100, 0.5);
+    schieber(a, [bein, 'lower'], 'Unterschenkel', -120, 100, 0.5);
+    schieber(a, [bein, 'foot'], 'Fuß', -30, 40, 0.5);
+  }
+}
+
+function setze(pfad, wert) {
+  if (pfad.length === 1) z[pfad[0]] = wert;
+  else {
+    const [glied, feld] = pfad;
+    z[glied] = { ...z[glied], [feld]: wert };
+    // Ein Armwinkel von Hand schaltet den Arm auf Winkel; die Hand bleibt im IK-Modus erhalten.
+    if (modus[glied] && feld !== 'hand') {
+      modus[glied] = 'winkel';
+      delete ziele[glied];
+      delete z[glied].ziel;
+    }
+  }
+}
+
+function zeigeRegler() {
+  for (const e of regler) {
+    if (e.pfad) {
+      const v = e.pfad.length === 1 ? z[e.pfad[0]] : z[e.pfad[0]][e.pfad[1]];
+      e.i.value = String(v);
+      e.o.value = String(r1(v));
+    } else {
+      e.s.value = z[e.form].form;
+      e.b.textContent = beuge[e.form] < 0 ? 'unten (wechseln)' : 'außen (wechseln)';
+      const h = document.querySelector(`#regler h2[data-arm="${e.form}"]`);
+      if (h) h.textContent = `${e.form} · ${modus[e.form] === 'ik' ? 'Handziel (IK)' : 'Winkel'}`;
+    }
+  }
+  $('blick').textContent = `Blick: ${(z.dir ?? 1) === 1 ? 'rechts' : 'links'}`;
+  $('blick').setAttribute('aria-pressed', String(z.dir === -1));
+}
+
+// ---------- Schlüsselposen ----------
+function setzeSchluessel() {
+  const t = Math.max(0, r1(Number($('zeit').value) || 0));
+  const gl = r.gelenke(z);
+  const haende = Object.fromEntries(glieder().arme.map((a) => [a, { x: r0(gl[a].hand.x), y: r0(gl[a].hand.y) }]));
+  const k = { t, z: kopie(z), modus: { ...modus }, ziele: kopie(ziele), beuge: { ...beuge }, haende };
+  schluessel = schluessel.filter((s) => s.t !== t).concat(k).sort((a, b) => a.t - b.t);
+  zeigeSchluessel(t);
+  zeigeCode();
+  speichere();
+}
+$('setzen').addEventListener('click', setzeSchluessel);
+
+function zeigeSchluessel(aktiv) {
+  const box = $('schluessel');
+  box.innerHTML = '';
+  for (const k of schluessel) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = `t ${k.t.toFixed(1)}`;
+    if (k.t === aktiv) b.className = 'aktiv';
+    b.title = 'Pose laden';
+    b.addEventListener('click', () => {
+      ({ modus, beuge } = { modus: { ...k.modus }, beuge: { ...k.beuge } });
+      z = kopie(k.z);
+      ziele = kopie(k.ziele);
+      $('zeit').value = String(k.t);
+      zeichneFigur();
+      aktualisiere();
+      zeigeSchluessel(k.t);
+    });
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.textContent = '×';
+    x.title = `Schlüssel t ${k.t.toFixed(1)} löschen`;
+    x.addEventListener('click', () => {
+      schluessel = schluessel.filter((s) => s !== k);
+      zeigeSchluessel();
+      zeigeCode();
+      speichere();
+    });
+    box.append(b, x);
+  }
+}
+
+// ---------- Ausgabe ----------
+/** Spur aus den Schlüsseln; gleichbleibende Werte werden zu einem einzigen Schlüssel. */
+function spur(werte) {
+  const alleGleich = werte.every((w) => JSON.stringify(w.slice(1)) === JSON.stringify(werte[0].slice(1)));
+  return alleGleich ? [werte[0]] : werte;
+}
+function stufen(werte) {
+  return werte.filter((w, i) => i === 0 || w[1] !== werte[i - 1][1]);
+}
+
+/** Posen-Objekt im Format von lib/posen.js aus den Schlüsseln (oder der aktuellen Pose). */
+function posenObjekt() {
+  const gl = r.gelenke(z);
+  const keys = schluessel.length
+    ? schluessel
+    : [{ t: 0, z, modus, ziele, beuge, haende: Object.fromEntries(glieder().arme.map((a) => [a, { x: r0(gl[a].hand.x), y: r0(gl[a].hand.y) }])) }];
+  const P = { archetyp: r.name, dir: keys[0].z.dir ?? 1 };
+  const zahlen = ['x', 'y', 'torso', 'head', ...(r.ansicht === 'frontal' ? ['schulterL', 'schulterR'] : ['schulter'])];
+  for (const k of zahlen) P[k] = spur(keys.map((s) => [s.t, k === 'x' || k === 'y' ? r0(s.z[k]) : r1(s.z[k])]));
+  for (const arm of glieder().arme) {
+    const ik = keys.some((s) => s.modus[arm] === 'ik');
+    const a = {};
+    if (ik) {
+      a.ziel = spur(keys.map((s) => [s.t, s.haende[arm].x, s.haende[arm].y]));
+      a.beugeseite = keys[keys.length - 1].beuge[arm];
+    } else {
+      a.winkel = spur(keys.map((s) => [s.t, r1(s.z[arm].upper), r1(s.z[arm].lower)]));
+    }
+    a.hand = spur(keys.map((s) => [s.t, r1(s.z[arm].hand)]));
+    a.form = stufen(keys.map((s) => [s.t, s.z[arm].form]));
+    P[arm] = a;
+  }
+  for (const bein of glieder().beine) {
+    P[bein] = { winkel: spur(keys.map((s) => [s.t, r1(s.z[bein].upper), r1(s.z[bein].lower), r1(s.z[bein].foot)])) };
+  }
+  return P;
+}
+
+function alsCode(P, prefix) {
+  const wert = (v) => JSON.stringify(v).replace(/"([a-zA-Z_]\w*)":/g, '$1: ').replace(/"/g, "'").replace(/,/g, ', ').replace(/\[ /g, '[');
+  const zeilen = Object.entries(P).map(([k, v]) => {
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      const innen = Object.entries(v).map(([k2, v2]) => `    ${k2}: ${wert(v2)},`).join('\n');
+      return `  ${k}: {\n${innen}\n  },`;
+    }
+    return `  ${k}: ${wert(v)},`;
+  });
+  const n = schluessel.length || 1;
+  return (
+    `// Erzeugt im Posen-Editor: ${P.archetyp}, ${n} Schlüsselpose${n === 1 ? '' : 'n'}, verbunden mit inOut.\n` +
+    `// In geometry.js einfügen; in animation.js:\n` +
+    `//   import { posenZustand } from '../../lib/posen.js';\n` +
+    `//   const ${prefix} = posenZustand(rig('${P.archetyp}'), POSEN_${prefix}, t);\n` +
+    `export const POSEN_${prefix} = {\n${zeilen.join('\n')}\n};\n`
+  );
+}
+
+function zeigeCode() {
+  const prefix = ($('prefix').value || 'A').replace(/[^A-Za-z0-9]/g, '') || 'A';
+  $('code').value = alsCode(posenObjekt(), prefix);
+}
+$('prefix').addEventListener('input', zeigeCode);
+$('kopieren').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText($('code').value);
+    $('meldung').textContent = 'Code kopiert.';
+  } catch {
+    $('code').select();
+    $('meldung').textContent = 'Code markiert: Strg+C kopiert ihn.';
+  }
+});
+
+// ---------- Vorschau ----------
+// Zeitgeber ist performance.now(); requestAnimationFrame stößt nur das Zeichnen an.
+let vorschauStart = 0;
+function vorschau() {
+  if (schluessel.length < 2) {
+    $('meldung').textContent = 'Für die Vorschau mindestens zwei Schlüsselposen setzen.';
+    return;
+  }
+  spielt = !spielt;
+  $('vorschau').setAttribute('aria-pressed', String(spielt));
+  if (!spielt) {
+    aktualisiere();
+    return;
+  }
+  const P = posenObjekt();
+  const t0 = schluessel[0].t;
+  const t1 = schluessel[schluessel.length - 1].t;
+  vorschauStart = performance.now();
+  zeichneGriffe();
+  const takt = (jetzt) => {
+    if (!spielt) return;
+    let t = t0 + (jetzt - vorschauStart) / 1000;
+    if (t > t1) {
+      if ($('schleife').checked) {
+        vorschauStart = jetzt;
+        t = t0;
+      } else {
+        spielt = false;
+        $('vorschau').setAttribute('aria-pressed', 'false');
+        aktualisiere();
+        return;
+      }
+    }
+    // Quantisiert auf Bilder: die Vorschau zeigt genau, was die Szene bei 30 fps rendert.
+    const tf = Math.round(t * 30) / 30;
+    zeige(posenZustand(r, P, tf));
+    $('zeit').value = tf.toFixed(2);
+    requestAnimationFrame(takt);
+  };
+  requestAnimationFrame(takt);
+}
+$('vorschau').addEventListener('click', vorschau);
+
+// ---------- Blick, Archetyp, Zurücksetzen ----------
+$('blick').addEventListener('click', () => {
+  z.dir = (z.dir ?? 1) === 1 ? -1 : 1;
+  zeichneFigur();
+  aktualisiere();
+});
+$('archetyp').addEventListener('change', () => neuesRig($('archetyp').value));
+$('teilesatz').addEventListener('change', () => {
+  zeichneFigur();
+  aktualisiere();
+});
+$('zuruecksetzen').addEventListener('click', () => {
+  try {
+    localStorage.removeItem(`posen-editor:${r.name}`);
+  } catch {
+    /* ohne Speicher geht es auch */
+  }
+  neuesRig(r.name, true);
+});
+
+// Zwischenstand je Archetyp im Browser dieses Rechners; nur Bequemlichkeit, nie Quelle.
+function speichere() {
+  try {
+    localStorage.setItem(`posen-editor:${r.name}`, JSON.stringify({ z, modus, ziele, beuge, schluessel }));
+  } catch {
+    /* privates Fenster o. Ä. */
+  }
+}
+function lade(name) {
+  if (START.frisch) return null;
+  try {
+    const roh = localStorage.getItem(`posen-editor:${name}`);
+    return roh ? JSON.parse(roh) : null;
+  } catch {
+    return null;
+  }
+}
+
+// ---------- Werkzeugschnittstelle (Tests) ----------
+window.editor = {
+  zustand: () => kopie(z),
+  griffe: () => griffPunkte(),
+  posen: () => posenObjekt(),
+  code: () => $('code').value,
+};
+
+zeichneHilfen();
+neuesRig(START.archetyp ?? 'stehend-profil');
+zeigeSchluessel();
+document.documentElement.dataset.bereit = '1';
+</script>
+</body>
+</html>
