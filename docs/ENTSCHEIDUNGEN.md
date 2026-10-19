@@ -18,4 +18,8 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 
 **Lizenzhinweis (genannt, nicht erfragt):** Remotion ist für Einzelpersonen und Firmen bis drei Personen frei; darüber braucht es eine Firmenlizenz. ElevenLabs-Generierungen sind je nach Tarif kommerziell nutzbar. Beides wird in `docs/LIZENZEN.md` mit Prüfdatum geführt und vor einer Kundenlieferung erneut geprüft.
 
+**Nachtrag 2026-10-19, entschieden von Regie:** Das Repository bleibt vorerst öffentlich. Daraus folgt: keine Kundeninhalte, kein Corporate Design eines Auftrags, keine personenbezogenen Daten und keine unveröffentlichten Sprechtexte im Repository, solange es öffentlich ist. Vor dem ersten Auftrag wird die Sichtbarkeit erneut entschieden.
+
+**Nachtrag 2026-10-19, entschieden von Claude nach Empfehlung:** Der erste Stand wird als `main` angelegt; gearbeitet wird auf Zweigen mit Pull Request gegen `main`.
+
 **Umgebung der Cloud-Sitzung am 2026-10-19 vorgefunden:** Node 22.22.0, npm 10.9.4, ffmpeg und ffprobe unter `/usr/bin`, Chromium unter `/opt/pw-browsers`, Liberation Sans installiert.
