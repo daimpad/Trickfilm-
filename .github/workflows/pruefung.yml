@@ -1,5 +1,5 @@
 # Prüflauf bei jedem Push und Pull Request (Abschnitt 13.3 der Werkstatt).
-# Szenen bauen, Cue-Listen und erzeugte Dateien vergleichen kommen mit den Phasen 2 bis 4 hinzu.
+# Cue-Listen vergleichen kommt mit Phase 4 hinzu.
 name: Prüfung
 
 on:
@@ -12,9 +12,7 @@ permissions:
 jobs:
   pruefung:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    env:
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -25,6 +23,9 @@ jobs:
 
       - name: Abhängigkeiten
         run: npm ci --no-audit --no-fund
+
+      - name: Chromium für Standbilder und Seitentests
+        run: npx playwright install --with-deps chromium
 
       - name: Fassungen von remotion und @remotion/* gleich und exakt
         run: |
@@ -46,3 +47,9 @@ jobs:
 
       - name: Geheimnisse und Verbotenes
         run: npm run verboten
+
+      - name: Jede Szene bauen (Brief gegen Code, keine NaN, Reichweiten)
+        run: npm run szene:bauen -- alle
+
+      - name: Erzeugte Dateien aktuell (Spezifikation, Teilesätze, Protokolle)
+        run: npm run erzeugt:pruefen

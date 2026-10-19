@@ -2,7 +2,7 @@
 
 Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen. Bewegung ist eine reine Zeitfunktion, Figuren entstehen aus Rigs, Geräusche aus den Bewegungsereignissen, Stimme und Untertitel aus gemessenen Aufnahmen. Der Render ist deterministisch: Gleiche Eingabe ergibt dasselbe Bild.
 
-Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md).
+Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md), der Weg einer Szene in [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md).
 
 ## Schnellstart
 
@@ -11,7 +11,8 @@ npm ci                                  # Abhängigkeiten, exakt gepinnt
 npm run pruefen                         # Typen, Tests, Geheimnisse und Verbotenes
 npm run studio                          # Remotion Studio im Browser
 npx remotion still Palette out/p.png    # Standbild der Testkarte
-npm run szene:neu -- FILM-01-slug       # neue Szene (ab Phase 2)
+npm run szene:neu -- FILM-01-slug       # neue Szene aus der Vorlage
+npm run szene:bauen -- FILM-01-slug     # prüfen und Prototyp nach szenen/<ID>/dist/index.html
 ```
 
 Voraussetzungen: Node ≥ 22, ffmpeg und ffprobe, die Schrift Arial oder Liberation Sans. Chromium kommt örtlich über `npx playwright install chromium`; in Claude-Code-Cloud-Sitzungen liegt es schon vor.
@@ -24,7 +25,7 @@ Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet
 |---|---|---|
 | 0 | Grundentscheidungen | fertig |
 | 1 | Grundgerüst, Tokens, Regeln, Prüflauf, SessionStart-Hook | fertig |
-| 2 | Bibliothek: Bewegung, Rigs, Requisiten, Build, Viewer | offen |
+| 2 | Bibliothek: Bewegung, Rigs, Requisiten, Build, Viewer | fertig |
 | 3 | Figurenbaukasten | offen |
 | 4 | Geräusche | offen |
 | 5 | Demoszene `DEMO-01-buero` | offen |

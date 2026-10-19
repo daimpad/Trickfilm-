@@ -37,7 +37,7 @@ Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen, unabhäng
 |---|---|
 | `tokens/tokens.js` | einzige Quelle aller Gestaltungswerte |
 | `lib/` | Bibliothek: Kurven, Bewegung, Spielweise, Bühne, SVG, Rigs, Requisiten, Ereignisse, Build, Viewer, `sfx/` |
-| `figuren/` | Rig-Spezifikation, Zeichenvorlagen, Teilesätze (Handarbeit) |
+| `figuren/` | Rig-Spezifikation (normativ), Zeichenvorlagen, Teilesätze (Handarbeit), `testposen.png` |
 | `tools/` | Werkzeuge für Import, Geräusche, Stimme, Untertitel, Mischung, Video, Galerie, Drehbuch |
 | `szenen/<FILM>-<NN>-<slug>/` | je Szene `brief.yaml`, `geometry.js`, `scene.js`, `animation.js`; `dist/` ist erzeugt |
 | `remotion/src/` | Kompositionen je Szene und Master je Film |
@@ -81,7 +81,11 @@ Werkzeuge, die noch nicht gebaut sind, melden über `tools/noch-nicht.js`, in we
 
 ## Prüfen
 
-`npm run pruefen` fährt örtlich, was der Prüflauf auf GitHub fährt: Typen, Tests, Geheimnisse und Verbotenes (`tools/pruefen-verboten.ts`). Szenen bauen, Cue-Listen und erzeugte Dateien vergleichen kommen mit den Phasen 2 bis 4 hinzu.
+`npm run pruefen` fährt örtlich, was der Prüflauf auf GitHub fährt: Typen, Tests (mit Chromium), Geheimnisse und Verbotenes einschließlich Raster (`tools/pruefen-verboten.ts`), jede Szene bauen, erzeugte Dateien vergleichen. Cue-Listen vergleichen kommt mit Phase 4 hinzu.
+
+- Rig-Zustand im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf; Spiegelung setzt das Rig, nie `-dir` in der Szene (2026-10-19).
+- Handziele über `rig.greife()`; ein Ziel außer Reichweite meldet der Build mit Bild und Abstand.
+- Haltungen, die IK nicht liefert (vor dem Körper halten), als Pose aus `rig.posen`.
 
 ## Ohne Rückfrage geschieht nicht
 

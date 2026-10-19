@@ -37,3 +37,14 @@ test('Netzaufrufe im Render werden gefunden, der SVG-Namensraum nicht', () => {
     'Netzaufruf im Render',
   ]);
 });
+
+test('Abstände außerhalb des Rasters werden in Bibliothek und Szenen gefunden', () => {
+  assert.deepEqual(regeln('szenen/X/geometry.js', 'const GEO = { abstand: 20 };'), ['Abstand außerhalb des Rasters (8, 16, 24, 32, 48, 64, 96, 128)']);
+  assert.deepEqual(regeln('szenen/X/geometry.js', 'const GEO = { abstand: 24, randLinks: 128 };'), []);
+  assert.deepEqual(regeln('tools/katalog.js', 'const abstand: 20'), []);
+});
+
+test('erzeugte Dateien sind von der Farbregel ausgenommen, Geheimnisse nicht', () => {
+  assert.deepEqual(regeln('lib/rigs/spezifikation.js', "// ERZEUGT von tools/x.js\nconst f = '#ff00ff';"), []);
+  assert.deepEqual(regeln('lib/rigs/basis.js', "const f = '#ff00ff';"), ['Farbliteral außerhalb der Tokens']);
+});

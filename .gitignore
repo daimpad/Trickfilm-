@@ -12,3 +12,6 @@ ton/roh-lokal/
 # Betriebssystem
 .DS_Store
 Thumbs.db
+
+# Erzeugte Prototypen, Standbilder und Kontaktbögen; mit npm run szene:bauen und szene:kontaktbogen neu erzeugbar.
+szenen/*/dist/

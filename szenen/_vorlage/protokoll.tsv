@@ -1,0 +1,13 @@
+# ERZEUGT von lib/protokoll.js aus brief.yaml und der Prüfung des Builds. Nicht von Hand ändern.
+szene	beat	start_s	ende_s	figur	aktion	gefuehl	requisiten	pruefpunkt	status	anmerkung
+_vorlage	tippen	0.5	3	A	tippt die Eingabe	konzentriert				„Formular“
+_vorlage	warten	3	3.6	A	nimmt die Hände zurück	konzentriert				
+_vorlage	haken	3.6	4.4	A	Haken erscheint am Monitor	konzentriert				„bestätigt“
+_vorlage	reaktion	4.4	5.4	A	lehnt sich zurück	erleichtert				
+_vorlage	pruef							schutzzone	ok	Text über y 940
+_vorlage	pruef							reichweite	ok	181 Bilder
+_vorlage	pruef							lesetakt	ok	
+_vorlage	pruef							lesbarkeit_960	offen	Sichtung am Kontaktbogen
+_vorlage	pruef							synchron	offen	Stichprobe am Bild
+_vorlage	pruef							dauer	geschaetzt	Sprechtext 4.5 s, Szene 6 s
+_vorlage	pruef							build	ok	0 Befunde

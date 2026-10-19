@@ -23,3 +23,12 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 **Nachtrag 2026-10-19, entschieden von Claude nach Empfehlung:** Der erste Stand wird als `main` angelegt; gearbeitet wird auf Zweigen mit Pull Request gegen `main`.
 
 **Umgebung der Cloud-Sitzung am 2026-10-19 vorgefunden:** Node 22.22.0, npm 10.9.4, ffmpeg und ffprobe unter `/usr/bin`, Chromium unter `/opt/pw-browsers`, Liberation Sans installiert.
+
+## 2026-10-19 · Phase 2: Bibliothek
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Startpalette | bleibt wie in Phase 1 vorgeschlagen (keine Einwände) | entschieden von Claude nach Empfehlung |
+| `szenen/*/dist/` im Repository | nein: Prototyp, Standbilder und Kontaktbogen sind jederzeit neu erzeugbar und PNGs nicht bitgleich; `protokoll.tsv` bleibt im Repository und wird im Prüflauf verglichen | entschieden von Claude |
+| `satz-00` | wird aus der Rig-Spezifikation erzeugt (`npm run figuren:erzeugen`), nicht von Hand gezeichnet; Kopf und Hände weiß, Kleidung aus der Figurenpalette, damit keine Hauttöne als Token nötig sind | entschieden von Claude |
+| Referenzbilder `lib/props/KATALOG.png`, `figuren/testposen.png` | im Repository als Sichtungsstand, nicht im Prüflauf verglichen | entschieden von Claude |

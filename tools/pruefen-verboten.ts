@@ -4,6 +4,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { RASTER } from '../tokens/tokens.js';
 
 export interface Befund {
   datei: string;
@@ -25,10 +26,12 @@ const SKRIPT = /\.(js|mjs|ts|tsx)$/;
 const RENDER = /^(lib|szenen|remotion)\//;
 // Erzeugtes und Zeichnungen tragen aufgelöste Farben; sie werden über ihre Quelle geprüft.
 const ERZEUGT = /(^|\/)dist\/|^lib\/teilesaetze\/|^figuren\//;
-// Prüfung und ihr Test enthalten Verbotenes als Muster und Beispiel; für sie gelten nur die Geheimnisregeln.
-const SELBST = new Set(['tools/pruefen-verboten.ts', 'test/verboten.test.ts']);
+// Prüfung, ihr Test und der Build enthalten Verbotenes als Suchmuster; für sie gelten nur die Geheimnisregeln.
+const SELBST = new Set(['tools/pruefen-verboten.ts', 'test/verboten.test.ts', 'lib/build.js']);
 
 const imRender = (p: string) => RENDER.test(p) && !ERZEUGT.test(p);
+// Tests nennen Verbotenes als Prüfmuster; sie werden nie gerendert.
+const keinTest = (p: string) => !p.startsWith('test/');
 
 export const REGELN: Regel[] = [
   // Geheimnisse: überall.
@@ -43,15 +46,15 @@ export const REGELN: Regel[] = [
   },
 
   // Bewegung nur als Zeitfunktion.
-  { name: 'CSS-Animation', muster: /@keyframes\b|\banimation(-name)?\s*:|\btransition\s*:/, gilt: (p) => CODE.test(p) },
-  { name: 'SMIL', muster: /<(animate|animateTransform|animateMotion|set)\b/, gilt: (p) => CODE.test(p) },
+  { name: 'CSS-Animation', muster: /@keyframes\b|\banimation(-name)?\s*:|\btransition\s*:/, gilt: (p) => CODE.test(p) && keinTest(p) },
+  { name: 'SMIL', muster: /<(animate|animateTransform|animateMotion|set)\b/, gilt: (p) => CODE.test(p) && keinTest(p) },
   { name: 'Zufall ohne Seed', muster: /\bMath\.random\s*\(/, gilt: (p) => imRender(p) || p.startsWith('tokens/') },
   { name: 'Uhrzeit im Bild', muster: /\bDate\.now\s*\(|\bnew Date\s*\(/, gilt: (p) => imRender(p) || p.startsWith('tokens/') },
   { name: 'requestAnimationFrame als Zeitgeber', muster: /\brequestAnimationFrame\s*\(/, gilt: (p) => imRender(p) && SKRIPT.test(p) },
   {
     name: 'verbotene Bibliothek',
     muster: /(from\s+|require\(\s*|import\(\s*)['"](gsap|framer-motion|motion|d3-selection|lottie-web)(\/[^'"]*)?['"]/,
-    gilt: (p) => SKRIPT.test(p),
+    gilt: (p) => SKRIPT.test(p) && keinTest(p),
   },
 
   // Gestaltung nur aus den Tokens.
@@ -60,7 +63,7 @@ export const REGELN: Regel[] = [
     muster: /(?<![\w&/])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b|\b(rgba?|hsla?)\s*\(/,
     gilt: (p) => imRender(p) && CODE.test(p),
   },
-  { name: 'Webfont', muster: /@font-face|fonts\.(googleapis|gstatic)\.com|\.woff2?\b/, gilt: (p) => CODE.test(p) },
+  { name: 'Webfont', muster: /@font-face|fonts\.(googleapis|gstatic)\.com|\.woff2?\b/, gilt: (p) => CODE.test(p) && keinTest(p) },
 
   // Kein Netz im Render; der SVG-Namensraum ist eine Kennung, kein Abruf.
   {
@@ -77,14 +80,41 @@ const VERBOTENE_DATEIEN: { name: string; muster: RegExp }[] = [
 ];
 
 /** Prüfungen aus Abschnitt 13.3, die erst mit einer späteren Phase greifen. */
-export const NOCH_NICHT = ['Abstände außerhalb des Rasters (kommt mit den Szenengeometrien, Phase 2)'];
+export const NOCH_NICHT: string[] = [];
+
+// Abstände heißen abstand…, rand…, luecke… oder einzug…; ihr Zahlwert muss auf dem 8-px-Raster liegen.
+const ABSTAND = /\b(abstand|rand|luecke|einzug)\w*\s*:\s*(-?\d+(?:\.\d+)?)\b/gi;
+const RASTER_WERTE = new Set([0, ...RASTER]);
+
+function pruefeRaster(pfad: string, inhalt: string): Befund[] {
+  if (!(RENDER.test(pfad) && !ERZEUGT.test(pfad) && SKRIPT.test(pfad))) return [];
+  const befunde: Befund[] = [];
+  inhalt.split('\n').forEach((text, i) => {
+    for (const m of text.matchAll(ABSTAND)) {
+      if (!RASTER_WERTE.has(Math.abs(Number(m[2])))) {
+        befunde.push({ datei: pfad, zeile: i + 1, regel: `Abstand außerhalb des Rasters (${RASTER.join(', ')})`, auszug: text.trim().slice(0, 120) });
+      }
+    }
+  });
+  return befunde;
+}
+
+// Erzeugte Dateien tragen „ERZEUGT von“ im Kopf; ihre Farben stammen aus geprüften Quellen.
+const istErzeugt = (inhalt: string) => /^\/\/ ERZEUGT von /.test(inhalt) || /^# ERZEUGT von /.test(inhalt);
 
 export function pruefeDatei(pfad: string, inhalt: string): Befund[] {
   const befunde: Befund[] = [];
   for (const { name, muster } of VERBOTENE_DATEIEN) {
     if (muster.test(pfad)) befunde.push({ datei: pfad, zeile: 0, regel: name, auszug: '' });
   }
-  const regeln = REGELN.filter((r) => r.gilt(pfad) && (!SELBST.has(pfad) || r.name.startsWith('Geheimnis')));
+  const erzeugt = istErzeugt(inhalt);
+  const regeln = REGELN.filter(
+    (r) =>
+      r.gilt(pfad) &&
+      (!SELBST.has(pfad) || r.name.startsWith('Geheimnis')) &&
+      !(erzeugt && r.name === 'Farbliteral außerhalb der Tokens'),
+  );
+  befunde.push(...pruefeRaster(pfad, inhalt));
   if (regeln.length === 0) return befunde;
   inhalt.split('\n').forEach((text, i) => {
     for (const r of regeln) {

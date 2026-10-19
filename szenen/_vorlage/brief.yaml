@@ -1,0 +1,31 @@
+id: _vorlage                          # <FILM>-<NN>-<slug>; npm run szene:neu ersetzt id und film
+film: VORLAGE
+sprechtext:
+  datei: null                         # ton/<FILM>/absatz-NN.wav, sobald eine Aufnahme gemessen ist
+  passage: "Sie füllt das Formular aus und schickt es ab. Das System bestätigt."
+  dauer_s: 4.5
+  dauer_geschaetzt: true              # 15 Zeichen/s, solange keine Aufnahme gemessen ist
+  luft_prozent: 12
+  dauer_szene_s: 6.0
+these: "Eine Eingabe wird abgeschickt und bestätigt."
+pointe: "Der Haken kommt so prompt, dass die Erleichterung fast zu spät einsetzt."
+palette: { grund: "#F5F3EE", akzent1: "#2F7032", akzent2: null }
+figuren:
+  - prefix: A
+    rig: sitzend-profil
+    teilesatz: satz-00
+    palette: { kleidung1: "#1C6E78", kleidung2: "#1F2A44", zubehoer: null }
+    blick: rechts
+    charakter: { tempo: 1.0, haltung: konzentriert, reaktion: 0.8, tick: null }
+    gefuehlsbogen: [konzentriert, erleichtert]
+requisiten: [buerostuhl, schreibtisch, tastatur, monitor, haken]
+beats:                                # gleiche Namen und Reihenfolge wie BEATS in animation.js
+  - { name: tippen, start: 0.5, ende: 3.0, figur: A, aktion: "tippt die Eingabe", gefuehl: konzentriert, wort: "Formular" }
+  - { name: warten, start: 3.0, ende: 3.6, figur: A, aktion: "nimmt die Hände zurück", gefuehl: konzentriert }
+  - { name: haken, start: 3.6, ende: 4.4, figur: A, aktion: "Haken erscheint am Monitor", gefuehl: konzentriert, wort: "bestätigt" }
+  - { name: reaktion, start: 4.4, ende: 5.4, figur: A, aktion: "lehnt sich zurück", gefuehl: erleichtert }
+beschriftungen: { links: "Eingabe", mitte: "", rechts: "Bestätigung" }
+textaequivalent: "Eine Person sitzt am Schreibtisch und tippt auf der Tastatur. Danach erscheint auf dem Monitor ein grüner Haken, und die Person lehnt sich erleichtert zurück."
+annahmen: []
+abweichungen: []
+sichtung: { lesbarkeit_960: offen, synchron: offen }
