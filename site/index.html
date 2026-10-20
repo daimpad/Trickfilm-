@@ -4,545 +4,617 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trickfilm-Werkstatt</title>
-<meta name="description" content="Was die Trickfilm-Werkstatt kann und wie man sie bedient: Werkzeuge, Anleitungen, Bausteine und Regeln, Nachschlagen.">
+<meta name="description" content="Werkzeuge, Anleitungen, Bausteine und Regeln der Trickfilm-Werkstatt.">
 <style>
-/* Vorlage der Webseite; tools/seite-bauen.js setzt Tokens, Palette, Befehle, Stand und Bilder ein.
-   Aufbau: Start und vier Bereiche (Werkzeuge, Anleitungen, Bausteine und Regeln, Nachschlagen), jedes Kapitel
-   eine eigene Ansicht. Ohne JavaScript ist alles eine lange Seite mit Sprungmarken. Keine Übergänge, keine Animation. */
-:root { {{TOKENS_CSS}} }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--grund); color: var(--text); font-family: var(--schrift); font-size: 18px; line-height: 1.55; }
-a { color: var(--link); }
-a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+/* Vorlage der Webseite; tools/seite-bauen.js setzt Palette und Befehle ein und kopiert Bilder und Schriften.
+   Aufbau: Start und vier Bereiche, jedes Kapitel eine eigene Ansicht. Ohne JavaScript eine lange Seite.
+   Keine Übergänge, keine Animation. Schriften liegen im Repository (SIL OFL), nie aus dem Netz. */
+@font-face { font-family: "Bricolage Grotesque"; font-style: normal; font-weight: 400 800; font-display: swap; src: url(schriften/bricolage-grotesque.woff2) format("woff2"); }
+@font-face { font-family: "Fraunces"; font-style: italic; font-weight: 300 600; font-display: swap; src: url(schriften/fraunces-kursiv.woff2) format("woff2"); }
+@font-face { font-family: "Instrument Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url(schriften/instrument-sans.woff2) format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 800; font-display: swap; src: url(schriften/inter.woff2) format("woff2"); }
 
-/* Kopfzeile: Name, Reiter, Suche, Ebenen; bleibt oben stehen. */
-.kopf { position: sticky; top: 0; z-index: 2; background: var(--weiss); border-bottom: 4px solid var(--kontur); }
-.kopf-innen { max-width: 1120px; margin: 0 auto; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
-.marke { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
-.reiter { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
-.reiter a { display: block; padding: 5px 8px; font-size: 16px; color: var(--text); text-decoration: none; border: 2px solid transparent; border-bottom-width: 4px; }
-.reiter a:hover { border-color: var(--linie); }
-.reiter a[aria-current="true"] { border-color: var(--kontur); border-bottom-color: var(--link); font-weight: 700; }
-.werkzeugleiste { display: flex; align-items: center; gap: 8px 12px; margin-left: auto; }
-.suche { position: relative; }
-.suche input { font: inherit; font-size: 16px; width: 190px; padding: 6px 10px; border: 2px solid var(--kontur); background: var(--weiss); color: var(--text); }
-.treffer { position: absolute; right: 0; top: calc(100% + 4px); width: min(480px, calc(100vw - 32px)); background: var(--weiss); border: 2px solid var(--kontur); margin: 0; padding: 0; list-style: none; max-height: 60vh; overflow: auto; }
-.treffer li a { display: block; padding: 8px 12px; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--linie); }
-.treffer li a:hover, .treffer li a:focus { background: var(--flaeche); }
-.treffer .ort { display: block; font-size: 14px; font-weight: 700; }
-.treffer .auszug { display: block; font-size: 15px; }
-.treffer .leer { padding: 8px 12px; font-size: 15px; }
-.ebenen { display: inline-flex; border: 2px solid var(--kontur); }
-.ebenen button { font: inherit; font-size: 15px; padding: 5px 10px; border: 0; background: var(--weiss); color: var(--text); cursor: pointer; }
-.ebenen button[aria-pressed="true"] { background: var(--text); color: var(--weiss); font-weight: 700; }
+:root {
+  /* Farben */
+  --st-bg: #F6F5F1;
+  --st-surface: #FFFFFF;
+  --st-ink: #111317;
+  --st-gray: #5B6068; /* Nebentext: 5,9:1 auf dem Grund */
+  --st-dark: #16191E;
+  --st-btn: #1D2129;
+  --st-clay: #F1F0EC;
+  --st-rule: #D4D3CF;
+  --st-hairline: rgba(17, 19, 23, 0.08);
+  --st-lilac: #DDD5FB;
+  --st-mint: #D9F5DF;
+  --st-sky: #DCE8FD;
+  --st-purple-deep: #6C5BBD;
+  --st-blue: #2F6FE0;
+  /* Schrift */
+  --st-font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --st-font-serif: "Fraunces", Georgia, serif;
+  --st-font-body: "Instrument Sans", "Inter", system-ui, sans-serif;
+  --st-font-ui: "Inter", system-ui, sans-serif;
+
+  /* Stilwerte: vom Stil-Editor einstellbar; zum Übernehmen den Block aus dem Editor hier einsetzen. */
+  --st-akzent: #2F6FE0;
+  --st-radius: 26px;
+  --st-schatten: 1;
+  --st-tiefe: 1;
+  --st-unschaerfe: 18px;
+  --st-glas: 0.72;
+  --st-titelschrift: var(--st-font-display);
+
+  /* Abgeleitet */
+  --st-radius-klein: calc(var(--st-radius) * 0.55);
+  --st-schatten-weich: 0 1px 2px rgba(17, 19, 23, calc(0.04 * var(--st-schatten))), 0 8px 24px rgba(17, 19, 23, calc(0.06 * var(--st-schatten))), 0 32px 64px -24px rgba(17, 19, 23, calc(0.12 * var(--st-schatten)));
+  --st-schatten-ton: 6px 8px 16px rgba(0, 0, 0, calc(0.06 * var(--st-tiefe))), inset 2px 2px 5px rgba(255, 255, 255, calc(1 * var(--st-tiefe))), inset -3px -3px 8px rgba(0, 0, 0, calc(0.06 * var(--st-tiefe)));
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--st-bg); color: var(--st-ink); font-family: var(--st-font-body); font-size: 17px; line-height: 1.55; }
+a { color: var(--st-akzent); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--st-akzent); outline-offset: 3px; }
+.icon { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; vertical-align: -4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Kopfzeile aus Glas */
+.kopf { position: sticky; top: 0; z-index: 3; background: rgba(246, 245, 241, var(--st-glas)); backdrop-filter: blur(var(--st-unschaerfe)) saturate(1.4); -webkit-backdrop-filter: blur(var(--st-unschaerfe)) saturate(1.4); border-bottom: 1px solid var(--st-hairline); }
+.kopf-innen { max-width: 1240px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+.marke { font-family: var(--st-font-display); font-weight: 800; font-size: 19px; color: var(--st-ink); text-decoration: none; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 8px; }
+.marke .icon { width: 26px; height: 26px; color: var(--st-akzent); }
+.reiter { display: flex; gap: 4px; margin: 0; padding: 4px; list-style: none; background: var(--st-clay); border-radius: 999px; }
+.reiter a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; font-family: var(--st-font-ui); font-size: 14px; font-weight: 500; color: var(--st-ink); text-decoration: none; border-radius: 999px; }
+.reiter a:hover { background: var(--st-surface); }
+.reiter a[aria-current="true"] { background: var(--st-btn); color: #FFFFFF; }
+.werkzeugleiste { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.suche { position: relative; display: flex; align-items: center; }
+.suche .icon { position: absolute; left: 12px; color: var(--st-gray); pointer-events: none; }
+.suche input { font-family: var(--st-font-ui); font-size: 14px; width: 160px; padding: 9px 14px 9px 38px; border: 1px solid var(--st-hairline); border-radius: 999px; background: var(--st-surface); color: var(--st-ink); }
+.treffer { position: absolute; right: 0; top: calc(100% + 8px); width: min(460px, calc(100vw - 32px)); background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); margin: 0; padding: 6px; list-style: none; max-height: 60vh; overflow: auto; }
+.treffer li a { display: block; padding: 8px 10px; color: var(--st-ink); text-decoration: none; border-radius: 10px; }
+.treffer li a:hover, .treffer li a:focus { background: var(--st-clay); }
+.treffer .ort { display: block; font-family: var(--st-font-ui); font-size: 12px; font-weight: 600; color: var(--st-gray); }
+.treffer .auszug { display: block; font-size: 14px; }
+.treffer .leer { padding: 8px 10px; font-size: 14px; color: var(--st-gray); }
+.ebenen { display: inline-flex; padding: 3px; background: var(--st-clay); border-radius: 999px; }
+.ebenen button { font-family: var(--st-font-ui); font-size: 13px; font-weight: 500; padding: 6px 12px; border: 0; border-radius: 999px; background: transparent; color: var(--st-ink); cursor: pointer; }
+.ebenen button[aria-pressed="true"] { background: var(--st-surface); box-shadow: 0 1px 3px rgba(17, 19, 23, calc(0.12 * var(--st-schatten))); font-weight: 600; }
+.rund { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 999px; background: var(--st-clay); color: var(--st-ink); cursor: pointer; }
+.rund[aria-expanded="true"] { background: var(--st-btn); color: #FFFFFF; }
 
 /* Inhalt */
-main { max-width: 1120px; margin: 0 auto; padding: 16px 16px 48px; }
-.ansicht { padding-top: 8px; }
-.ansicht + .ansicht { border-top: 2px solid var(--linie); margin-top: 32px; }
-.js .ansicht + .ansicht { border-top: 0; margin-top: 0; }
-.ansicht > h1, .ansicht > h2 { font-size: 32px; line-height: 1.2; margin: 8px 0 8px; }
-.ansicht h3 { font-size: 21px; margin: 24px 0 4px; }
-.lauftext { max-width: 760px; }
-p, li { max-width: 72ch; }
-.lead { font-size: 20px; }
-.krume { font-size: 15px; margin: 0; }
-.krume a { color: var(--text); }
-code, kbd { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--flaeche); padding: 1px 5px; }
-pre { background: var(--flaeche); padding: 12px 16px; overflow-x: auto; font-size: 15px; line-height: 1.45; border-left: 4px solid var(--linie); }
-pre code { background: none; padding: 0; }
-.tabelle { overflow-x: auto; margin: 12px 0; }
-table { border-collapse: collapse; width: 100%; font-size: 16px; background: var(--weiss); }
-th, td { text-align: left; vertical-align: top; padding: 6px 10px; border: 1px solid var(--linie); }
-th { background: var(--flaeche); }
-figure { margin: 16px 0; }
-figure img { max-width: 100%; height: auto; border: 2px solid var(--kontur); background: var(--weiss); display: block; }
-figcaption { font-size: 15px; margin-top: 4px; }
-ol.schritte > li { margin: 8px 0; }
+main { max-width: 1240px; margin: 0 auto; padding: 32px 24px 64px; }
+.ansicht + .ansicht { margin-top: 48px; }
+.js .ansicht + .ansicht { margin-top: 0; }
+.ansicht > h1, .ansicht > h2 { font-family: var(--st-titelschrift); font-weight: 700; font-size: 44px; line-height: 1.08; letter-spacing: -0.02em; margin: 6px 0 12px; }
+.ansicht > h1 { font-size: 60px; }
+h1 em, h2 em { font-family: var(--st-font-serif); font-weight: 400; font-style: italic; }
+.ansicht h3 { font-family: var(--st-font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 28px 0 6px; }
+p, li { max-width: 68ch; }
+.lead { font-size: 19px; color: var(--st-gray); max-width: 56ch; margin: 0 0 24px; }
+.krume { font-family: var(--st-font-ui); font-size: 13px; font-weight: 500; color: var(--st-gray); margin: 0; display: flex; align-items: center; gap: 6px; }
+.krume .icon { width: 14px; height: 14px; vertical-align: 0; }
+.krume a { color: var(--st-gray); text-decoration: none; }
+.krume a:hover { color: var(--st-ink); }
+code, kbd { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.86em; background: var(--st-clay); padding: 2px 6px; border-radius: 6px; }
+pre { background: var(--st-dark); color: #F1F0EC; padding: 16px 20px; overflow-x: auto; font-size: 14px; line-height: 1.5; border-radius: var(--st-radius-klein); }
+pre code { background: none; padding: 0; color: inherit; }
+.tabelle { overflow-x: auto; margin: 16px 0; background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 16px; border-bottom: 1px solid var(--st-hairline); }
+tr:last-child > * { border-bottom: 0; }
+th { font-family: var(--st-font-ui); font-size: 13px; font-weight: 600; }
+figure { margin: 20px 0; }
+figure img { max-width: 100%; height: auto; display: block; background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); }
+figcaption { font-size: 14px; color: var(--st-gray); margin-top: 8px; }
+ol.schritte { list-style: none; counter-reset: schritt; padding: 0; margin: 16px 0; display: grid; gap: 10px; max-width: 820px; }
+ol.schritte > li { counter-increment: schritt; position: relative; padding: 12px 16px 12px 56px; background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); max-width: none; }
+ol.schritte > li::before { content: counter(schritt); position: absolute; left: 14px; top: 11px; width: 28px; height: 28px; border-radius: 999px; background: var(--st-clay); font-family: var(--st-font-ui); font-size: 13px; font-weight: 700; display: grid; place-items: center; }
 
-/* Kacheln: Einstiege, Kapitel eines Bereichs, Werkzeuge */
-.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; padding: 0; list-style: none; }
-.kachel { background: var(--weiss); border: 2px solid var(--kontur); padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
-.kachel h3 { margin: 0; font-size: 20px; }
-.kachel p { margin: 0; font-size: 16px; }
-.kachel .wann { font-size: 15px; }
-.kachel .aktionen { margin-top: auto; padding-top: 8px; }
-a.kachel { color: var(--text); text-decoration: none; }
-a.kachel:hover { border-color: var(--link); }
-a.kachel h3 { color: var(--link); }
-.einstiege .kachel { min-height: 140px; border-width: 3px; }
-.einstiege .kachel h3 { font-size: 24px; }
-.knopf { display: inline-block; padding: 6px 14px; border: 3px solid var(--kontur); background: var(--weiss); color: var(--text); text-decoration: none; font-weight: 700; margin: 4px 8px 4px 0; }
-.knopf:hover { background: var(--text); color: var(--weiss); }
-.querverweis { border-left: 4px solid var(--link); background: var(--weiss); padding: 8px 16px; margin: 12px 0; font-size: 16px; }
-.querverweis p { margin: 4px 0; }
-iframe { width: 100%; aspect-ratio: 16 / 12; border: 2px solid var(--kontur); background: var(--weiss); }
+/* Karten und Kacheln */
+.kacheln { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; padding: 0; list-style: none; }
+.kacheln > li { max-width: none; }
+.kachel { position: relative; background: var(--st-surface); border-radius: var(--st-radius); box-shadow: var(--st-schatten-weich); padding: 22px; display: flex; flex-direction: column; gap: 8px; color: var(--st-ink); text-decoration: none; height: 100%; }
+a.kachel:hover { outline: 2px solid var(--st-akzent); outline-offset: -2px; }
+.kachel h3, .ansicht .kachel h3 { font-family: var(--st-font-display); font-size: 21px; font-weight: 700; letter-spacing: -0.01em; margin: 4px 0 0; }
+.kachel p { margin: 0; font-size: 15px; color: var(--st-gray); }
+.kachel .aktionen { margin-top: auto; padding-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.blase { width: 48px; height: 48px; border-radius: calc(var(--st-radius) * 0.6); display: grid; place-items: center; background: var(--st-lilac); box-shadow: var(--st-schatten-ton); color: var(--st-ink); }
+.blase .icon { width: 24px; height: 24px; vertical-align: 0; }
+.blase.mint { background: var(--st-mint); }
+.blase.himmel { background: var(--st-sky); }
+.blase.ton { background: var(--st-clay); }
+.einstiege .kachel { padding: 26px; min-height: 200px; }
+.ansicht .einstiege .kachel h3 { font-size: 26px; }
+.knopf { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; background: var(--st-btn); color: #FFFFFF; font-family: var(--st-font-ui); font-size: 14px; font-weight: 600; text-decoration: none; }
+.knopf:hover { background: var(--st-ink); }
+.knopf.hell { background: var(--st-clay); color: var(--st-ink); }
+.knopf.hell:hover { background: var(--st-rule); }
+.knopf .icon { width: 16px; height: 16px; vertical-align: 0; }
+.querverweis { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 20px; max-width: none; }
+.querverweis a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; background: var(--st-surface); box-shadow: var(--st-schatten-weich); color: var(--st-ink); text-decoration: none; font-family: var(--st-font-ui); font-size: 13px; font-weight: 500; }
+.querverweis a:hover { outline: 2px solid var(--st-akzent); outline-offset: -2px; }
+.querverweis .icon { width: 16px; height: 16px; vertical-align: 0; color: var(--st-akzent); }
+.liste { padding-left: 20px; }
+.liste li { margin: 6px 0; }
+iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-surface); border-radius: var(--st-radius); box-shadow: var(--st-schatten-weich); }
 .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-.farbe { border: 2px solid var(--kontur); background: var(--weiss); font-size: 14px; }
-.farbe span { display: block; height: 48px; border-bottom: 2px solid var(--kontur); }
-.farbe p { margin: 4px 8px; }
-.stand-fertig { font-weight: 700; }
+.farbe { background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); overflow: hidden; font-size: 13px; }
+.farbe span { display: block; height: 56px; }
+.farbe p { margin: 8px 10px; }
 
-/* Technik-Blöcke: mit JavaScript nur sichtbar, wenn „Mit Technik“ gewählt ist. */
-.technik { border: 2px solid var(--linie); background: var(--weiss); padding: 4px 16px 8px; margin: 16px 0; }
-.technik::before { content: "Technik"; display: block; font-size: 14px; font-weight: 700; padding-top: 4px; }
+/* Technik-Blöcke: mit JavaScript nur bei „Technik“ sichtbar. */
+.technik { background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); padding: 6px 20px 12px; margin: 20px 0; border-left: 4px solid var(--st-akzent); }
+.technik::before { content: "Technik"; display: block; font-family: var(--st-font-ui); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--st-gray); padding-top: 10px; }
 .js:not(.mit-technik) .technik { display: none; }
-.hinweis-technik { font-size: 15px; }
-.mit-technik .hinweis-technik, html:not(.js) .hinweis-technik { display: none; }
-.markiert { outline: 3px solid var(--link); outline-offset: 4px; }
-/* Überschriften bekommen beim Wechsel den Fokus für Bildschirmleser; ein Rahmen wäre dort nur Lärm. */
+.markiert { outline: 2px solid var(--st-akzent); outline-offset: 4px; border-radius: 6px; }
 .ansicht > h1[tabindex="-1"]:focus, .ansicht > h2[tabindex="-1"]:focus { outline: none; }
 
-/* Blättern am Ende eines Kapitels */
-.blaettern { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 2px solid var(--linie); margin-top: 32px; padding-top: 12px; font-size: 16px; }
-.blaettern a { font-weight: 700; }
-footer { max-width: 1120px; margin: 0 auto; padding: 12px 16px 32px; font-size: 14px; border-top: 2px solid var(--linie); }
+/* Blättern */
+.blaettern { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 40px; }
+.blaettern a { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; background: var(--st-surface); box-shadow: var(--st-schatten-weich); color: var(--st-ink); text-decoration: none; font-family: var(--st-font-ui); font-size: 14px; font-weight: 500; }
+.blaettern a:hover { outline: 2px solid var(--st-akzent); outline-offset: -2px; }
+.blaettern .icon { width: 16px; height: 16px; vertical-align: 0; }
 
-/* Schmal: Kopfzeile scrollt mit, Reiter als zwei Spalten, Suche und Ebene in einer Zeile. */
-@media (max-width: 760px) {
-  .kopf { position: static; }
-  nav[aria-label="Bereiche"] { width: 100%; }
-  .reiter { display: grid; grid-template-columns: 1fr 1fr; }
+/* Stil-Editor */
+.stil { position: fixed; z-index: 4; top: 72px; right: 16px; width: min(340px, calc(100vw - 32px)); max-height: calc(100vh - 88px); overflow: auto; background: var(--st-surface); border-radius: var(--st-radius); box-shadow: var(--st-schatten-weich), 0 0 0 1px var(--st-hairline); padding: 20px; }
+.stil h2 { font-family: var(--st-font-display); font-size: 20px; margin: 0 0 4px; }
+.stil p { margin: 0 0 12px; font-size: 13px; color: var(--st-gray); }
+.stil label { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; margin: 12px 0; font-family: var(--st-font-ui); font-size: 13px; font-weight: 500; }
+.stil label output { font-variant-numeric: tabular-nums; color: var(--st-gray); }
+.stil input[type="range"], .stil select { grid-column: 1 / -1; width: 100%; accent-color: var(--st-akzent); font: inherit; }
+.stil select { padding: 6px 10px; border: 1px solid var(--st-hairline); border-radius: 10px; background: var(--st-surface); color: var(--st-ink); }
+.stil .aktionen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.stil button.knopf { border: 0; cursor: pointer; }
+.stil textarea { width: 100%; height: 150px; margin-top: 12px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; border: 1px solid var(--st-hairline); border-radius: 10px; padding: 8px; background: var(--st-clay); color: var(--st-ink); }
+
+@media (max-width: 1180px) {
   .werkzeugleiste { margin-left: 0; width: 100%; }
   .suche { flex: 1; }
   .suche input { width: 100%; }
-  .ansicht > h1, .ansicht > h2 { font-size: 26px; }
+}
+@media (max-width: 680px) {
+  .kopf { position: static; }
+  .kopf-innen { padding: 12px 16px; }
+  nav[aria-label="Bereiche"] { width: 100%; }
+  .reiter { display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; }
+  .reiter a { justify-content: center; }
+  main { padding: 20px 16px 48px; }
+  .ansicht > h1 { font-size: 40px; }
+  .ansicht > h2 { font-size: 32px; }
   .einstiege .kachel { min-height: 0; }
+  .stil { position: fixed; top: auto; bottom: 16px; max-height: 70vh; }
 }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 5l2 4M12 5l2 4M17 5l2 4"/></symbol>
+  <symbol id="i-werkzeug" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 4.9 4.9l-8.1 8.1a2.1 2.1 0 0 1-3-3l8.1-8.1a4 4 0 0 1-1.9-1.9z"/><path d="M15 3.6a4 4 0 0 1 5.4 5.4l-2.6-.6-.6-2.6z"/></symbol>
+  <symbol id="i-anleitung" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1 1 1.8-2M4 11.5l1 1 1.8-2M4 17.5l1 1 1.8-2"/></symbol>
+  <symbol id="i-bausteine" viewBox="0 0 24 24"><rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="1.5"/><rect x="8.25" y="3.5" width="7.5" height="7.5" rx="1.5"/></symbol>
+  <symbol id="i-buch" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z"/></symbol>
+  <symbol id="i-stift" viewBox="0 0 24 24"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M14.5 5.5l3 3"/></symbol>
+  <symbol id="i-figur" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v7M12 14l-3.5 6.5M12 14l3.5 6.5M12 9l-5 3M12 9l5-2.5"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 3.5h4v2a2 2 0 1 0 4 0h2.5V10h-2a2 2 0 1 0 0 4h2v6.5H14v-2a2 2 0 1 0-4 0v2H3.5V14h2a2 2 0 1 0 0-4h-2V3.5z"/></symbol>
+  <symbol id="i-kopfhoerer" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.5" height="6.5" rx="1.5"/><rect x="16.5" y="14" width="4.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-idee" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="i-regel" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.5-3.2 8.2-7.5 9.5-4.3-1.3-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-welle" viewBox="0 0 24 24"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"/></symbol>
+  <symbol id="i-lautsprecher" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-stuhl" viewBox="0 0 24 24"><path d="M7 3.5h10l-1 8H8z"/><path d="M5.5 11.5h13M8 11.5L6.5 20.5M16 11.5l1.5 9M9 16h6"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.9 1.8-1.8 0-.6-.3-1-.6-1.4-.3-.4-.6-.8-.6-1.4 0-1 .8-1.8 1.8-1.8H16a5 5 0 0 0 5-5C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7" r="1"/></symbol>
+  <symbol id="i-haken" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7 9.5l3 2.5-3 2.5M12.5 15H17"/></symbol>
+  <symbol id="i-begriff" viewBox="0 0 24 24"><path d="M3.5 18L8 6l4.5 12M5.2 13.5h5.6"/><path d="M15 12.5a2.7 2.7 0 1 1 0 5.4 2.7 2.7 0 0 1 0-5.4zM17.7 11v7"/></symbol>
+  <symbol id="i-personen" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2a4.5 4.5 0 0 1 5.5 4.3"/></symbol>
+  <symbol id="i-suche" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-regler" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-links" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-rechts" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-raster" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-extern" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+</svg>
+
 <header class="kopf">
   <div class="kopf-innen">
-    <a class="marke" href="#start">Trickfilm-Werkstatt</a>
+    <a class="marke" href="#start"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Trickfilm-Werkstatt</a>
     <nav aria-label="Bereiche">
       <ul class="reiter">
-        <li><a href="#werkzeuge" data-bereich="werkzeuge">Werkzeuge</a></li>
-        <li><a href="#anleitungen" data-bereich="anleitungen">Anleitungen</a></li>
-        <li><a href="#bausteine" data-bereich="bausteine">Bausteine und Regeln</a></li>
-        <li><a href="#nachschlagen" data-bereich="nachschlagen">Nachschlagen</a></li>
+        <li><a href="#werkzeuge" data-bereich="werkzeuge"><svg class="icon" aria-hidden="true"><use href="#i-werkzeug"/></svg>Werkzeuge</a></li>
+        <li><a href="#anleitungen" data-bereich="anleitungen"><svg class="icon" aria-hidden="true"><use href="#i-anleitung"/></svg>Anleitungen</a></li>
+        <li><a href="#bausteine" data-bereich="bausteine"><svg class="icon" aria-hidden="true"><use href="#i-bausteine"/></svg>Bausteine</a></li>
+        <li><a href="#nachschlagen" data-bereich="nachschlagen"><svg class="icon" aria-hidden="true"><use href="#i-buch"/></svg>Nachschlagen</a></li>
       </ul>
     </nav>
     <div class="werkzeugleiste">
-      <div class="suche" role="search">
-        <input id="suchfeld" type="search" placeholder="Suchen, z. B. Kontaktbogen" aria-label="Seite durchsuchen" aria-controls="treffer" autocomplete="off" hidden>
+      <div class="suche" role="search" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-suche"/></svg>
+        <input id="suchfeld" type="search" placeholder="Suchen" aria-label="Seite durchsuchen" aria-controls="treffer" autocomplete="off">
         <ul id="treffer" class="treffer" hidden></ul>
       </div>
       <div class="ebenen" role="group" aria-label="Ebene der Erklärung" hidden>
         <button type="button" id="ebene-kurz" aria-pressed="true">Kurz</button>
-        <button type="button" id="ebene-technik" aria-pressed="false">Mit Technik</button>
+        <button type="button" id="ebene-technik" aria-pressed="false">Technik</button>
       </div>
+      <button type="button" class="rund" id="stil-knopf" aria-expanded="false" aria-controls="stil" title="Stil einstellen" hidden><svg class="icon" aria-hidden="true"><use href="#i-regler"/></svg><span class="sr">Stil einstellen</span></button>
     </div>
   </div>
 </header>
+
+<aside class="stil" id="stil" aria-label="Stil einstellen" hidden>
+  <h2>Stil einstellen</h2>
+  <p>Wirkt sofort, nur in diesem Browser. „Übernehmen“ gibt die Werte für die Seite aus.</p>
+  <label>Schatten <output data-fuer="st-schatten"></output><input type="range" data-var="--st-schatten" min="0" max="2" step="0.05"></label>
+  <label>Tiefe der Symbole <output data-fuer="st-tiefe"></output><input type="range" data-var="--st-tiefe" min="0" max="2" step="0.05"></label>
+  <label>Unschärfe der Kopfzeile <output data-fuer="st-unschaerfe"></output><input type="range" data-var="--st-unschaerfe" data-einheit="px" min="0" max="40" step="1"></label>
+  <label>Deckkraft der Kopfzeile <output data-fuer="st-glas"></output><input type="range" data-var="--st-glas" min="0.3" max="1" step="0.02"></label>
+  <label>Rundung <output data-fuer="st-radius"></output><input type="range" data-var="--st-radius" data-einheit="px" min="0" max="40" step="1"></label>
+  <label>Akzent <select data-var="--st-akzent"><option value="#2F6FE0">Blau</option><option value="#6C5BBD">Violett</option><option value="#111317">Tinte</option></select></label>
+  <label>Titelschrift <select data-var="--st-titelschrift"><option value="var(--st-font-display)">Grotesk</option><option value="var(--st-font-serif)">Serif kursiv</option><option value="var(--st-font-body)">Text</option></select></label>
+  <div class="aktionen">
+    <button type="button" class="knopf" id="stil-uebernehmen">Übernehmen</button>
+    <button type="button" class="knopf hell" id="stil-zurueck">Zurücksetzen</button>
+  </div>
+  <textarea id="stil-css" readonly hidden aria-label="Stilwerte als CSS"></textarea>
+</aside>
 
 <main id="inhalt">
 
 <!-- ===================================================================== Start -->
 <section class="ansicht" id="start" data-titel="Start">
-  <h1 tabindex="-1">Trickfilm-Werkstatt</h1>
-  <p class="lead lauftext">Eine Werkstatt für kurze Trickfilme mit Figuren, Vertonung und Geräuschen, wie man sie aus Lern- und Erklärvideos kennt. Wohin möchtest du?</p>
+  <h1 tabindex="-1">Trickfilme, <em>gerechnet</em>.</h1>
+  <p class="lead">Figuren, Bewegung, Geräusche und Prüfung für kurze Erklärfilme. Wohin möchtest du?</p>
   <ul class="kacheln einstiege">
-    <li><a class="kachel" href="#werkzeuge"><h3>Ausprobieren</h3><p>Prototyp abspielen, eine Figur stellen, eine Figur aus Einzelteilen bauen.</p></a></li>
-    <li><a class="kachel" href="#anleitungen/szene"><h3>Eine Szene bauen</h3><p>In elf Schritten vom Szenenbrief zum geprüften Prototyp.</p></a></li>
-    <li><a class="kachel" href="#anleitungen/figur"><h3>Eine Figur zeichnen</h3><p>Eigene Zeichnungen auf das Skelett bringen, mit Vorlage oder Teile-Werkstatt.</p></a></li>
-    <li><a class="kachel" href="#nachschlagen"><h3>Nachschlagen</h3><p>Alle Befehle, Begriffe, Stand und Regeln der Zusammenarbeit.</p></a></li>
+    <li><a class="kachel" href="#werkzeuge"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></span><h3>Ausprobieren</h3><p>Prototyp, Posen-Editor, Teile-Werkstatt.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/szene"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg></span><h3>Szene bauen</h3><p>Vom Brief zum geprüften Prototyp.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/figur"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-stift"/></svg></span><h3>Figur zeichnen</h3><p>Eigene Zeichnungen aufs Skelett bringen.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen"><span class="blase ton"><svg class="icon" aria-hidden="true"><use href="#i-buch"/></svg></span><h3>Nachschlagen</h3><p>Befehle, Begriffe, Regeln.</p></a></li>
   </ul>
-  <p class="krume">Stand: {{ERSTELLT}} · Quelle: <a href="https://github.com/daimpad/trickfilm">github.com/daimpad/trickfilm</a> · Wie die Werkstatt denkt: <a href="#bausteine/ideen">vier Grundideen</a></p>
 </section>
 
 <!-- ===================================================================== Werkzeuge -->
 <section class="ansicht bereich" id="werkzeuge" data-titel="Werkzeuge">
   <h2 tabindex="-1">Werkzeuge</h2>
-  <p class="lauftext">Drei Werkzeuge laufen direkt hier im Browser, ohne Installation; die Hörprobe läuft im Repository. Jede Kachel sagt, wann man das Werkzeug braucht, und führt zur Erklärung.</p>
   <ul class="kacheln">
     <li class="kachel">
+      <span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></span>
       <h3>Prototyp</h3>
-      <p>Die Vorlage-Szene läuft so, wie sie im fertigen Film läuft, mit Geräuschen.</p>
-      <p class="wann">Wann: nach jedem Bauen einer Szene, zum Abspielen, Anhalten und Springen.</p>
-      <p class="aktionen"><a class="knopf" href="#werkzeuge/prototyp">Hier abspielen</a> <a href="prototyp/index.html">Eigenes Fenster</a></p>
+      <p>Die Vorlage-Szene abspielen, mit Geräuschen.</p>
+      <div class="aktionen"><a class="knopf" href="#werkzeuge/prototyp">Abspielen</a><a class="knopf hell" href="prototyp/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Fenster</a></div>
     </li>
     <li class="kachel">
+      <span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg></span>
       <h3>Posen-Editor</h3>
-      <p>Eine Figur greifen und stellen, Schlüsselposen setzen und als Code übernehmen.</p>
-      <p class="wann">Wann: beim Schreiben der Bewegung einer Szene.</p>
-      <p class="aktionen"><a class="knopf" href="editor/index.html">Editor öffnen</a> <a href="#werkzeuge/posen-editor">Erklärung</a></p>
+      <p>Figuren stellen, Schlüsselposen als Code.</p>
+      <div class="aktionen"><a class="knopf" href="editor/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a class="knopf hell" href="#werkzeuge/posen-editor">Erklärung</a></div>
     </li>
     <li class="kachel">
+      <span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg></span>
       <h3>Teile-Werkstatt</h3>
-      <p>Kopf, Rumpf, Arm, Hand, Bein als einzelne SVG-Dateien laden, einpassen, prüfen, als Teilesatz herunterladen.</p>
-      <p class="wann">Wann: wenn eine neue Figur gezeichnet wird.</p>
-      <p class="aktionen"><a class="knopf" href="teile/index.html">Werkstatt öffnen</a> <a href="#werkzeuge/teile-werkstatt">Erklärung</a></p>
+      <p>Figur aus einzelnen SVG-Teilen bauen.</p>
+      <div class="aktionen"><a class="knopf" href="teile/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a class="knopf hell" href="#werkzeuge/teile-werkstatt">Erklärung</a></div>
     </li>
     <li class="kachel">
+      <span class="blase ton"><svg class="icon" aria-hidden="true"><use href="#i-kopfhoerer"/></svg></span>
       <h3>Hörprobe</h3>
-      <p>Alle Varianten jedes Geräuschs mit Messwerten anhören und auswählen.</p>
-      <p class="wann">Wann: nach jeder Generierungsrunde, bevor Geräusche in Szenen kommen.</p>
-      <p class="aktionen"><a class="knopf" href="#werkzeuge/hoerprobe">Erklärung</a> im Repository: <code>npm run sfx:hoerprobe</code></p>
+      <p>Geräusch-Varianten anhören und wählen.</p>
+      <div class="aktionen"><a class="knopf hell" href="#werkzeuge/hoerprobe">Erklärung</a></div>
     </li>
   </ul>
-  <p>Alle übrigen Werkzeuge laufen als Befehle im Terminal: <a href="#nachschlagen/befehle">Alle Befehle</a>.</p>
+  <p class="querverweis"><a href="#nachschlagen/befehle"><svg class="icon" aria-hidden="true"><use href="#i-terminal"/></svg>Alle Befehle</a></p>
 </section>
 
 <section class="ansicht" id="werkzeuge/prototyp" data-bereich="werkzeuge" data-titel="Prototyp">
   <h2 tabindex="-1">Prototyp</h2>
-  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 9. Eigenes Fenster: <a href="prototyp/index.html">Prototyp öffnen</a>.</p></aside>
-  <p class="lauftext">Abspielen mit der Leertaste, ein Bild vor oder zurück mit den Pfeiltasten, Sprungmarken je Abschnitt (Beat). Erlaubt der Browser keinen Ton ohne Klick, wartet die Szene auf „Abspielen“. Wer im System „Bewegung reduzieren“ eingestellt hat, sieht die Szene zunächst angehalten.</p>
+  <p class="querverweis"><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen</a><a href="prototyp/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Eigenes Fenster</a></p>
+  <p>Leertaste spielt ab, Pfeiltasten gehen ein Bild weiter, Sprungmarken je Beat.</p>
   <iframe src="prototyp/index.html" title="Prototyp der Vorlage-Szene" loading="lazy"></iframe>
   <div class="technik">
-    <p>Das Ergebnis des Builds ist <code>szenen/&lt;ID&gt;/dist/index.html</code>, eine einzige Datei, die nichts nachlädt. Die Bibliothek ist darin über eine Import-Map eingebettet; jedes Modul bleibt ein echtes JavaScript-Modul. Zeitgeber ist <code>performance.now()</code>; ein Geräusch klingt, wenn die Wiedergabe über seinen Zeitpunkt läuft, Springen und Ziehen lösen nichts aus. Der lauteste Cue liegt bei 0 dB, die übrigen relativ dazu.</p>
+    <p>Eine Datei, die nichts nachlädt; die Bibliothek steckt als Import-Map darin. Zeitgeber ist <code>performance.now()</code>. Ein Geräusch klingt, wenn die Wiedergabe über seinen Zeitpunkt läuft; Springen löst nichts aus. Ohne Erlaubnis für Ton wartet die Szene auf „Abspielen“.</p>
   </div>
 </section>
 
 <section class="ansicht" id="werkzeuge/posen-editor" data-bereich="werkzeuge" data-titel="Posen-Editor">
   <h2 tabindex="-1">Posen-Editor</h2>
-  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 5. <a class="knopf" href="editor/index.html">Editor öffnen</a></p></aside>
-  <div class="lauftext">
-  <p>Der Posen-Editor macht das Stellen einer Figur anschaulich. Man zieht an Griffen direkt auf der Bühne: dunkel an der Hüfte, weiß an Rumpf und Kopf, farbig an Händen und Füßen. Eine gezogene Hand folgt ihrem Ziel; ein Ring zeigt die Reichweite und wird rot, wenn das Ziel zu weit weg liegt. Regler erlauben genaue Werte, die Pfeiltasten verschieben den gewählten Griff um 1 px, mit Umschalt um 8 px.</p>
-  <p>Mehrere Posen lassen sich als Schlüsselposen auf einer Zeitleiste setzen und in einer Vorschau abspielen. Der Editor schreibt daraus Code, der in die Szene kopiert wird.</p>
-  </div>
+  <p class="querverweis"><a href="editor/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen, Schritt 5</a></p>
+  <ul class="liste">
+    <li>An Griffen ziehen: Hüfte, Rumpf, Kopf, Hände, Füße.</li>
+    <li>Ein Ring zeigt die Reichweite der Hand; rot heißt zu weit.</li>
+    <li>Schlüsselposen auf der Zeitleiste setzen, abspielen, als Code kopieren.</li>
+  </ul>
   <div class="technik">
-    <p>Aufruf im Repository: <code>npm run editor -- --szene &lt;ID&gt; --figur A</code>. Dann liegt das Standbild der Szene blass unter der Figur, und Position, Blick und Palette kommen aus der Szene.</p>
-<pre><code>// in geometry.js
-export const POSEN_A = {
-  archetyp: 'stehend-profil',
-  torso: [[0, 0], [1, 17.1]],                      // [Zeit, Wert]
-  armF: { ziel: [[0, 1060, 470], [1, 1040, 520]], beugeseite: -1 },
-};
-// in animation.js
+    <p><code>npm run editor -- --szene &lt;ID&gt; --figur A</code> legt das Standbild der Szene unter die Figur.</p>
+<pre><code>// geometry.js
+export const POSEN_A = { archetyp: 'stehend-profil', torso: [[0, 0], [1, 17.1]], armF: { ziel: [[0, 1060, 470], [1, 1040, 520]] } };
+// animation.js
 const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
-    <p>Zahlen werden zwischen den Schlüsseln weich verbunden, Handformen gelten ab ihrem Zeitpunkt. Arme mit Handzielen laufen über <code>greife()</code>, damit der Build ihre Reichweite prüft.</p>
   </div>
 </section>
 
 <section class="ansicht" id="werkzeuge/teile-werkstatt" data-bereich="werkzeuge" data-titel="Teile-Werkstatt">
   <h2 tabindex="-1">Teile-Werkstatt</h2>
-  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/figur">Eine Figur zeichnen</a>. <a class="knopf" href="teile/index.html">Werkstatt öffnen</a> Alle Dateien bleiben im Browser; nichts wird hochgeladen.</p></aside>
-  <div class="lauftext">
-  <p>Statt eine ganze Zeichenvorlage mit allen Ebenen auszufüllen, zeichnet man jedes Körperteil für sich, in einem beliebigen Programm und Maßstab, und lädt es als SVG-Datei. Heißt die Datei nach dem Teil, etwa <code>kopf.svg</code>, <code>oberarm.svg</code>, <code>hand.svg</code> oder <code>fuss.svg</code>, findet die Werkstatt ihren Platz selbst.</p>
-  <ul>
-    <li><strong>Einpassen:</strong> Die Werkstatt legt die Längsachse des Teils auf das Skelett. Korrigiert wird durch Ziehen am Teil (verschieben) und am roten Griff (drehen und skalieren um das Gelenk) oder über Zahlenfelder.</li>
-    <li><strong>Ableiten:</strong> Fehlen hintere oder rechte Glieder, werden sie aus den vorhandenen gewonnen, frontal gespiegelt. Fehlende Handformen entstehen aus der offenen Hand. Was dann noch fehlt, ergänzt auf Wunsch der Platzhalter <code>satz-00</code>.</li>
-    <li><strong>Prüfen:</strong> Sechs Testposen zeigen die Figur sofort in Bewegung. Jedes Gelenk wird bei −60°, 0°, 60° und 120° auf Lücken geprüft; eine Lücke erscheint rot an Teil und Gelenk.</li>
-    <li><strong>Farben:</strong> Flächen, die je Szene umgefärbt werden sollen (Kleidung, Zubehör), werden per Auswahl zugeordnet. Alle anderen Farben bleiben, wie gezeichnet.</li>
-    <li><strong>Ausgabe:</strong> Ein Satz Einzelteile ergibt alle drei Profilfiguren (sitzend, stehend, nah). Das ZIP-Archiv enthält sie im Austauschformat und eine Anleitung zum Einlesen.</li>
+  <p class="querverweis"><a href="teile/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a href="#anleitungen/figur"><svg class="icon" aria-hidden="true"><use href="#i-stift"/></svg>Figur zeichnen</a></p>
+  <ul class="liste">
+    <li><strong>Laden:</strong> je Teil eine SVG-Datei, benannt nach dem Teil, etwa <code>kopf.svg</code>.</li>
+    <li><strong>Einpassen:</strong> am Teil ziehen, am roten Griff drehen und skalieren.</li>
+    <li><strong>Ableiten:</strong> hintere Glieder und Handformen entstehen von selbst.</li>
+    <li><strong>Prüfen:</strong> Testposen und Gelenke live, Lücken rot.</li>
+    <li><strong>Ausgeben:</strong> ZIP für alle drei Profilfiguren. Nichts wird hochgeladen.</li>
   </ul>
-  </div>
   <div class="technik">
-    <p>Aufruf im Repository: <code>npm run teile</code>, Ergebnis unter <code>out/teile/teile-werkstatt.html</code>. Das heruntergeladene Archiv wird unter <code>figuren/teilesaetze/</code> entpackt und mit <code>npm run figuren:import -- satz-01</code> eingelesen; der Importer prüft dieselben Regeln noch einmal.</p>
-    <p>Die Werkstatt liest Pfade, Grundformen, Gruppen-Transformationen, CSS-Klassen und Bögen, wie Illustrator, Inkscape oder Affinity sie schreiben. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen; beides meldet sie. Konturen werden auf die erlaubten Stärken 4 und 6 px gerundet. Die Rechnung liegt in <code>lib/svgpfad.js</code> und <code>lib/teile.js</code>, die Prüfung in <code>lib/zeichnung.js</code>, gemeinsam mit dem Importer.</p>
+    <p><code>npm run teile</code> erzeugt die Seite örtlich. Das ZIP unter <code>figuren/teilesaetze/</code> entpacken und mit <code>npm run figuren:import -- satz-01</code> einlesen. Gelesen werden Pfade, Grundformen, Transformationen, CSS-Klassen und Bögen; Konturen werden auf 4 oder 6 px gerundet.</p>
   </div>
 </section>
 
 <section class="ansicht" id="werkzeuge/hoerprobe" data-bereich="werkzeuge" data-titel="Hörprobe">
   <h2 tabindex="-1">Hörprobe</h2>
-  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a>, Schritt 3. Die Hörprobe läuft im Repository, weil sie alle Rohaufnahmen enthält (viele Megabyte Ton).</p></aside>
-  <div class="lauftext">
-  <p><code>npm run sfx:hoerprobe</code> erzeugt <code>out/sfx/hoerprobe.html</code>. Dort steht jedes Geräusch mit allen Varianten zum Anhören, dazu Länge, Zahl der Einsätze, Lautheit, Spitzenpegel, Vorgeräusch und eine Gütezahl (kleiner ist sauberer). Bei Lauten steht die Stimme dabei.</p>
-  <p>Je Geräusch wählt man eine Variante, bei einem Vorrat mehrere, und setzt „bestätigt“. Die Seite gibt eine CSV-Datei aus; <code>npm run sfx:hoerprobe -- --uebernehmen auswahl.csv</code> trägt die Wahl ein. Danach bearbeitet <code>npm run sfx:normalisieren</code> die gewählten Varianten.</p>
-  </div>
+  <p class="querverweis"><a href="#anleitungen/geraeusche"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg>Geräusche pflegen</a></p>
+  <ol class="schritte">
+    <li><code>npm run sfx:hoerprobe</code> erzeugt <code>out/sfx/hoerprobe.html</code>.</li>
+    <li>Je Geräusch Varianten anhören, wählen, „bestätigt“ setzen, CSV laden.</li>
+    <li><code>npm run sfx:hoerprobe -- --uebernehmen auswahl.csv</code>, dann <code>npm run sfx:normalisieren</code>.</li>
+  </ol>
   <div class="technik">
-    <p>Die Wahl steht in <code>lib/sfx/auswahl.yaml</code> (<code>vorlaeufig: true</code>, bis bestätigt). <code>npm run sfx:normalisieren -- --vorschlag</code> wählt vorläufig die sauberste Variante und lässt Bestätigtes unberührt.</p>
+    <p>Die Seite zeigt je Variante Länge, Einsätze, Lautheit, Spitzenpegel, Vorgeräusch und eine Gütezahl, bei Lauten die Stimme. Die Wahl steht in <code>lib/sfx/auswahl.yaml</code>. Sie läuft im Repository, weil sie alle Rohaufnahmen enthält.</p>
   </div>
 </section>
 
 <!-- ===================================================================== Anleitungen -->
 <section class="ansicht bereich" id="anleitungen" data-titel="Anleitungen">
   <h2 tabindex="-1">Anleitungen</h2>
-  <p class="lauftext">Schritt für Schritt durch die drei Wege, die man in der Werkstatt am häufigsten geht. Die Befehle laufen in einem Terminal im Ordner des Repositorys.</p>
   <ul class="kacheln">
-    <li><a class="kachel" href="#anleitungen/szene"><h3>Eine Szene bauen</h3><p>Vom Szenenbrief über Bewegung und Geräusche zum geprüften Prototyp, in elf Schritten.</p><p class="wann">Werkzeuge: Posen-Editor, Prototyp</p></a></li>
-    <li><a class="kachel" href="#anleitungen/figur"><h3>Eine Figur zeichnen</h3><p>Einen eigenen Teilesatz zeichnen und einlesen, mit Zeichenvorlage oder aus Einzelteilen.</p><p class="wann">Werkzeug: Teile-Werkstatt</p></a></li>
-    <li><a class="kachel" href="#anleitungen/geraeusche"><h3>Geräusche zuordnen und pflegen</h3><p>Geräusche aus der Bewegung einer Szene finden und die Bibliothek erweitern.</p><p class="wann">Werkzeug: Hörprobe</p></a></li>
+    <li><a class="kachel" href="#anleitungen/szene"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg></span><h3>Szene bauen</h3><p>Elf Schritte vom Brief zum Prototyp.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/figur"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-stift"/></svg></span><h3>Figur zeichnen</h3><p>Aus Einzelteilen oder mit Vorlage.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/geraeusche"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg></span><h3>Geräusche pflegen</h3><p>Zuordnen und Bibliothek erweitern.</p></a></li>
   </ul>
 </section>
 
-<section class="ansicht" id="anleitungen/szene" data-bereich="anleitungen" data-titel="Eine Szene bauen">
-  <h2 tabindex="-1">Eine Szene bauen</h2>
-  <aside class="querverweis"><p>Werkzeuge auf diesem Weg: <a href="#werkzeuge/posen-editor">Posen-Editor</a> (Schritt 5) · <a href="#werkzeuge/prototyp">Prototyp</a> (Schritt 9). Hintergrund: <a href="#bausteine/bewegung">Bewegung und Spielweise</a>, <a href="#bausteine/gestaltung">Gestaltung</a>.</p></aside>
+<section class="ansicht" id="anleitungen/szene" data-bereich="anleitungen" data-titel="Szene bauen">
+  <h2 tabindex="-1">Szene bauen</h2>
+  <p class="querverweis"><a href="#werkzeuge/posen-editor"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Posen-Editor</a><a href="#werkzeuge/prototyp"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Prototyp</a><a href="#bausteine/bewegung"><svg class="icon" aria-hidden="true"><use href="#i-welle"/></svg>Bewegung</a></p>
   <ol class="schritte">
-    <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code> kopiert die Vorlage.</li>
-    <li><strong>Szenenbrief schreiben</strong> (<code>brief.yaml</code>): der Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, die Abschnitte (Beats) mit Zeiten, Beschriftungen und eine Beschreibung des Bildes für Menschen, die es nicht sehen.</li>
-    <li><strong>Geometrie festlegen</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.</li>
-    <li><strong>Szene aufbauen</strong> (<code>scene.js</code>): Figuren und Requisiten in einer begründeten Reihenfolge von hinten nach vorn.</li>
-    <li><strong>Bewegung schreiben</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht. Posen lassen sich im <a href="#werkzeuge/posen-editor">Posen-Editor</a> setzen.</li>
-    <li><strong>Geräusche zuordnen</strong> (im Szenenbrief unter <code>sfx</code>): welche Ereignisse klingen, zum Beispiel jeder dritte Tastenanschlag. Siehe <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a>.</li>
-    <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code> prüft die Szene und erzeugt den Prototyp.</li>
-    <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code> erzeugt neun Standbilder. Jedes wird angesehen: Liegt etwas falsch vor dem Körper? Greift ein Arm durch einen Tisch? Ist die Pointe auch klein lesbar?</li>
-    <li><strong>Prototyp öffnen</strong> und abspielen: <code>szenen/FILM-01-name/dist/index.html</code>, so wie der <a href="#werkzeuge/prototyp">Prototyp der Vorlage</a>.</li>
-    <li><strong>Protokoll schreiben:</strong> <code>npm run szene:protokoll -- FILM-01-name</code>.</li>
-    <li><strong>Anhalten</strong> und den Stand in wenigen Zeilen melden.</li>
+    <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code></li>
+    <li><strong>Brief</strong> (<code>brief.yaml</code>): Sprechtext, These, Pointe, Figuren, Beats.</li>
+    <li><strong>Geometrie</strong> (<code>geometry.js</code>): wo alles steht, wohin Hände greifen.</li>
+    <li><strong>Aufbau</strong> (<code>scene.js</code>): Figuren und Requisiten von hinten nach vorn.</li>
+    <li><strong>Bewegung</strong> (<code>animation.js</code>), Posen im <a href="#werkzeuge/posen-editor">Posen-Editor</a>.</li>
+    <li><strong>Geräusche</strong> im Brief unter <code>sfx</code>; siehe <a href="#anleitungen/geraeusche">Geräusche pflegen</a>.</li>
+    <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code></li>
+    <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code>, jedes der neun Bilder prüfen.</li>
+    <li><strong>Abspielen:</strong> <code>szenen/FILM-01-name/dist/index.html</code></li>
+    <li><strong>Protokoll:</strong> <code>npm run szene:protokoll -- FILM-01-name</code></li>
+    <li><strong>Anhalten</strong> und kurz melden, was fertig ist.</li>
   </ol>
-  <p class="hinweis-technik">Beispiel eines Szenenbriefs und was der Build prüft: „Mit Technik“ oben rechts.</p>
   <div class="technik">
     <h3>Szenenbrief</h3>
 <pre><code>id: DEMO-01-buero
 film: DEMO
-sprechtext:
-  passage: "…wörtlich…"
-  dauer_s: 16.5
-  dauer_geschaetzt: true      # 15 Zeichen/s, bis eine Aufnahme gemessen ist
-  luft_prozent: 12
-  dauer_szene_s: 18.5
+sprechtext: { passage: "…wörtlich…", dauer_s: 16.5, dauer_geschaetzt: true, luft_prozent: 12, dauer_szene_s: 18.5 }
 these: "Ein Satz, was die Szene zeigt."
 pointe: "Ein Satz, worüber man schmunzelt."
 palette: { grund: "#F5F3EE", akzent1: "#2F7032", akzent2: null }
 figuren:
-  - prefix: A
-    rig: sitzend-profil
-    teilesatz: satz-00
-    charakter: { tempo: 1.0, haltung: konzentriert, reaktion: 0.8 }
+  - { prefix: A, rig: sitzend-profil, teilesatz: satz-00, charakter: { tempo: 1.0, haltung: konzentriert, reaktion: 0.8 } }
 beats:
   - { name: tippen, start: 0.6, ende: 4.0, figur: A, aktion: "füllt aus" }
 beschriftungen: { links: "Eingabe", mitte: "", rechts: "Bestätigung" }
 textaequivalent: "Zwei bis vier Sätze, die das Bild beschreiben."
 sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
-    <p>Der Brief wird von einem eigenen Leser für eine Teilmenge von YAML gelesen; was nicht hineinpasst, meldet er mit Zeilennummer.</p>
     <h3>Was der Build prüft</h3>
-    <ul>
-      <li>Brief und Code stimmen überein: Dauer, Abschnitte mit Namen und Zeiten, Palette (nur Farben der Tokens), Beschriftungen, Textäquivalent, Figuren mit Rig und Teilesatz.</li>
-      <li>Das Bild enthält keine Animationen, Verläufe, Filter, Masken oder abgerundeten Ecken.</li>
-      <li>Für <em>jedes einzelne Bild</em> der Szene: jede bewegte ID existiert, jedes Attribut ist vorhanden, kein Wert ist ungültig (NaN).</li>
-      <li>Jede Hand erreicht ihr Ziel; sonst nennt der Build Bild, Arm und Abstand.</li>
-      <li>Kein Text reicht in die Schutzzone für Untertitel; jede Beschriftung steht lange genug, um sie zu lesen.</li>
-      <li>Gleiche Zeit ergibt denselben Zustand (Wiederholbarkeit).</li>
+    <ul class="liste">
+      <li>Brief und Code stimmen überein; nur Farben der Tokens.</li>
+      <li>Keine Animationen, Verläufe, Filter, Masken oder Rundungen im Bild.</li>
+      <li>Für jedes Bild: jede ID, jedes Attribut, kein NaN.</li>
+      <li>Jede Hand erreicht ihr Ziel; Text bleibt aus der Schutzzone und steht lange genug.</li>
+      <li>Gleiche Zeit ergibt denselben Zustand.</li>
     </ul>
   </div>
 </section>
 
-<section class="ansicht" id="anleitungen/figur" data-bereich="anleitungen" data-titel="Eine Figur zeichnen">
-  <h2 tabindex="-1">Eine Figur zeichnen</h2>
-  <aside class="querverweis"><p>Werkzeug: <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> (<a href="teile/index.html">öffnen</a>). Hintergrund: <a href="#bausteine/figuren">Figuren und Archetypen</a>.</p></aside>
-  <div class="lauftext">
-  <p>Eine Figur ist eine Gliederpuppe mit festem Skelett; gezeichnet wird nur ihr Aussehen, der <strong>Teilesatz</strong>. Es gibt zwei Wege.</p>
-  <h3>Weg A: aus Einzelteilen (einfacher)</h3>
+<section class="ansicht" id="anleitungen/figur" data-bereich="anleitungen" data-titel="Figur zeichnen">
+  <h2 tabindex="-1">Figur zeichnen</h2>
+  <p class="querverweis"><a href="#werkzeuge/teile-werkstatt"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg>Teile-Werkstatt</a><a href="#bausteine/figuren"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Archetypen</a></p>
+  <h3>Aus Einzelteilen</h3>
   <ol class="schritte">
-    <li>Jedes Körperteil als eigene SVG-Datei zeichnen, in beliebigem Programm und Maßstab; Dateiname nach dem Teil, etwa <code>kopf.svg</code>.</li>
-    <li>In der <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> laden, einpassen, in den Testposen prüfen, Farben zuordnen.</li>
-    <li>Das ZIP herunterladen, unter <code>figuren/teilesaetze/</code> entpacken und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
+    <li>Jedes Körperteil als eigene SVG-Datei zeichnen, Name nach dem Teil.</li>
+    <li>In der <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> laden, einpassen, prüfen.</li>
+    <li>ZIP entpacken unter <code>figuren/teilesaetze/</code>, einlesen: <code>npm run figuren:import -- satz-01</code></li>
   </ol>
-  <h3>Weg B: mit der Zeichenvorlage</h3>
+  <h3>Mit der Zeichenvorlage</h3>
   <ol class="schritte">
-    <li>Die Zeichenvorlage <code>figuren/vorlage_&lt;archetyp&gt;.svg</code> nach <code>figuren/teilesaetze/satz-01/&lt;archetyp&gt;.svg</code> kopieren.</li>
-    <li>In Illustrator oder Inkscape jedes Teil in die Ebene mit genau seinem Namen zeichnen (<code>torso</code>, <code>head</code>, <code>armF-upper</code> …). Die blassen Formen und blauen Kreise sind Hilfen und dürfen bleiben.</li>
-    <li>Jedes Teil deckt den blauen Kreis an seinen Gelenken, sonst entstehen beim Drehen Lücken.</li>
-    <li>Kleidung in den Schlüsselfarben zeichnen: Magenta für Kleidung 1, Gelb für Kleidung 2, Grün für Zubehör. Diese Flächen färbt jede Szene um; alle anderen Farben bleiben, wie gezeichnet.</li>
-    <li>Als SVG exportieren und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
+    <li><code>figuren/vorlage_&lt;archetyp&gt;.svg</code> nach <code>figuren/teilesaetze/satz-01/</code> kopieren.</li>
+    <li>Jedes Teil in seine Ebene zeichnen; die blauen Gelenkkreise abdecken.</li>
+    <li>Kleidung in Schlüsselfarben: Magenta, Gelb, Grün.</li>
+    <li>Als SVG exportieren und einlesen.</li>
   </ol>
-  </div>
   <figure>
     <img src="bilder/vorlagen.png" alt="Vier Zeichenvorlagen mit blassen Grundformen, blauen Drehpunkten und einer Legende mit Farbschlüssel und Regeln." loading="lazy">
-    <figcaption>Die vier Zeichenvorlagen. Blaue Kreise: Drehpunkte mit Überlappungskreis.</figcaption>
   </figure>
   <div class="technik">
-    <p>Der Importer prüft die Zeichnung (alle Teile vorhanden, keine fremden Ebenen, keine Transformationen, nur erlaubte Formen, Farben und Konturen von 4 oder 6 px), verschiebt jedes Teil um seinen Drehpunkt und dreht jedes Gelenk in Chromium auf −60°, 0°, +60° und +120°. Bleibt dabei im Überlappungskreis eine Lücke, meldet er sie. Er ändert keine Zeichnung; Befunde stehen in <code>figuren/import.tsv</code>.</p>
-    <p>Exportregeln: SVG mit Präsentationsattributen (kein <code>style</code>, keine Klassen), Ebenennamen als IDs, zwei Nachkommastellen; keine Verläufe, Filter, Masken, Schatten, Deckkraft, Texte oder Bilder.</p>
+    <p>Der Importer prüft Teile, Ebenen, Formen, Farben und Konturen (4 oder 6 px), verschiebt jedes Teil um seinen Drehpunkt und dreht jedes Gelenk auf −60°, 0°, +60° und +120°. Lücken meldet er in <code>figuren/import.tsv</code>; Zeichnungen ändert er nie.</p>
+    <p>Exportregeln: Präsentationsattribute, Ebenennamen als IDs, keine Verläufe, Filter, Masken, Schatten, Deckkraft, Texte oder Bilder.</p>
   </div>
 </section>
 
-<section class="ansicht" id="anleitungen/geraeusche" data-bereich="anleitungen" data-titel="Geräusche zuordnen und pflegen">
-  <h2 tabindex="-1">Geräusche zuordnen und pflegen</h2>
-  <aside class="querverweis"><p>Werkzeug: <a href="#werkzeuge/hoerprobe">Hörprobe</a>. Hintergrund: <a href="#bausteine/geraeusche">Klangcharakter und Regeln</a>.</p></aside>
-  <div class="lauftext">
-  <p>Die Zeitpunkte werden nicht von Hand gesetzt. Die Werkstatt spielt die Bewegung Bild für Bild ab und erkennt, wo etwas anschlägt, losgeht, ankommt oder erscheint. Der Szenenbrief sagt nur, welche dieser Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.</p>
+<section class="ansicht" id="anleitungen/geraeusche" data-bereich="anleitungen" data-titel="Geräusche pflegen">
+  <h2 tabindex="-1">Geräusche pflegen</h2>
+  <p class="querverweis"><a href="#werkzeuge/hoerprobe"><svg class="icon" aria-hidden="true"><use href="#i-kopfhoerer"/></svg>Hörprobe</a><a href="#bausteine/geraeusche"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg>Klangregeln</a></p>
   <h3>In einer Szene</h3>
   <ol class="schritte">
-    <li>Im Szenenbrief unter <code>sfx</code> nennen, welche Ereignisse klingen, wo die Größen im Zustand liegen und was still bleibt.</li>
-    <li><code>npm run sfx:cues -- FILM-01-name --stichprobe</code> schreibt die Liste der Geräusche und zeigt je Ereignis das Bild davor, darauf und danach. Bewegt sich das Ding im Ereignisbild zuerst, ist die Szene synchron.</li>
-    <li>Neu bauen; der Prototyp spielt die Geräusche mit.</li>
+    <li>Im Brief unter <code>sfx</code> sagen, welche Ereignisse klingen.</li>
+    <li><code>npm run sfx:cues -- FILM-01-name --stichprobe</code> findet die Zeitpunkte in der Bewegung.</li>
+    <li>Neu bauen; der Prototyp spielt mit.</li>
   </ol>
-  <h3>Die Bibliothek erweitern</h3>
+  <h3>Bibliothek erweitern</h3>
   <ol class="schritte">
-    <li><strong>Kosten:</strong> <code>npm run sfx:kosten</code> listet, was fehlt, und schätzt die Credits. Generiert wird erst nach Zustimmung der Regie.</li>
-    <li><strong>Generieren und ablegen:</strong> über den ElevenLabs-Connector; <code>npm run sfx:ablegen -- liste.tsv</code> prüft jede Datei und schreibt ihre Herkunft.</li>
-    <li><strong>Anhören und wählen</strong> in der <a href="#werkzeuge/hoerprobe">Hörprobe</a>.</li>
-    <li><strong>Bearbeiten:</strong> <code>npm run sfx:normalisieren</code> schneidet Stille ab, kürzt auf genau einen Anschlag, blendet weich und bringt alles auf denselben Pegel.</li>
+    <li><code>npm run sfx:kosten</code>, Freigabe durch die Regie.</li>
+    <li>Generieren und ablegen: <code>npm run sfx:ablegen -- liste.tsv</code></li>
+    <li>Wählen in der <a href="#werkzeuge/hoerprobe">Hörprobe</a>, dann <code>npm run sfx:normalisieren</code>.</li>
   </ol>
-  </div>
   <div class="technik">
 <pre><code>sfx:
-  ereignisse:
-    anschlag: { cue: tastenanschlag, ausduennen: 3 }    # nur jeder dritte klingt
-    erscheinen: { cue: bestaetigung, versatz_s: -0.03 }
+  ereignisse: { anschlag: { cue: tastenanschlag, ausduennen: 3 }, erscheinen: { cue: bestaetigung } }
   quellen:
     anschlag: [ { pfade: [A.armF.hand.y, A.armB.hand.y], beat: tippen, figur: A } ]
     erscheinen: [ { pfad: haken.deckkraft, beat: haken } ]
   stumm: []
-  laute: [ { beat: reaktion, versatz_s: 0.2, cue: laut-erleichtert, figur: A } ]
-  stichprobe: [anschlag, erscheinen]</code></pre>
-    <p>Erkennungsarten in <code>lib/events.js</code>: Tiefpunkt (Anschlag, Stempel), Beginn (Klick), Nulldurchgang (Schritt), Bewegungsbeginn und -ende (Abheben, Ankunft), Aufprall, Hüllkurve (Gerät) und Schwelle (Erscheinen). Pfade zeigen in den Zustand oder in die Gelenke einer Figur. Aus einem Vorrat wählt ein Hash über Szene, Typ und laufende Nummer die Variante, nie zweimal dieselbe hintereinander. Ausführlich: <code>docs/GERAEUSCHE.md</code>.</p>
+  laute: [ { beat: reaktion, versatz_s: 0.2, cue: laut-erleichtert, figur: A } ]</code></pre>
+    <p>Erkennung in <code>lib/events.js</code>: Tiefpunkt, Beginn, Nulldurchgang, Bewegungsbeginn und -ende, Aufprall, Hüllkurve, Schwelle. Ausführlich in <code>docs/GERAEUSCHE.md</code>.</p>
   </div>
 </section>
 
-<!-- ===================================================================== Bausteine und Regeln -->
-<section class="ansicht bereich" id="bausteine" data-titel="Bausteine und Regeln">
-  <h2 tabindex="-1">Bausteine und Regeln</h2>
-  <p class="lauftext">Woraus Szenen bestehen und welche Regeln für sie gelten.</p>
+<!-- ===================================================================== Bausteine -->
+<section class="ansicht bereich" id="bausteine" data-titel="Bausteine">
+  <h2 tabindex="-1">Bausteine</h2>
   <ul class="kacheln">
-    <li><a class="kachel" href="#bausteine/ideen"><h3>Wie die Werkstatt denkt</h3><p>Vier Grundideen und der Kontaktbogen der Vorlage-Szene.</p></a></li>
-    <li><a class="kachel" href="#bausteine/grundsaetze"><h3>Grundsätze</h3><p>Zehn Regeln, die Szenen wiederholbar und prüfbar halten.</p></a></li>
-    <li><a class="kachel" href="#bausteine/figuren"><h3>Figuren und Archetypen</h3><p>Skelett, Teilesatz, Palette, Blickrichtung; die vier Archetypen.</p></a></li>
-    <li><a class="kachel" href="#bausteine/bewegung"><h3>Bewegung und Spielweise</h3><p>Kurven, Handziele, Gang, Gefühle als Rezepte.</p></a></li>
-    <li><a class="kachel" href="#bausteine/geraeusche"><h3>Geräusche</h3><p>Klangcharakter, Dichte, Katalog und Pegel.</p></a></li>
-    <li><a class="kachel" href="#bausteine/requisiten"><h3>Requisiten</h3><p>Möbel, Geräte, Büro, Außen, Zeichen als fertige Bausteine.</p></a></li>
-    <li><a class="kachel" href="#bausteine/gestaltung"><h3>Gestaltung</h3><p>Bühne, Schutzzone, Raster, Farben, Kontraste, Startpalette.</p></a></li>
-    <li><a class="kachel" href="#bausteine/pruefungen"><h3>Prüfungen</h3><p>Was bei jeder Änderung automatisch geprüft wird.</p></a></li>
+    <li><a class="kachel" href="#bausteine/ideen"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-idee"/></svg></span><h3>Grundideen</h3><p>Wie die Werkstatt denkt.</p></a></li>
+    <li><a class="kachel" href="#bausteine/grundsaetze"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-regel"/></svg></span><h3>Grundsätze</h3><p>Zehn Regeln für jede Szene.</p></a></li>
+    <li><a class="kachel" href="#bausteine/figuren"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg></span><h3>Figuren</h3><p>Vier Archetypen.</p></a></li>
+    <li><a class="kachel" href="#bausteine/bewegung"><span class="blase ton"><svg class="icon" aria-hidden="true"><use href="#i-welle"/></svg></span><h3>Bewegung</h3><p>Kurven, Handziele, Spielweise.</p></a></li>
+    <li><a class="kachel" href="#bausteine/geraeusche"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg></span><h3>Geräusche</h3><p>Klangcharakter und Katalog.</p></a></li>
+    <li><a class="kachel" href="#bausteine/requisiten"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-stuhl"/></svg></span><h3>Requisiten</h3><p>Möbel, Geräte, Zeichen.</p></a></li>
+    <li><a class="kachel" href="#bausteine/gestaltung"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg></span><h3>Gestaltung</h3><p>Bühne, Farben, Lesbarkeit.</p></a></li>
+    <li><a class="kachel" href="#bausteine/pruefungen"><span class="blase ton"><svg class="icon" aria-hidden="true"><use href="#i-haken"/></svg></span><h3>Prüfungen</h3><p>Was automatisch geprüft wird.</p></a></li>
   </ul>
 </section>
 
-<section class="ansicht" id="bausteine/ideen" data-bereich="bausteine" data-titel="Wie die Werkstatt denkt">
-  <h2 tabindex="-1">Wie die Werkstatt denkt</h2>
-  <div class="lauftext">
-  <p>Die Werkstatt baut kurze Trickfilm-Szenen: Menschen am Schreibtisch, am Schalter, unterwegs, dazu Geräte, Papiere und Zeichen. Sie ist unabhängig von einem bestimmten Auftrag. Inhalte, Sprechtexte und das Erscheinungsbild eines Auftraggebers kommen später als Eingaben dazu. Vier Ideen tragen alles:</p>
-  <ul>
-    <li><strong>Jedes Bild wird gerechnet.</strong> Zu jedem Zeitpunkt einer Szene ergibt sich das Bild aus einer Rechenvorschrift. Gleiche Eingabe ergibt immer dasselbe Bild.</li>
-    <li><strong>Figuren sind Gliederpuppen.</strong> Ein festes Skelett (Rig) trägt austauschbare Zeichnungen (Teilesätze). So lassen sich verschiedene Menschen mit denselben Bewegungen zeigen.</li>
-    <li><strong>Geräusche entstehen aus der Bewegung.</strong> Wo eine Hand auf die Tastatur trifft, entsteht ein Anschlag, nicht dort, wo jemand ihn von Hand hinsetzt.</li>
-    <li><strong>Was am Bild zu sehen ist, wird am Bild geprüft.</strong> Zu jeder Szene gibt es Standbilder, die ein Mensch ansieht, und Prüfungen, die eine Maschine über jedes einzelne Bild fährt.</li>
+<section class="ansicht" id="bausteine/ideen" data-bereich="bausteine" data-titel="Grundideen">
+  <h2 tabindex="-1">Grundideen</h2>
+  <ul class="kacheln">
+    <li class="kachel"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-raster"/></svg></span><h3>Jedes Bild wird gerechnet</h3><p>Gleiche Eingabe, dasselbe Bild.</p></li>
+    <li class="kachel"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg></span><h3>Figuren sind Gliederpuppen</h3><p>Ein Skelett, austauschbare Zeichnungen.</p></li>
+    <li class="kachel"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg></span><h3>Klang aus Bewegung</h3><p>Wo die Hand aufschlägt, klingt es.</p></li>
+    <li class="kachel"><span class="blase ton"><svg class="icon" aria-hidden="true"><use href="#i-haken"/></svg></span><h3>Geprüft am Bild</h3><p>Standbilder für Menschen, Prüfungen für jedes Bild.</p></li>
   </ul>
-  </div>
   <figure>
     <img src="bilder/kontaktbogen-vorlage.png" alt="Neun Standbilder der Vorlage-Szene: eine Person am Schreibtisch tippt, auf dem Monitor erscheint ein grüner Haken, die Person lehnt sich zurück." loading="lazy">
-    <figcaption>Kontaktbogen der Vorlage-Szene: neun Standbilder zu festen Zeitpunkten. Die gestrichelte Linie markiert die Schutzzone für Untertitel.</figcaption>
+    <figcaption>Kontaktbogen der Vorlage-Szene.</figcaption>
   </figure>
   <div class="technik">
-    <p>Die Bibliothek unter <code>lib/</code> ist reines JavaScript ohne Zugriff auf eine Webseite (DOM-frei). Sie läuft unverändert in drei Umgebungen: im Browser-Prototyp, in Node (Prüfungen, Standbilder) und in Remotion (fertiges Video). Eine Szene besteht aus vier Dateien: <code>brief.yaml</code> (Szenenbrief), <code>geometry.js</code> (Positionen und Palette), <code>scene.js</code> (Aufbau aus Figuren und Requisiten) und <code>animation.js</code> (die Zeitfunktion <code>computeState(t)</code>).</p>
-    <p>Format: 1920 × 1080 Pixel, 30 Bilder je Sekunde. Werkzeuge in TypeScript, Bibliothek in JavaScript, Render mit Remotion 4, Standbilder und Tests mit Chromium über Playwright.</p>
+    <p><code>lib/</code> ist DOM-freies JavaScript und läuft im Prototyp, in Node und in Remotion. Eine Szene: <code>brief.yaml</code>, <code>geometry.js</code>, <code>scene.js</code>, <code>animation.js</code> mit <code>computeState(t)</code>. 1920 × 1080, 30 Bilder je Sekunde.</p>
   </div>
 </section>
 
 <section class="ansicht" id="bausteine/grundsaetze" data-bereich="bausteine" data-titel="Grundsätze">
   <h2 tabindex="-1">Grundsätze</h2>
-  <p class="lauftext">Zehn Regeln gelten überall. Sie sorgen dafür, dass Szenen wiederholbar, prüfbar und unabhängig von einzelnen Rechnern bleiben.</p>
-  <ol class="lauftext">
-    <li><strong>Jedes Bild ist eine Funktion der Zeit.</strong> Keine Animation läuft „von selbst“; Zufall gibt es nur mit festem Startwert.</li>
-    <li><strong>Die Bibliothek ist unabhängig vom Browser.</strong> Dieselbe Rechnung läuft im Prototyp, in Prüfungen und im Video.</li>
-    <li><strong>Geometrie ist Daten.</strong> Positionen, Maße und Farben stehen in eigenen Dateien, nie verstreut im Bildaufbau.</li>
-    <li><strong>Bild und Ton werden nicht beide geraten.</strong> Mit Aufnahme folgen die Bewegungen den gemessenen Wortzeiten; ohne Aufnahme wird die Dauer geschätzt (15 Zeichen je Sekunde plus 10–15 % Luft) und als Schätzung markiert.</li>
-    <li><strong>Geräusche entstehen aus der Bewegung.</strong></li>
-    <li><strong>Was gerechnet ist, wird nie von Hand gepflegt.</strong> Erzeugte Dateien tragen den Vermerk „ERZEUGT von …“ und werden immer neu erzeugt, nie nachgebessert.</li>
-    <li><strong>Was am Bild zu prüfen ist, wird am Bild geprüft.</strong></li>
-    <li><strong>Ein Lauf, der etwas nicht weiß, sagt es.</strong> Kein Werkzeug liefert ein leeres Ergebnis, das wie „nichts zu tun“ aussieht.</li>
-    <li><strong>Kein Netz beim Rendern.</strong> Alles, was generiert wird, liegt vorher im Repository.</li>
-    <li><strong>Keine Geheimnisse im Repository.</strong> Zugangsschlüssel kommen nur aus der Umgebung.</li>
+  <ol class="schritte">
+    <li>Jedes Bild ist eine Funktion der Zeit.</li>
+    <li>Die Bibliothek ist unabhängig vom Browser.</li>
+    <li>Geometrie ist Daten.</li>
+    <li>Bild und Ton werden nie beide geraten.</li>
+    <li>Geräusche entstehen aus der Bewegung.</li>
+    <li>Was gerechnet ist, wird nie von Hand gepflegt.</li>
+    <li>Was am Bild zu prüfen ist, wird am Bild geprüft.</li>
+    <li>Ein Lauf, der etwas nicht weiß, sagt es.</li>
+    <li>Kein Netz beim Rendern.</li>
+    <li>Keine Geheimnisse im Repository.</li>
   </ol>
   <div class="technik">
-    <p>Verboten sind CSS-Animationen, SMIL, <code>transition</code>, <code>requestAnimationFrame</code> als Zeitgeber, GSAP und Framer Motion. Zufall läuft über den Generator <code>prng(seed)</code> aus <code>lib/zufall.js</code>. Die Verbotsprüfung (<code>npm run verboten</code>) sucht im Repository nach Verstößen, zum Beispiel <code>Math.random</code>, <code>Date.now</code> und Farbwerte außerhalb der Tokens im Bildcode, Webfonts, Netzaufrufe und Zugangsschlüssel.</p>
+    <p>Verboten im Bildcode: CSS-Animationen, SMIL, <code>transition</code>, <code>requestAnimationFrame</code> als Zeitgeber, GSAP, Framer Motion, <code>Math.random</code>, <code>Date.now</code>. Zufall über <code>prng(seed)</code>. <code>npm run verboten</code> sucht Verstöße.</p>
   </div>
 </section>
 
-<section class="ansicht" id="bausteine/figuren" data-bereich="bausteine" data-titel="Figuren und Archetypen">
-  <h2 tabindex="-1">Figuren und Archetypen</h2>
-  <aside class="querverweis"><p>Selbst zeichnen: <a href="#anleitungen/figur">Eine Figur zeichnen</a> · Stellen: <a href="#werkzeuge/posen-editor">Posen-Editor</a></p></aside>
-  <p class="lauftext">Eine Figur setzt sich aus vier Dingen zusammen: einem <strong>Archetyp</strong> (dem Skelett), einem <strong>Teilesatz</strong> (den Zeichnungen), einer <strong>Palette</strong> (Farben der Kleidung) und einer <strong>Blickrichtung</strong>. Figuren haben keine Gesichter; Gefühle zeigen sich in Haltung, Tempo und Pausen.</p>
+<section class="ansicht" id="bausteine/figuren" data-bereich="bausteine" data-titel="Figuren">
+  <h2 tabindex="-1">Figuren</h2>
+  <p class="querverweis"><a href="#anleitungen/figur"><svg class="icon" aria-hidden="true"><use href="#i-stift"/></svg>Figur zeichnen</a><a href="#werkzeuge/posen-editor"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Posen-Editor</a></p>
+  <p>Archetyp, Teilesatz, Palette, Blickrichtung. Keine Gesichter; Gefühl zeigt sich in Haltung und Tempo.</p>
   <div class="tabelle"><table>
-    <thead><tr><th>Archetyp</th><th>Wofür</th><th>Bewegliche Teile</th></tr></thead>
+    <thead><tr><th>Archetyp</th><th>Wofür</th></tr></thead>
     <tbody>
-      <tr><td><code>sitzend-profil</code></td><td>Schreibtisch, Schalter, Gespräch</td><td>Rumpf, Kopf, zwei Arme mit Händen; Beine sitzend, Fuß kann wippen</td></tr>
-      <tr><td><code>stehend-profil</code></td><td>Gehen, Warten, Tragen</td><td>dazu zwei Beine mit Füßen und Gang</td></tr>
-      <tr><td><code>stehend-frontal</code></td><td>Zeigen, Erklären, Reagieren</td><td>Arme seitlich, Schultern heben, Haltung „vor dem Körper halten“</td></tr>
-      <tr><td><code>oberkoerper-nah</code></td><td>Reaktion, Dialog, Pointe</td><td>Oberkörper in größerem Maßstab</td></tr>
+      <tr><td><code>sitzend-profil</code></td><td>Schreibtisch, Schalter, Gespräch</td></tr>
+      <tr><td><code>stehend-profil</code></td><td>Gehen, Warten, Tragen</td></tr>
+      <tr><td><code>stehend-frontal</code></td><td>Zeigen, Erklären, Reagieren</td></tr>
+      <tr><td><code>oberkoerper-nah</code></td><td>Reaktion, Dialog, Pointe</td></tr>
     </tbody>
   </table></div>
   <figure>
     <img src="bilder/testposen.png" alt="Vier Reihen mit je sechs Posen: Ruhe, Greifen, Zeigen, Tippen, Gehen oder Sitzen, Reaktion, für jeden Archetyp." loading="lazy">
-    <figcaption>Testposen aller Archetypen mit dem Platzhalter-Teilesatz <code>satz-00</code>.</figcaption>
   </figure>
   <div class="technik">
-    <p>Die Maße stehen in <code>figuren/rig-spezifikation.json</code> (Oberarm und Unterarm je 90 px, Schulter 130 px über der Hüfte, Boden bei y 760, Tischplatte bei y 560). Der Zustand einer Figur steht im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf. Die Spiegelung für den Blick nach links übernimmt das Rig selbst.</p>
+    <p>Maße in <code>figuren/rig-spezifikation.json</code>: Ober- und Unterarm je 90 px, Schulter 130 px über der Hüfte, Boden y 760, Tisch y 560. Zustand im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf; das Rig spiegelt selbst.</p>
   </div>
 </section>
 
-<section class="ansicht" id="bausteine/bewegung" data-bereich="bausteine" data-titel="Bewegung und Spielweise">
-  <h2 tabindex="-1">Bewegung und Spielweise</h2>
-  <aside class="querverweis"><p>Anwenden: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 5 · Werkzeug: <a href="#werkzeuge/posen-editor">Posen-Editor</a></p></aside>
-  <div class="lauftext">
-  <p>Bewegung entsteht aus wenigen Bausteinen:</p>
-  <ul>
-    <li><strong>Kurven</strong> geben einer Bewegung ihren Charakter: weich, mit Anlauf, mit Überschwingen, mit Nachschwingen oder von Pose zu Pose.</li>
-    <li><strong>Handziele:</strong> Arme werden über den Punkt gesteuert, an dem die Hand sein soll. Die Werkstatt rechnet die Gelenkwinkel selbst aus und meldet, wenn ein Ziel zu weit weg ist.</li>
-    <li><strong>Gang:</strong> ein Doppelschritt auf etwa 140 px Strecke; der tiefste Fuß steht immer auf dem Boden, das Knie zeigt immer nach vorn.</li>
-    <li><strong>Spielweise:</strong> Gefühle wie konzentriert, genervt, überrascht, erleichtert, stolz oder ratlos sind fertige Rezepte für Haltung und Tempo, die sich addieren lassen.</li>
-    <li><strong>Charakter:</strong> Je Figur bestimmen Tempo, Grundhaltung, Stärke der Reaktion und eine kleine Eigenheit (zum Beispiel Fußwippen), wie sie sich bewegt.</li>
+<section class="ansicht" id="bausteine/bewegung" data-bereich="bausteine" data-titel="Bewegung">
+  <h2 tabindex="-1">Bewegung</h2>
+  <p class="querverweis"><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen</a><a href="#werkzeuge/posen-editor"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Posen-Editor</a></p>
+  <ul class="liste">
+    <li><strong>Kurven:</strong> weich, Anlauf, Überschwingen, von Pose zu Pose.</li>
+    <li><strong>Handziele:</strong> die Hand geht zum Punkt, die Winkel rechnet die Werkstatt.</li>
+    <li><strong>Gang:</strong> Fuß immer am Boden, Knie immer vorn.</li>
+    <li><strong>Spielweise:</strong> konzentriert, genervt, überrascht, erleichtert, stolz, ratlos.</li>
+    <li><strong>Charakter:</strong> Tempo, Haltung, Reaktion, eine kleine Eigenheit.</li>
   </ul>
-  <p>Der Witz liegt immer in der Situation, nie in der Person. Eine Pointe ist ein eigener Abschnitt und folgt auf einen Anlauf.</p>
-  </div>
+  <p>Der Witz liegt in der Situation, nie in der Person.</p>
   <div class="technik">
     <div class="tabelle"><table>
       <thead><tr><th>Modul</th><th>Funktionen</th></tr></thead>
       <tbody>
-        <tr><td><code>lib/easing.js</code></td><td><code>linear</code>, <code>inOut</code>, <code>anticipate</code> (8 % Anlauf), <code>overshoot</code> (12 % Überschwingen), <code>settle</code>, <code>snap</code>, <code>snapBei</code>, <code>movingHold</code> (1–2 px Drift in Pausen)</td></tr>
-        <tr><td><code>lib/motion.js</code></td><td><code>interp</code>, <code>schluessel</code>, <code>envelope</code>, <code>pulse</code>, <code>bezier2</code>, <code>entlang</code>, <code>ik</code>, <code>fk</code>, <code>walkCycle</code>, <code>gangPhase</code>, <code>umblenden</code>, <code>haengend</code>, <code>summe</code></td></tr>
-        <tr><td><code>lib/spielweise.js</code></td><td><code>charakter</code>, <code>dauer</code>, <code>HALTUNGEN</code>, <code>atmen</code>, <code>konzentriert</code>, <code>genervt</code>, <code>ueberrascht</code>, <code>erleichtert</code>, <code>stolz</code>, <code>ratlos</code>, <code>tippen</code>, <code>fussWippen</code></td></tr>
-        <tr><td><code>lib/rigs/</code></td><td>je Archetyp <code>markup</code>, <code>apply</code>, <code>gelenke</code>, <code>greife</code> (Hand zum Ziel), <code>fuss</code> (Knöchel zum Ziel), <code>pruefeReichweite</code>, <code>defaults</code>; frontal dazu <code>posen</code></td></tr>
-        <tr><td><code>lib/posen.js</code></td><td><code>posenZustand</code> liest Schlüsselposen aus dem Posen-Editor</td></tr>
-        <tr><td><code>lib/zufall.js</code></td><td><code>prng(seed)</code>, <code>hash</code></td></tr>
+        <tr><td><code>lib/easing.js</code></td><td><code>inOut</code>, <code>anticipate</code>, <code>overshoot</code>, <code>settle</code>, <code>snap</code>, <code>movingHold</code></td></tr>
+        <tr><td><code>lib/motion.js</code></td><td><code>interp</code>, <code>schluessel</code>, <code>envelope</code>, <code>ik</code>, <code>walkCycle</code>, <code>summe</code></td></tr>
+        <tr><td><code>lib/spielweise.js</code></td><td><code>charakter</code>, <code>atmen</code>, <code>konzentriert</code>, <code>erleichtert</code>, <code>tippen</code>, <code>fussWippen</code></td></tr>
+        <tr><td><code>lib/rigs/</code></td><td><code>markup</code>, <code>apply</code>, <code>gelenke</code>, <code>greife</code>, <code>fuss</code>, <code>pruefeReichweite</code></td></tr>
+        <tr><td><code>lib/posen.js</code></td><td><code>posenZustand</code></td></tr>
       </tbody>
     </table></div>
-<pre><code>// animation.js, gekürzt
-export function computeState(t) {
-  const A = { ...rigA.defaults, x: F.x, y: F.y, torso: haltung(t).torso };
-  A.armF = rigA.greife(A, 'armF', handZiel(t));   // IK zum Handziel
-  return { A };
-}</code></pre>
   </div>
 </section>
 
 <section class="ansicht" id="bausteine/geraeusche" data-bereich="bausteine" data-titel="Geräusche">
   <h2 tabindex="-1">Geräusche</h2>
-  <aside class="querverweis"><p>Anwenden: <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a> · Werkzeug: <a href="#werkzeuge/hoerprobe">Hörprobe</a></p></aside>
-  <div class="lauftext">
-  <p>Geräusche sind dezent und eher zum Schmunzeln: eine etwas zu eifrige Tastatur, ein Drucker, der kurz nachdenkt. Ausgeschlossen sind Boing, Fanfare, Lachen, Applaus, Explosionen und Musik. Je Szene klingen drei bis sechs Geräuscharten, höchstens sechs Geräusche in einer Sekunde und höchstens ein kurzer Laut wie „oh?“. Nur Physisches klingt; eine Grafik, die bloß einblendet, nicht.</p>
-  <p>Der Katalog umfasst 219 Cues: Büro, Schalter und Handel, Stadt und Verkehr, Haushalt, Werkzeug, Körper, Übergänge und Bildschirmklänge, dazu acht Laute ohne Wort in vier Stimmen. Jeder Cue hat mehrere Varianten; die Regie wählt in der Hörprobe.</p>
-  </div>
+  <p class="querverweis"><a href="#anleitungen/geraeusche"><svg class="icon" aria-hidden="true"><use href="#i-anleitung"/></svg>Geräusche pflegen</a><a href="#werkzeuge/hoerprobe"><svg class="icon" aria-hidden="true"><use href="#i-kopfhoerer"/></svg>Hörprobe</a></p>
+  <ul class="liste">
+    <li>Dezent und zum Schmunzeln, nie Boing, Fanfare, Lachen oder Musik.</li>
+    <li>Drei bis sechs Arten je Szene, höchstens sechs Geräusche je Sekunde.</li>
+    <li>Höchstens ein Laut wie „oh?“, in vier Stimmen zur Wahl.</li>
+    <li>Ein Katalog für Büro, Handel, Stadt, Haushalt, Werkzeug und Übergänge.</li>
+  </ul>
   <div class="technik">
-    <p>Pegel: −20 LUFS größte Momentanlautheit, True Peak höchstens −3 dBTP, gemessen nach ITU-R BS.1770 in <code>lib/sfx/lautheit.js</code> und mit ffmpeg gegengeprüft. Ausgabe als WAV mono 48 kHz 24 bit (<code>lib/sfx/final/</code>) und als OGG/Opus für den Prototyp (<code>lib/sfx/prototyp/</code>). Herkunft jeder Aufnahme mit Modell, Prompt, Parametern und Stimme in <code>lib/sfx/roh/herkunft.tsv</code>.</p>
+    <p>−20 LUFS größte Momentanlautheit, True Peak ≤ −3 dBTP, gemessen nach BS.1770 und gegen ffmpeg geprüft. WAV 48 kHz 24 bit in <code>lib/sfx/final/</code>, OGG für den Prototyp; Herkunft in <code>lib/sfx/roh/herkunft.tsv</code>.</p>
   </div>
 </section>
 
 <section class="ansicht" id="bausteine/requisiten" data-bereich="bausteine" data-titel="Requisiten">
   <h2 tabindex="-1">Requisiten</h2>
-  <p class="lauftext">Möbel, Geräte, Büromaterial, Dinge im Freien und Zeichen stehen als fertige Bausteine bereit. Sie sind aus Flächen mit Kontur gebaut, ohne Schatten und Verläufe. Bewegliche Teile wie eine Schublade, das Papierfach eines Druckers oder der Hörer eines Telefons lassen sich einzeln bewegen.</p>
+  <p>Fertige Bausteine mit beweglichen Teilen: Schublade, Papierfach, Telefonhörer.</p>
   <figure>
     <img src="bilder/requisiten.png" alt="Katalog aller Requisiten in fünf Gruppen: Möbel, Geräte, Büro, Außen, Zeichen." loading="lazy">
-    <figcaption>Katalog aller Requisiten im selben Maßstab, mit ihren beweglichen Teilen.</figcaption>
   </figure>
   <div class="technik">
-    <p>Jede Requisite bietet <code>markup(id, pos, farben, opts)</code>, <code>ids(id)</code> (bewegliche Gruppen), <code>anker(pos)</code> (benannte Punkte, etwa die Tasten einer Tastatur als Handziel) und <code>rahmen()</code>. Braucht eine Szene etwas, das fehlt, baut sie es in ihrer eigenen <code>requisiten.js</code>; braucht es eine zweite Szene, wandert es in die Bibliothek.</p>
+    <p>Jede Requisite bietet <code>markup</code>, <code>ids</code>, <code>anker</code> (etwa Tasten als Handziel) und <code>rahmen</code>. Was nur eine Szene braucht, steht in ihrer <code>requisiten.js</code>.</p>
   </div>
 </section>
 
 <section class="ansicht" id="bausteine/gestaltung" data-bereich="bausteine" data-titel="Gestaltung">
   <h2 tabindex="-1">Gestaltung</h2>
-  <ul class="lauftext">
-    <li><strong>Bühne</strong> 1920 × 1080; die Grafik steht im Bereich x 128–1792, y 96–816, Beschriftungen in festen Plätzen darunter.</li>
-    <li><strong>Schutzzone:</strong> Die unteren 140 px bleiben frei von Text und wichtiger Bildaussage, damit Untertitel nichts verdecken.</li>
-    <li><strong>Abstände</strong> auf einem 8-px-Raster: 8, 16, 24, 32, 48, 64, 96, 128.</li>
-    <li><strong>Farben</strong> nur aus der Palette; je Szene eine helle Grundfläche, eine Akzentfarbe, höchstens eine zweite. <strong>Farbe nie allein:</strong> Jede Unterscheidung trägt zusätzlich eine Form oder ein Wort.</li>
-    <li><strong>Kontraste</strong> werden gerechnet: Text mindestens 4,5:1, Grafik mindestens 3:1.</li>
-    <li><strong>Lesetakt:</strong> Jeder Text steht so lange, dass man ihn lesen kann.</li>
-    <li><strong>Keine Dekoration:</strong> keine Schatten, Verläufe, Emojis oder abgerundeten Ecken; runde Linienenden nur an Figuren und Zeichen.</li>
-    <li><strong>Schrift:</strong> Arial (in der Cloud Liberation Sans mit gleichen Maßen), nie Webfonts.</li>
+  <ul class="liste">
+    <li><strong>Bühne</strong> 1920 × 1080, Grafik in x 128–1792, y 96–816.</li>
+    <li><strong>Schutzzone:</strong> die unteren 140 px frei für Untertitel.</li>
+    <li><strong>Raster:</strong> 8, 16, 24, 32, 48, 64, 96, 128 px.</li>
+    <li><strong>Farbe nie allein:</strong> immer auch Form oder Wort.</li>
+    <li><strong>Kontrast:</strong> Text ≥ 4,5:1, Grafik ≥ 3:1.</li>
+    <li><strong>Im Film:</strong> keine Schatten, Verläufe, Rundungen; Schrift Arial.</li>
   </ul>
-  <h3>Startpalette</h3>
-  <p class="lauftext">Eine neutrale Palette, bis ein Auftrag sein eigenes Erscheinungsbild mitbringt. Neben jeder Farbe steht ihr gemessener Kontrast auf Weiß.</p>
+  <h3>Palette der Filme</h3>
   <div class="palette">{{PALETTE}}</div>
   <div class="technik">
-    <p>Alle Werte stehen in <code>tokens/tokens.js</code>, der einzigen Quelle für Farben, Strichstärken (8 / 6 / 4 px), Schrift, Raster und Bühne. Ein Auftrag ersetzt diese Datei, sonst nichts. Die Funktion <code>kontrast()</code> rechnet nach WCAG; ein Test prüft, dass jeder Farbkommentar den gerechneten Wert nennt. <code>lesezeitFrames(zeichen)</code> = (Zeichen / 12) · 30 + 45 Bilder.</p>
+    <p>Alle Werte in <code>tokens/tokens.js</code>; ein Auftrag ersetzt nur diese Datei. <code>kontrast()</code> rechnet nach WCAG, <code>lesezeitFrames(zeichen)</code> = (Zeichen / 12) · 30 + 45.</p>
   </div>
 </section>
 
 <section class="ansicht" id="bausteine/pruefungen" data-bereich="bausteine" data-titel="Prüfungen">
   <h2 tabindex="-1">Prüfungen</h2>
-  <p class="lauftext">Bei jeder Änderung prüft GitHub die ganze Werkstatt automatisch. Erst wenn alles grün ist, wird eine Änderung übernommen. Örtlich läuft dasselbe mit <code>npm run pruefen</code>.</p>
-  <ul class="lauftext">
-    <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt, Geräusche mit Lautheit gegen ffmpeg, diese Seite)</li>
-    <li>Verbotsprüfung: Zugangsschlüssel, unerlaubte Animationen, Zufall ohne Startwert, Farben außerhalb der Palette, Abstände außerhalb des Rasters, Webfonts, Netzaufrufe</li>
-    <li>jede Szene bauen und über jedes Bild prüfen</li>
-    <li>erzeugte Dateien vergleichen: Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Cue-Listen, Protokolle</li>
+  <p>Jede Änderung prüft GitHub automatisch; örtlich <code>npm run pruefen</code>.</p>
+  <ul class="liste">
+    <li>Typen und Tests, auch im Browser.</li>
+    <li>Verbotenes: Schlüssel, Animationen, Zufall, fremde Farben, Raster, Netz.</li>
+    <li>Jede Szene, jedes Bild.</li>
+    <li>Erzeugte Dateien aktuell: Teilesätze, Cue-Listen, Protokolle.</li>
   </ul>
   <div class="technik">
-    <p>Der Prüflauf steht in <code>.github/workflows/pruefung.yml</code>, die Verbotsprüfung in <code>tools/pruefen-verboten.ts</code>. Der Prototyp wird in Chromium mit zwei Regeln für automatischen Ton getestet: Erlaubt der Browser Ton, startet die Szene; verlangt er einen Klick, wartet sie bei 0. Ein Test baut absichtlich gestörte Kopien der Vorlage und belegt, dass der Build Fehler tatsächlich meldet.</p>
+    <p>Prüflauf in <code>.github/workflows/pruefung.yml</code>, Verbotsprüfung in <code>tools/pruefen-verboten.ts</code>. Gestörte Kopien der Vorlage belegen, dass der Build Fehler meldet.</p>
   </div>
 </section>
 
@@ -550,18 +622,17 @@ export function computeState(t) {
 <section class="ansicht bereich" id="nachschlagen" data-titel="Nachschlagen">
   <h2 tabindex="-1">Nachschlagen</h2>
   <ul class="kacheln">
-    <li><a class="kachel" href="#nachschlagen/befehle"><h3>Alle Befehle</h3><p>Jeder <code>npm run</code>-Befehl mit Beschreibung und Stand.</p></a></li>
-    <li><a class="kachel" href="#nachschlagen/begriffe"><h3>Begriffe</h3><p>Archetyp, Beat, Cue, Rig, Teilesatz und weitere.</p></a></li>
-    <li><a class="kachel" href="#nachschlagen/stand"><h3>Stand und nächste Schritte</h3><p>Welche Phase fertig ist und was als Nächstes kommt.</p></a></li>
-    <li><a class="kachel" href="#nachschlagen/zusammenarbeit"><h3>Zusammenarbeit</h3><p>Wer entscheidet, was nie ohne Rückfrage geschieht.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/befehle"><span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-terminal"/></svg></span><h3>Befehle</h3><p>Jeder <code>npm run</code>-Befehl.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/begriffe"><span class="blase mint"><svg class="icon" aria-hidden="true"><use href="#i-begriff"/></svg></span><h3>Begriffe</h3><p>Von Archetyp bis Vorrat.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/zusammenarbeit"><span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-personen"/></svg></span><h3>Zusammenarbeit</h3><p>Wer entscheidet.</p></a></li>
   </ul>
 </section>
 
-<section class="ansicht" id="nachschlagen/befehle" data-bereich="nachschlagen" data-titel="Alle Befehle">
-  <h2 tabindex="-1">Alle Befehle</h2>
-  <p class="lauftext">Jeder Befehl läuft mit <code>npm run &lt;name&gt;</code>. Werkzeuge, die noch nicht gebaut sind, nennen ihre Phase und tun nichts. Für die häufigsten Wege gibt es Starter zum Doppelklick im Ordner <code>scripts/</code>.</p>
+<section class="ansicht" id="nachschlagen/befehle" data-bereich="nachschlagen" data-titel="Befehle">
+  <h2 tabindex="-1">Befehle</h2>
+  <p>Jeder Befehl läuft mit <code>npm run &lt;name&gt;</code>.</p>
   <div class="tabelle"><table>
-    <thead><tr><th>Befehl</th><th>Was er tut</th><th>Stand</th></tr></thead>
+    <thead><tr><th>Befehl</th><th>Was er tut</th></tr></thead>
     <tbody>{{SKRIPTE}}</tbody>
   </table></div>
 </section>
@@ -570,62 +641,46 @@ export function computeState(t) {
   <h2 tabindex="-1">Begriffe</h2>
   <div class="tabelle"><table>
     <tbody>
-      <tr><th>Archetyp</th><td>Skelett einer Figur mit festen Maßen, zum Beispiel sitzend im Profil.</td></tr>
-      <tr><th>Beat</th><td>Abschnitt einer Szene mit Anfang, Ende und einer Handlung.</td></tr>
-      <tr><th>Cue</th><td>Ein Geräusch aus dem Katalog, das an einer Stelle klingt.</td></tr>
-      <tr><th>Handziel</th><td>Der Punkt, an dem eine Hand sein soll; die Gelenkwinkel rechnet die Werkstatt.</td></tr>
-      <tr><th>Kontaktbogen</th><td>Neun Standbilder einer Szene auf einem Bild, zum Ansehen und Prüfen.</td></tr>
-      <tr><th>Laut</th><td>Ein kurzer Ausruf ohne Wort, etwa „oh?“; höchstens einer je Szene.</td></tr>
-      <tr><th>Pointe</th><td>Der Moment, über den man schmunzelt; er liegt im Ablauf, nie in der Person.</td></tr>
-      <tr><th>Prototyp</th><td>Die Szene als Webseite zum Abspielen, Anhalten und Springen.</td></tr>
-      <tr><th>Regie</th><td>Die Person, die das Repository führt und inhaltlich entscheidet.</td></tr>
-      <tr><th>Rig</th><td>Gliederpuppe einer Figur: Gelenke, Längen und die Rechnung, die Winkel in ein Bild übersetzt.</td></tr>
-      <tr><th>Schlüsselpose</th><td>Eine festgelegte Pose zu einem Zeitpunkt; dazwischen wird weich verbunden.</td></tr>
-      <tr><th>Schutzzone</th><td>Die unteren 140 px des Bildes, frei für Untertitel.</td></tr>
-      <tr><th>Teilesatz</th><td>Die Zeichnungen aller Teile einer Figur, zum Beispiel <code>satz-01</code>.</td></tr>
-      <tr><th>Tokens</th><td>Die eine Datei mit allen Farben, Strichstärken und Maßen.</td></tr>
-      <tr><th>Vorrat</th><td>Mehrere Varianten eines Einzelgeräuschs, etwa acht Tastenanschläge, damit sich nichts hörbar wiederholt.</td></tr>
+      <tr><th>Archetyp</th><td>Skelett einer Figur mit festen Maßen.</td></tr>
+      <tr><th>Beat</th><td>Abschnitt einer Szene mit einer Handlung.</td></tr>
+      <tr><th>Cue</th><td>Ein Geräusch, das an einer Stelle klingt.</td></tr>
+      <tr><th>Handziel</th><td>Punkt, an dem eine Hand sein soll.</td></tr>
+      <tr><th>Kontaktbogen</th><td>Neun Standbilder einer Szene zum Prüfen.</td></tr>
+      <tr><th>Laut</th><td>Kurzer Ausruf ohne Wort, etwa „oh?“.</td></tr>
+      <tr><th>Pointe</th><td>Der Moment zum Schmunzeln, nie über eine Person.</td></tr>
+      <tr><th>Prototyp</th><td>Die Szene als Webseite zum Abspielen.</td></tr>
+      <tr><th>Regie</th><td>Die Person, die das Repository führt und entscheidet.</td></tr>
+      <tr><th>Rig</th><td>Gliederpuppe: Gelenke, Längen, Rechnung.</td></tr>
+      <tr><th>Schlüsselpose</th><td>Pose zu einem Zeitpunkt; dazwischen weich verbunden.</td></tr>
+      <tr><th>Schutzzone</th><td>Die unteren 140 px, frei für Untertitel.</td></tr>
+      <tr><th>Teilesatz</th><td>Die Zeichnungen aller Teile einer Figur.</td></tr>
+      <tr><th>Tokens</th><td>Die eine Datei mit allen Farben und Maßen.</td></tr>
+      <tr><th>Vorrat</th><td>Mehrere Varianten eines Geräuschs gegen Wiederholung.</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<section class="ansicht" id="nachschlagen/stand" data-bereich="nachschlagen" data-titel="Stand und nächste Schritte">
-  <h2 tabindex="-1">Stand und nächste Schritte</h2>
-  <p class="lauftext">Die Werkstatt entsteht in Phasen; nach jeder Phase wird angehalten und gesichtet.</p>
-  <div class="tabelle"><table>
-    <thead><tr><th>Phase</th><th>Inhalt</th><th>Stand</th></tr></thead>
-    <tbody>{{STAND}}</tbody>
-  </table></div>
-  <p class="lauftext">Als Nächstes: die Geräuschbibliothek vervollständigen und in der Hörprobe auswählen, die Rig-Spezifikation freigeben (danach bleibt sie fest) und den ersten eigenen Teilesatz zeichnen.</p>
-</section>
-
 <section class="ansicht" id="nachschlagen/zusammenarbeit" data-bereich="nachschlagen" data-titel="Zusammenarbeit">
   <h2 tabindex="-1">Zusammenarbeit</h2>
-  <div class="lauftext">
-  <p>Inhaltliche und gestalterische Entscheidungen trifft die Regie. Wo sie zu entscheiden hat, bekommt sie zwei bis vier Möglichkeiten mit einer Empfehlung. Ohne Rückfrage geschieht nicht:</p>
-  <ul>
-    <li>eine neue Abhängigkeit aufnehmen;</li>
-    <li>Farben, Maße oder Schrift der Palette ändern;</li>
-    <li>die Rig-Spezifikation ändern (nach ihrer Freigabe);</li>
+  <p>Die Regie entscheidet und bekommt dafür zwei bis vier Möglichkeiten mit Empfehlung. Ohne Rückfrage geschieht nicht:</p>
+  <ul class="liste">
+    <li>neue Abhängigkeit, neue Farben oder Maße;</li>
+    <li>Änderung der Rig-Spezifikation nach Freigabe;</li>
     <li>Sprech- oder Bildschirmtext umformulieren;</li>
     <li>etwas generieren, das Kosten verursacht;</li>
     <li>eine Seite öffentlich machen.</li>
   </ul>
-  <p>Solange das Repository öffentlich ist, enthält es keine Kundeninhalte, kein Erscheinungsbild eines Auftrags, keine personenbezogenen Daten und keine unveröffentlichten Sprechtexte.</p>
-  </div>
+  <p>Solange das Repository öffentlich ist: keine Kundeninhalte, keine personenbezogenen Daten.</p>
   <div class="technik">
-    <p>Die Regeln stehen in <code>CLAUDE.md</code>, ihre Geschichte in <code>docs/CHRONIK.md</code>, Entscheidungen in <code>docs/ENTSCHEIDUNGEN.md</code>. Jede Änderung läuft auf einem eigenen Zweig mit Pull Request gegen <code>main</code>. Renderergebnisse liegen nie im Repository.</p>
+    <p>Regeln in <code>CLAUDE.md</code>, Geschichte in <code>docs/CHRONIK.md</code>, Entscheidungen in <code>docs/ENTSCHEIDUNGEN.md</code>. Jede Änderung auf eigenem Zweig mit Pull Request.</p>
   </div>
 </section>
 
 </main>
-<footer>
-  <p>Diese Seite wird bei jeder Änderung an <code>main</code> aus dem Repository neu gebaut (<code>tools/seite-bauen.js</code>). Stand: {{ERSTELLT}}.</p>
-</footer>
 
 <script>
-// Navigation in Ansichten: Jede Ansicht (Start, Bereich, Kapitel) hat eine Adresse #id; gezeigt wird nur die aktuelle.
-// Ohne dieses Skript bleibt die Seite eine lange Seite mit Sprungmarken. Keine Übergänge, keine Animation.
+// Navigation in Ansichten, Ebenen, Suche und Stil-Editor. Ohne dieses Skript bleibt die Seite eine lange Seite.
+// Keine Übergänge, keine Animation.
 (() => {
   const wurzel = document.documentElement;
   wurzel.classList.add('js');
@@ -639,12 +694,13 @@ export function computeState(t) {
   const adresse = (a) => a.dataset.adresse;
   const nachId = new Map(ansichten.map((a) => [adresse(a), a]));
   const titelVon = (a) => a.dataset.titel;
-  // Alte Sprungmarken der früheren Seite führen zum neuen Ort.
+  const icon = (name) => `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  // Alte Sprungmarken führen zum neuen Ort.
   const ALT = {
     ueberblick: 'bausteine/ideen', ausprobieren: 'werkzeuge', grundsaetze: 'bausteine/grundsaetze', szene: 'anleitungen/szene',
     figuren: 'bausteine/figuren', bewegung: 'bausteine/bewegung', editor: 'werkzeuge/posen-editor', teile: 'werkzeuge/teile-werkstatt',
     geraeusche: 'anleitungen/geraeusche', requisiten: 'bausteine/requisiten', gestaltung: 'bausteine/gestaltung',
-    pruefungen: 'bausteine/pruefungen', befehle: 'nachschlagen/befehle', stand: 'nachschlagen/stand',
+    pruefungen: 'bausteine/pruefungen', befehle: 'nachschlagen/befehle', stand: 'nachschlagen', 'nachschlagen/stand': 'nachschlagen',
     zusammenarbeit: 'nachschlagen/zusammenarbeit', begriffe: 'nachschlagen/begriffe',
   };
 
@@ -655,19 +711,22 @@ export function computeState(t) {
     const i = geschwister.indexOf(a);
     const krume = document.createElement('p');
     krume.className = 'krume';
-    krume.innerHTML = `<a href="#${adresse(bereich)}"></a> › <span></span>`;
+    krume.innerHTML = `<a href="#${adresse(bereich)}"></a>${icon('rechts')}<span></span>`;
     krume.querySelector('a').textContent = titelVon(bereich);
     krume.querySelector('span').textContent = titelVon(a);
     a.prepend(krume);
     const nav = document.createElement('nav');
     nav.className = 'blaettern';
     nav.setAttribute('aria-label', 'Blättern');
-    const link = (ziel, text) => (ziel ? `<a href="#${adresse(ziel)}">${text}</a>` : '<span></span>');
-    nav.innerHTML = link(geschwister[i - 1], `← ${geschwister[i - 1] ? titelVon(geschwister[i - 1]) : ''}`) + link(bereich, `Übersicht ${titelVon(bereich)}`) + link(geschwister[i + 1], `${geschwister[i + 1] ? titelVon(geschwister[i + 1]) : ''} →`);
+    const vor = geschwister[i - 1];
+    const nach = geschwister[i + 1];
+    nav.innerHTML = (vor ? `<a href="#${adresse(vor)}">${icon('links')}<span></span></a>` : '<span></span>') + `<a href="#${adresse(bereich)}">${icon('raster')}<span></span></a>` + (nach ? `<a href="#${adresse(nach)}"><span></span>${icon('rechts')}</a>` : '<span></span>');
+    const texte = [vor && titelVon(vor), `Übersicht ${titelVon(bereich)}`, nach && titelVon(nach)].filter(Boolean);
+    nav.querySelectorAll('a span').forEach((s, k) => (s.textContent = texte[k]));
     a.append(nav);
   }
 
-  // Ebene: Kurz oder mit Technik; die Wahl gilt seitenweit und bleibt im Browser gespeichert.
+  // Ebene: Kurz oder mit Technik; die Wahl bleibt im Browser.
   const knopfKurz = document.getElementById('ebene-kurz');
   const knopfTechnik = document.getElementById('ebene-technik');
   function setzeEbene(technik) {
@@ -714,7 +773,7 @@ export function computeState(t) {
   window.addEventListener('hashchange', () => ausAdresse());
   ausAdresse({ fokus: false });
 
-  // Suche: Überschriften, Absätze, Listenpunkte und Tabellenzeilen aller Ansichten, ohne Netz.
+  // Suche über Überschriften, Absätze, Listenpunkte und Tabellenzeilen, ohne Netz.
   const feld = document.getElementById('suchfeld');
   const liste = document.getElementById('treffer');
   const eintraege = [];
@@ -722,22 +781,25 @@ export function computeState(t) {
   const mitLuecken = (el) => [...el.childNodes].map((n) => (n.nodeType === 1 ? (BLOCK.test(n.tagName) ? ` ${mitLuecken(n)} ` : mitLuecken(n)) : n.textContent)).join('');
   for (const a of ansichten) {
     for (const el of a.querySelectorAll('h2, h3, p, li, tr, figcaption, pre')) {
-      if (el.closest('.blaettern, .krume') || (el.tagName === 'LI' && el.querySelector('li')) || (el.tagName === 'P' && el.closest('li, .kachel'))) continue;
+      if (el.closest('.blaettern, .krume, .querverweis, .kachel')) continue;
       const text = mitLuecken(el).replace(/\s+/g, ' ').trim();
       if (text) eintraege.push({ ansicht: a, el, text, klein: text.toLowerCase(), technik: Boolean(el.closest('.technik')) });
     }
+    for (const k of a.querySelectorAll('.kachel')) {
+      const text = mitLuecken(k).replace(/\s+/g, ' ').trim();
+      eintraege.push({ ansicht: a, el: k, text, klein: text.toLowerCase(), technik: false });
+    }
   }
-  function auszug(text, i, laenge) {
+  const auszug = (text, i, laenge) => {
     const von = Math.max(0, i - 40);
     return (von ? '…' : '') + text.slice(von, i + laenge + 60) + (i + laenge + 60 < text.length ? '…' : '');
-  }
+  };
   function suche() {
     const q = feld.value.trim().toLowerCase();
     liste.innerHTML = '';
     if (q.length < 2) return void (liste.hidden = true);
     const treffer = eintraege.filter((e) => e.klein.includes(q));
-    // Treffer in Überschriften zuerst, dann nach Reihenfolge der Seite; höchstens zwölf.
-    treffer.sort((x, y) => (/^H/.test(y.el.tagName) - /^H/.test(x.el.tagName)));
+    treffer.sort((x, y) => /^H/.test(y.el.tagName) - /^H/.test(x.el.tagName));
     for (const t of treffer.slice(0, 12)) {
       const li = document.createElement('li');
       const a = document.createElement('a');
@@ -763,7 +825,7 @@ export function computeState(t) {
     if (!treffer.length) liste.innerHTML = '<li class="leer">Nichts gefunden.</li>';
     liste.hidden = false;
   }
-  feld.hidden = false;
+  document.querySelector('.suche').hidden = false;
   feld.addEventListener('input', suche);
   feld.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter') liste.querySelector('a')?.click();
@@ -779,7 +841,60 @@ export function computeState(t) {
   });
   document.addEventListener('click', (ev) => { if (!ev.target.closest('.suche')) liste.hidden = true; });
   document.addEventListener('keydown', (ev) => {
-    if (ev.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { ev.preventDefault(); feld.focus(); }
+    if (ev.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { ev.preventDefault(); feld.focus(); }
+  });
+
+  // Stil-Editor: Regler setzen die Stilwerte als CSS-Variablen; die Wahl bleibt im Browser.
+  // „Übernehmen“ gibt den Block aus, der in dieser Datei unter „Stilwerte“ eingesetzt wird.
+  const stil = document.getElementById('stil');
+  const stilKnopf = document.getElementById('stil-knopf');
+  const regler = [...stil.querySelectorAll('[data-var]')];
+  // Vorgabe aus dem Stilblock; eine Auswahl wie var(--st-font-serif) liest der Browser aufgelöst, daher Optionen auflösen.
+  const wert = (name) => getComputedStyle(wurzel).getPropertyValue(name).trim();
+  const aufgeloest = (v) => v.replace(/^var\((--[\w-]+)\)$/, (_, n) => wert(n));
+  const vorgabe = Object.fromEntries(regler.map((r) => {
+    const w = wert(r.dataset.var);
+    return [r.dataset.var, r.type === 'range' ? w : ([...r.options].find((o) => o.value === w || aufgeloest(o.value) === w)?.value ?? r.options[0].value)];
+  }));
+  const alsCss = (r) => r.value + (r.type === 'range' ? r.dataset.einheit ?? '' : '');
+  function setze(r, wert, speichern = true) {
+    r.value = r.type === 'range' ? String(parseFloat(wert)) : wert;
+    wurzel.style.setProperty(r.dataset.var, alsCss(r));
+    const out = stil.querySelector(`output[data-fuer="${r.dataset.var.slice(2)}"]`);
+    if (out) out.textContent = alsCss(r);
+    if (speichern) {
+      try { localStorage.setItem('werkstatt-stil', JSON.stringify(Object.fromEntries(regler.map((x) => [x.dataset.var, x.value])))); } catch {}
+    }
+  }
+  let gespeicherterStil = {};
+  try { gespeicherterStil = JSON.parse(localStorage.getItem('werkstatt-stil') ?? '{}'); } catch {}
+  for (const r of regler) {
+    setze(r, gespeicherterStil[r.dataset.var] ?? vorgabe[r.dataset.var], false);
+    r.addEventListener('input', () => setze(r, r.value));
+  }
+  const feldCss = document.getElementById('stil-css');
+  document.getElementById('stil-uebernehmen').addEventListener('click', async () => {
+    feldCss.value = `  /* Stilwerte: vom Stil-Editor einstellbar; zum Übernehmen den Block aus dem Editor hier einsetzen. */\n${regler.map((r) => `  ${r.dataset.var}: ${alsCss(r)};`).join('\n')}`;
+    feldCss.hidden = false;
+    feldCss.select();
+    try { await navigator.clipboard.writeText(feldCss.value); } catch {}
+  });
+  document.getElementById('stil-zurueck').addEventListener('click', () => {
+    for (const r of regler) setze(r, vorgabe[r.dataset.var], false);
+    try { localStorage.removeItem('werkstatt-stil'); } catch {}
+    feldCss.hidden = true;
+  });
+  function stilOffen(offen) {
+    stil.hidden = !offen;
+    stilKnopf.setAttribute('aria-expanded', String(offen));
+  }
+  stilKnopf.hidden = false;
+  stilKnopf.addEventListener('click', () => {
+    stilOffen(stil.hidden);
+    if (!stil.hidden) regler[0].focus();
+  });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && !stil.hidden) { stilOffen(false); stilKnopf.focus(); }
   });
 })();
 </script>

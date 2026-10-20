@@ -1,4 +1,4 @@
-// Webseite: Ansichten mit Adressen, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken, ohne Skript eine lange Seite.
+// Webseite: Ansichten mit Adressen, Reiter, Blättern, Ebenen, Suche, Stil-Editor, alte Sprungmarken, ohne Skript eine lange Seite.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -11,14 +11,14 @@ const WURZEL = join(import.meta.dirname, '..');
 
 /** Vorlage mit einfachen Platzhaltern statt des vollen Seitenbaus (der braucht Szenen und Bilder). */
 function seiteOhneBau(dir) {
-  const ersetzung = { TOKENS_CSS: '', PALETTE: '<div class="farbe">Palette</div>', SKRIPTE: '<tr><td>szene:bauen</td><td>Szene bauen</td><td>bereit</td></tr>', STAND: '<tr><td>4</td><td>Geräusche</td><td>fertig</td></tr>', ERSTELLT: '2026-10-20' };
+  const ersetzung = { PALETTE: '<div class="farbe">Palette</div>', SKRIPTE: '<tr><td>szene:bauen</td><td>Szene bauen</td></tr>' };
   const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => ersetzung[k]);
   const ziel = join(dir, 'index.html');
   writeFileSync(ziel, html);
   return pathToFileURL(ziel).href;
 }
 
-test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken', async () => {
+test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, Stil-Editor, alte Sprungmarken', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'seite-'));
   const browser = await starteBrowser();
   try {
@@ -44,8 +44,8 @@ test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken', as
     // Kapitel: Brotkrume, Blättern innerhalb des Bereichs, Titel.
     await seite.goto(`${url}#anleitungen/szene`);
     await zeigt('anleitungen/szene');
-    assert.equal(await seite.title(), 'Eine Szene bauen · Trickfilm-Werkstatt');
-    assert.equal(await seite.textContent('.ansicht:not([hidden]) .krume'), 'Anleitungen › Eine Szene bauen');
+    assert.equal(await seite.title(), 'Szene bauen · Trickfilm-Werkstatt');
+    assert.deepEqual(await seite.$$eval('.ansicht:not([hidden]) .krume > a, .ansicht:not([hidden]) .krume > span', (e) => e.map((x) => x.textContent)), ['Anleitungen', 'Szene bauen']);
     await seite.click('.ansicht:not([hidden]) .blaettern a:last-child');
     await zeigt('anleitungen/figur');
     assert.equal(await seite.getAttribute('.reiter a[data-bereich="anleitungen"]', 'aria-current'), 'true');
@@ -67,13 +67,32 @@ test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken', as
     // Suche: Treffer mit Ort, Klick zeigt das Kapitel und markiert die Stelle; Technik-Treffer schalten die Ebene um.
     await seite.fill('#suchfeld', 'Exportregeln');
     const ort = await seite.textContent('#treffer li:first-child .ort');
-    assert.equal(ort, 'Eine Figur zeichnen · Technik');
+    assert.equal(ort, 'Figur zeichnen · Technik');
     await seite.keyboard.press('Enter');
     await zeigt('anleitungen/figur');
     assert.equal(await seite.evaluate(() => document.documentElement.classList.contains('mit-technik')), true);
     assert.match(await seite.textContent('.markiert'), /Exportregeln/);
     await seite.fill('#suchfeld', 'gibt es nicht xyz');
     assert.equal(await seite.textContent('#treffer'), 'Nichts gefunden.');
+
+    // Stil-Editor: Regler wirken sofort auf die Variablen, bleiben nach dem Neuladen, Zurücksetzen stellt die Vorgabe her.
+    const variable = (n) => seite.evaluate((x) => getComputedStyle(document.documentElement).getPropertyValue(x).trim(), n);
+    assert.equal(await seite.isHidden('#stil'), true);
+    await seite.click('#stil-knopf');
+    assert.equal(await seite.isVisible('#stil'), true);
+    assert.equal(await seite.inputValue('[data-var="--st-titelschrift"]'), 'var(--st-font-display)', 'Auswahl kennt ihre Vorgabe');
+    await seite.$eval('[data-var="--st-unschaerfe"]', (r) => { r.value = '30'; r.dispatchEvent(new Event('input')); });
+    assert.equal(await variable('--st-unschaerfe'), '30px');
+    assert.match(await seite.evaluate(() => getComputedStyle(document.querySelector('.kopf')).backdropFilter), /blur\(30px\)/);
+    await seite.click('#stil-uebernehmen');
+    assert.match(await seite.inputValue('#stil-css'), /--st-unschaerfe: 30px;/);
+    await seite.reload();
+    assert.equal(await variable('--st-unschaerfe'), '30px', 'Wahl bleibt nach dem Neuladen');
+    await seite.click('#stil-knopf');
+    await seite.click('#stil-zurueck');
+    assert.equal(await variable('--st-unschaerfe'), '18px');
+    await seite.keyboard.press('Escape');
+    assert.equal(await seite.isHidden('#stil'), true);
 
     // Alte Sprungmarken der früheren Seite.
     await seite.goto(`${url}#editor`);

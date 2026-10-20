@@ -38,9 +38,16 @@ test('Netzaufrufe im Render werden gefunden, der SVG-Namensraum nicht', () => {
   assert.deepEqual(regeln('lib/teile.js', 'xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"'), []);
   assert.deepEqual(regeln('lib/teile.js', 'const u = "https://www.inkscape.org/release/";'), ['Netzaufruf im Render']);
   assert.deepEqual(regeln('lib/viewer.template.html', '<link href="https://fonts.googleapis.com/css">'), [
-    'Webfont',
+    'Webfont aus dem Netz',
     'Netzaufruf im Render',
   ]);
+});
+
+test('eigene Schriften nur auf der Webseite, aus dem Netz nirgends', () => {
+  const eigene = '@font-face { src: url(schriften/inter.woff2); }';
+  assert.deepEqual(regeln('site/index.html', eigene), []);
+  assert.deepEqual(regeln('lib/viewer.template.html', eigene), ['Webfont']);
+  assert.deepEqual(regeln('site/index.html', '<link href="https://fonts.gstatic.com/s/inter.woff2">'), ['Webfont aus dem Netz']);
 });
 
 test('Abstände außerhalb des Rasters werden in Bibliothek und Szenen gefunden', () => {
