@@ -1,0 +1,95 @@
+// Webseite: Ansichten mit Adressen, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken, ohne Skript eine lange Seite.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { pathToFileURL } from 'node:url';
+import { starteBrowser } from '../lib/browser.js';
+
+const WURZEL = join(import.meta.dirname, '..');
+
+/** Vorlage mit einfachen Platzhaltern statt des vollen Seitenbaus (der braucht Szenen und Bilder). */
+function seiteOhneBau(dir) {
+  const ersetzung = { TOKENS_CSS: '', PALETTE: '<div class="farbe">Palette</div>', SKRIPTE: '<tr><td>szene:bauen</td><td>Szene bauen</td><td>bereit</td></tr>', STAND: '<tr><td>4</td><td>Geräusche</td><td>fertig</td></tr>', ERSTELLT: '2026-10-20' };
+  const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => ersetzung[k]);
+  const ziel = join(dir, 'index.html');
+  writeFileSync(ziel, html);
+  return pathToFileURL(ziel).href;
+}
+
+test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, alte Sprungmarken', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'seite-'));
+  const browser = await starteBrowser();
+  try {
+    const url = seiteOhneBau(dir);
+    const seite = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+    const fehler = [];
+    seite.on('pageerror', (e) => fehler.push(e.message));
+    const sichtbar = () => seite.evaluate(() => [...document.querySelectorAll('.ansicht')].filter((a) => !a.hidden).map((a) => a.dataset.adresse));
+    // hashchange kommt nach dem Klick; auf die erwartete Ansicht warten, dann vergleichen.
+    const zeigt = async (adresse) => {
+      await seite.waitForFunction((x) => document.querySelector(`.ansicht[data-adresse="${x}"]`)?.hidden === false, adresse, { timeout: 5000 }).catch(() => {});
+      assert.deepEqual(await sichtbar(), [adresse]);
+    };
+    await seite.goto(url);
+    assert.deepEqual(await sichtbar(), ['start']);
+    assert.equal(await seite.evaluate(() => document.querySelectorAll('.ansicht[id]').length), 0, 'Adressen stehen in data-adresse');
+
+    // Reiter: Bereich zeigen, aktiv markieren.
+    await seite.click('.reiter a[data-bereich="werkzeuge"]');
+    await zeigt('werkzeuge');
+    assert.equal(await seite.getAttribute('.reiter a[data-bereich="werkzeuge"]', 'aria-current'), 'true');
+
+    // Kapitel: Brotkrume, Blättern innerhalb des Bereichs, Titel.
+    await seite.goto(`${url}#anleitungen/szene`);
+    await zeigt('anleitungen/szene');
+    assert.equal(await seite.title(), 'Eine Szene bauen · Trickfilm-Werkstatt');
+    assert.equal(await seite.textContent('.ansicht:not([hidden]) .krume'), 'Anleitungen › Eine Szene bauen');
+    await seite.click('.ansicht:not([hidden]) .blaettern a:last-child');
+    await zeigt('anleitungen/figur');
+    assert.equal(await seite.getAttribute('.reiter a[data-bereich="anleitungen"]', 'aria-current'), 'true');
+
+    // Jeder Querverweis und jede Kachel führt zu einer vorhandenen Ansicht.
+    const ziele = await seite.evaluate(() => [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href').slice(1)));
+    const adressen = await seite.evaluate(() => [...document.querySelectorAll('.ansicht')].map((a) => a.dataset.adresse));
+    assert.deepEqual(ziele.filter((z) => !adressen.includes(z)), [], 'Verweise ohne Ziel');
+
+    // Ebenen: Technik-Blöcke nur mit „Mit Technik“, Wahl bleibt erhalten.
+    const technikSichtbar = () => seite.evaluate(() => getComputedStyle(document.querySelector('.ansicht:not([hidden]) .technik')).display !== 'none');
+    assert.equal(await technikSichtbar(), false);
+    await seite.click('#ebene-technik');
+    assert.equal(await technikSichtbar(), true);
+    await seite.reload();
+    assert.equal(await technikSichtbar(), true, 'Wahl bleibt nach dem Neuladen');
+    await seite.click('#ebene-kurz');
+
+    // Suche: Treffer mit Ort, Klick zeigt das Kapitel und markiert die Stelle; Technik-Treffer schalten die Ebene um.
+    await seite.fill('#suchfeld', 'Exportregeln');
+    const ort = await seite.textContent('#treffer li:first-child .ort');
+    assert.equal(ort, 'Eine Figur zeichnen · Technik');
+    await seite.keyboard.press('Enter');
+    await zeigt('anleitungen/figur');
+    assert.equal(await seite.evaluate(() => document.documentElement.classList.contains('mit-technik')), true);
+    assert.match(await seite.textContent('.markiert'), /Exportregeln/);
+    await seite.fill('#suchfeld', 'gibt es nicht xyz');
+    assert.equal(await seite.textContent('#treffer'), 'Nichts gefunden.');
+
+    // Alte Sprungmarken der früheren Seite.
+    await seite.goto(`${url}#editor`);
+    await zeigt('werkzeuge/posen-editor');
+    assert.equal(await seite.evaluate(() => location.hash), '#werkzeuge/posen-editor');
+    assert.deepEqual(fehler, []);
+
+    // Ohne Skript: alles sichtbar, Sprungmarken als ids, Technik lesbar.
+    const ohne = await browser.newPage({ javaScriptEnabled: false });
+    await ohne.goto(url);
+    const stand = await ohne.evaluate(() => ({ verborgen: document.querySelectorAll('.ansicht[hidden]').length, ids: document.querySelectorAll('.ansicht[id]').length, technik: getComputedStyle(document.querySelector('.technik')).display }));
+    assert.equal(stand.verborgen, 0);
+    assert.ok(stand.ids > 20);
+    assert.notEqual(stand.technik, 'none');
+  } finally {
+    await browser.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
