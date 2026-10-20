@@ -51,3 +51,13 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Freie Farben | erlaubt und im Protokoll als Hinweis genannt; nur die drei Farbschlüssel werden umgefärbt | entschieden von Claude |
 | Gelenklücke | hält den Import an; `--trotzdem` schreibt dennoch, Strukturfehler halten immer an | entschieden von Claude |
 | Zubehör-Teile | vorgesehen, noch nicht eingebaut; der Importer meldet sie als fremd | entschieden von Claude |
+
+## 2026-10-20 · Webseite auf GitHub Pages
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Seite öffentlich auf GitHub Pages | ja, die Übersicht aller Funktionen mit Prototyp und Posen-Editor | entschieden von Regie |
+| Zielgruppe | zwei Ebenen: Wesentliches für Mitwirkende ohne Vorwissen, aufklappbare technische Einzelheiten | entschieden von Regie |
+| Live-Teile | Prototyp der Vorlage-Szene und Posen-Editor laufen auf der Seite | entschieden von Regie |
+| Aktualität | bei jedem Push auf `main` neu gebaut | entschieden von Regie |
+| Aufbau | eine Seite mit Inhaltsverzeichnis | entschieden von Regie |
