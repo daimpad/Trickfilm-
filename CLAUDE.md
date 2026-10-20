@@ -88,6 +88,7 @@ Werkzeuge, die noch nicht gebaut sind, melden über `tools/noch-nicht.js`, in we
 - Haltungen, die IK nicht liefert (vor dem Körper halten), als Pose aus `rig.posen`.
 - Teilesätze entstehen nur über den Importer (`npm run figuren:import -- <satz>`) aus `figuren/teilesaetze/<satz>/<archetyp>.svg`; auch `satz-00`, dessen Zeichnung `npm run figuren:erzeugen` schreibt. Zeichenregeln in `docs/FIGUREN.md` (2026-10-20).
 - Webseite: `site/index.html` ist der Text, `tools/seite-bauen.js` setzt Befehle, Stand, Palette, Bilder, Prototyp und Editor ein; `.github/workflows/static.yml` veröffentlicht sie bei jedem Push auf `main` auf GitHub Pages. Ein neuer Befehl in `package.json` braucht eine Beschreibung in `tools/seite-bauen.js`, sonst scheitert der Prüflauf (2026-10-20).
+- Teile-Werkstatt (`npm run teile`): Einzelzeichnungen je Teil laden, einpassen, als Teilesatz im Exportformat ausgeben; ihr Ergebnis geht wie jede Zeichnung durch den Importer, Prüfung und Layout teilt sie mit ihm über `lib/zeichnung.js` und `lib/rigs/vorlage-layout.js` (2026-10-20).
 - Posen-Editor (`npm run editor`): erzeugt `out/editor/posen-editor.html`; sein Code (Schlüsselposen) gehört nach `geometry.js` und wird mit `posenZustand()` aus `lib/posen.js` gelesen.
 
 ## Ohne Rückfrage geschieht nicht

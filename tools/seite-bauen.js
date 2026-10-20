@@ -28,6 +28,7 @@ const BESCHREIBUNG = {
   'szene:kontaktbogen': 'neun Standbilder mit Schutzzone erzeugen',
   'szene:protokoll': 'Protokoll der Szene schreiben',
   editor: 'Posen-Editor erzeugen, optional mit Szene als Hintergrund',
+  teile: 'Teile-Werkstatt erzeugen: Einzelzeichnungen laden, einpassen, als Teilesatz ausgeben',
   requisiten: 'Katalog aller Requisiten als Bild',
   'figuren:erzeugen': 'Spezifikationsmodul, Zeichenvorlagen und satz-00 aus der Rig-Spezifikation',
   'figuren:testposen': 'sechs Testposen je Archetyp als Bild',
@@ -114,12 +115,18 @@ execFileSync('node', [join(WURZEL, 'tools/posen-editor.js'), '--szene', '_vorlag
   stdio: 'inherit',
 });
 
-// 3. Bilder aus dem Repository.
+// 3. Teile-Werkstatt, ohne gespeicherten Zwischenstand.
+execFileSync('node', [join(WURZEL, 'tools/teile-werkstatt.js'), '--frisch', '--ziel', join(ZIEL, 'teile/index.html').replace(WURZEL + '/', '')], {
+  cwd: WURZEL,
+  stdio: 'inherit',
+});
+
+// 4. Bilder aus dem Repository.
 kopiere('lib/props/KATALOG.png', 'bilder/requisiten.png');
 kopiere('figuren/teilesaetze/satz-00/testposen.png', 'bilder/testposen.png');
 kopiere('figuren/vorlagen.png', 'bilder/vorlagen.png');
 
-// 4. Seite aus der Vorlage.
+// 5. Seite aus der Vorlage.
 const css = [
   `--grund: ${FARBEN.primaerHell}`,
   `--weiss: ${FARBEN.weiss}`,
@@ -136,7 +143,7 @@ const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{
   return ersetzungen[k];
 });
 
-// 5. Jeder relative Link und jedes Bild muss existieren.
+// 6. Jeder relative Link und jedes Bild muss existieren.
 const fehlend = [...html.matchAll(/\s(?:href|src)="([^"#:]+?)"/g)]
   .map((m) => m[1])
   .filter((p) => !existsSync(join(ZIEL, p.endsWith('/') ? `${p}index.html` : p)));
@@ -145,4 +152,4 @@ if (fehlend.length) throw new Error(`Seite: Links ins Leere: ${fehlend.join(', '
 writeFileSync(join(ZIEL, 'index.html'), html);
 // Ohne Jekyll liefert Pages die Dateien unverändert aus.
 writeFileSync(join(ZIEL, '.nojekyll'), '');
-console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Editor, 4 Bilder)`);
+console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Editor, Teile-Werkstatt, 4 Bilder)`);

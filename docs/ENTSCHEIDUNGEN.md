@@ -61,3 +61,13 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Live-Teile | Prototyp der Vorlage-Szene und Posen-Editor laufen auf der Seite | entschieden von Regie |
 | Aktualität | bei jedem Push auf `main` neu gebaut | entschieden von Regie |
 | Aufbau | eine Seite mit Inhaltsverzeichnis | entschieden von Regie |
+
+## 2026-10-20 · Teile-Werkstatt
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Ansatz | Einzelzeichnungen je Teil laden, einpassen, live prüfen, Ausgabe für den Importer | entschieden von Regie |
+| Ergebnis | Zeichnung im Austauschformat, die der Importer einliest | entschieden von Regie |
+| Hilfen | ein Satz für drei Profile, zweite Seite ableiten, Farbschlüssel per Klick, Testposen live | entschieden von Regie |
+| Ort | im Repository (`npm run teile`) und auf der Webseite | entschieden von Regie |
+| Prüfung | dieselbe Struktur- und Gelenkprüfung wie der Importer, aus `lib/` geteilt | entschieden vom Leitstand |

@@ -2,7 +2,7 @@
 
 Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen. Bewegung ist eine reine Zeitfunktion, Figuren entstehen aus Rigs, Geräusche aus den Bewegungsereignissen, Stimme und Untertitel aus gemessenen Aufnahmen. Der Render ist deterministisch: Gleiche Eingabe ergibt dasselbe Bild.
 
-Eine leicht lesbare Übersicht aller Funktionen mit Prototyp und Posen-Editor zum Ausprobieren: **https://daimpad.github.io/trickfilm/** (bei jedem Merge neu gebaut).
+Eine leicht lesbare Übersicht aller Funktionen mit Prototyp, Posen-Editor und Teile-Werkstatt zum Ausprobieren: **https://daimpad.github.io/trickfilm/** (bei jedem Merge neu gebaut).
 
 Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md), der Weg einer Szene in [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md), das Zeichnen von Figuren in [`docs/FIGUREN.md`](docs/FIGUREN.md).
 
@@ -16,6 +16,7 @@ npx remotion still Palette out/p.png    # Standbild der Testkarte
 npm run szene:neu -- FILM-01-slug       # neue Szene aus der Vorlage
 npm run szene:bauen -- FILM-01-slug     # prüfen und Prototyp nach szenen/<ID>/dist/index.html
 npm run editor -- --szene FILM-01-slug --figur A   # Posen-Editor nach out/editor/posen-editor.html
+npm run teile                                      # Teile-Werkstatt nach out/teile/teile-werkstatt.html
 ```
 
 Voraussetzungen: Node ≥ 22, ffmpeg und ffprobe, die Schrift Arial oder Liberation Sans. Chromium kommt örtlich über `npx playwright install chromium`; in Claude-Code-Cloud-Sitzungen liegt es schon vor.
