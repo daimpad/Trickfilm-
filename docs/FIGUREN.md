@@ -31,6 +31,10 @@ npm run figuren:import -- satz-01
 
 Der Importer prüft Ebenen, Formen, Farben und Konturen, verschiebt jedes Teil um seinen Drehpunkt, testet jedes Gelenk bei −60°, 0°, +60°, +120° in Chromium auf Lücken, schreibt `lib/teilesaetze/satz-01/` und einen Bogen `figuren/teilesaetze/satz-01/testposen.png`. Das Protokoll steht in `figuren/import.tsv`. Der Importer ändert keine Zeichnung: Befunde gehen an Regie zurück. `--trotzdem` schreibt auch bei Gelenklücken, nie bei Strukturfehlern.
 
+## Einzelteile statt Vorlage: Teile-Werkstatt
+
+`npm run teile` erzeugt `out/teile/teile-werkstatt.html` (auch auf der Webseite). Jedes Teil wird als eigene SVG-Datei geladen, in beliebigem Maßstab und Programm; der Dateiname (`kopf.svg`, `oberarm.svg`, `armF-hand-zeigend.svg` …) bestimmt den Platz. Die Werkstatt legt die Längsachse auf die Zielstrecke des Skeletts, leitet hintere oder rechte Glieder und Handformen aus vorhandenen ab, ergänzt Fehlendes auf Wunsch aus `satz-00`, prüft die Gelenke live und schreibt ein ZIP mit allen Archetypen der Ansicht im Exportformat oben. Danach gilt der Abschnitt „Einlesen“ unverändert. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen, Konturen auf 4 oder 6 px gerundet; die Werkstatt meldet das.
+
 ## Variation ohne neue Zeichnung
 
 Palette je Szene über den Farbschlüssel, Blick durch Spiegelung, Haltung und Tempo über die Charakterkarte. Zubehör als eigenes Teil mit Drehpunkt (`zubehoer-…--hals`) ist vorgesehen, aber noch nicht eingebaut; der Importer meldet solche Ebenen derzeit als fremd.

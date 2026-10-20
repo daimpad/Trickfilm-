@@ -72,6 +72,7 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
     <li><a href="#figuren">Figuren</a></li>
     <li><a href="#bewegung">Bewegung und Spielweise</a></li>
     <li><a href="#editor">Posen-Editor</a></li>
+    <li><a href="#teile">Teile-Werkstatt</a></li>
     <li><a href="#requisiten">Requisiten</a></li>
     <li><a href="#gestaltung">Gestaltung</a></li>
     <li><a href="#pruefungen">Prüfungen</a></li>
@@ -110,7 +111,7 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
 
 <section id="ausprobieren">
 <h2>Ausprobieren</h2>
-<p>Zwei Werkzeuge laufen direkt hier im Browser, ohne Installation.</p>
+<p>Drei Werkzeuge laufen direkt hier im Browser, ohne Installation.</p>
 <div class="karten">
   <div class="karte">
     <h3>Prototyp der Vorlage-Szene</h3>
@@ -121,6 +122,11 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
     <h3>Posen-Editor</h3>
     <p>Eine Figur greifen und stellen: Hände ziehen, Rumpf neigen, Schlüsselposen auf einer Zeitleiste setzen und als Code übernehmen.</p>
     <a class="knopf" href="editor/index.html">Editor öffnen</a>
+  </div>
+  <div class="karte">
+    <h3>Teile-Werkstatt</h3>
+    <p>Eine eigene Figur aus Einzelzeichnungen bauen: Kopf, Rumpf, Arm, Hand, Bein als einzelne SVG-Dateien laden, einpassen, in Testposen prüfen und als Teilesatz herunterladen.</p>
+    <a class="knopf" href="teile/index.html">Werkstatt öffnen</a>
   </div>
 </div>
 <iframe src="prototyp/index.html" title="Prototyp der Vorlage-Szene" loading="lazy"></iframe>
@@ -223,6 +229,7 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
   <li>Kleidung in den Schlüsselfarben zeichnen: Magenta für Kleidung 1, Gelb für Kleidung 2, Grün für Zubehör. Diese Flächen färbt jede Szene um; alle anderen Farben bleiben, wie gezeichnet.</li>
   <li>Als SVG exportieren und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
 </ol>
+<p>Einfacher geht es mit der <a href="#teile">Teile-Werkstatt</a>: jedes Teil als eigene Datei zeichnen, laden und einpassen.</p>
 <figure>
   <img src="bilder/vorlagen.png" alt="Vier Zeichenvorlagen mit blassen Grundformen, blauen Drehpunkten und einer Legende mit Farbschlüssel und Regeln." loading="lazy">
   <figcaption>Die vier Zeichenvorlagen. Blaue Kreise: Drehpunkte mit Überlappungskreis.</figcaption>
@@ -285,6 +292,24 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
 </div></details>
 </section>
 
+<section id="teile">
+<h2>Teile-Werkstatt</h2>
+<p>Die Teile-Werkstatt vereinfacht das Zeichnen einer neuen Figur. Statt eine ganze Zeichenvorlage mit allen Ebenen auszufüllen, zeichnet man jedes Körperteil für sich, in einem beliebigen Programm und Maßstab, und lädt es als SVG-Datei. Heißt die Datei nach dem Teil, etwa <code>kopf.svg</code>, <code>oberarm.svg</code>, <code>hand.svg</code> oder <code>fuss.svg</code>, findet die Werkstatt ihren Platz selbst.</p>
+<ul>
+  <li><strong>Einpassen:</strong> Die Werkstatt legt die Längsachse des Teils auf das Skelett. Korrigiert wird durch Ziehen am Teil (verschieben) und am roten Griff (drehen und skalieren um das Gelenk) oder über Zahlenfelder.</li>
+  <li><strong>Ableiten:</strong> Fehlen hintere oder rechte Glieder, werden sie aus den vorhandenen gewonnen, frontal gespiegelt. Fehlende Handformen entstehen aus der offenen Hand. Was dann noch fehlt, ergänzt auf Wunsch der Platzhalter <code>satz-00</code>.</li>
+  <li><strong>Prüfen:</strong> Sechs Testposen zeigen die Figur sofort in Bewegung. Jedes Gelenk wird bei −60°, 0°, 60° und 120° auf Lücken geprüft; eine Lücke erscheint rot an Teil und Gelenk.</li>
+  <li><strong>Farben:</strong> Flächen, die je Szene umgefärbt werden sollen (Kleidung, Zubehör), werden per Auswahl zugeordnet. Alle anderen Farben bleiben, wie gezeichnet.</li>
+  <li><strong>Ausgabe:</strong> Ein Satz Einzelteile ergibt alle drei Profilfiguren (sitzend, stehend, nah). Das ZIP-Archiv enthält sie im Austauschformat und eine Anleitung zum Einlesen.</li>
+</ul>
+<p><a class="knopf" href="teile/index.html">Werkstatt öffnen</a></p>
+<p>Alle Dateien bleiben im Browser; nichts wird hochgeladen.</p>
+<details><summary>Technische Einzelheiten</summary><div>
+<p>Aufruf im Repository: <code>npm run teile</code>, Ergebnis unter <code>out/teile/teile-werkstatt.html</code>. Das heruntergeladene Archiv wird unter <code>figuren/teilesaetze/</code> entpackt und mit <code>npm run figuren:import -- satz-01</code> eingelesen; der Importer prüft dieselben Regeln noch einmal.</p>
+<p>Die Werkstatt liest Pfade, Grundformen, Gruppen-Transformationen, CSS-Klassen und Bögen, wie Illustrator, Inkscape oder Affinity sie schreiben. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen; beides meldet sie. Konturen werden auf die erlaubten Stärken 4 und 6 px gerundet. Die Rechnung liegt in <code>lib/svgpfad.js</code> und <code>lib/teile.js</code>, die Prüfung in <code>lib/zeichnung.js</code>, gemeinsam mit dem Importer.</p>
+</div></details>
+</section>
+
 <section id="requisiten">
 <h2>Requisiten</h2>
 <p>Möbel, Geräte, Büromaterial, Dinge im Freien und Zeichen stehen als fertige Bausteine bereit. Sie sind aus Flächen mit Kontur gebaut, ohne Schatten und Verläufe. Bewegliche Teile wie eine Schublade, das Papierfach eines Druckers oder der Hörer eines Telefons lassen sich einzeln bewegen.</p>
@@ -321,7 +346,7 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
 <h2>Prüfungen</h2>
 <p>Bei jeder Änderung prüft GitHub die ganze Werkstatt automatisch. Erst wenn alles grün ist, wird eine Änderung übernommen. Örtlich läuft dasselbe mit <code>npm run pruefen</code>.</p>
 <ul>
-  <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer)</li>
+  <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt)</li>
   <li>Verbotsprüfung: Zugangsschlüssel, unerlaubte Animationen, Zufall ohne Startwert, Farben außerhalb der Palette, Abstände außerhalb des Rasters, Webfonts, Netzaufrufe</li>
   <li>jede Szene bauen und über jedes Bild prüfen</li>
   <li>erzeugte Dateien vergleichen: Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle</li>

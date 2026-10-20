@@ -8,7 +8,7 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { layout, teileVon } from './figuren-layout.js';
+import { layout, teileVon } from '../lib/rigs/vorlage-layout.js';
 
 const WURZEL = join(dirname(fileURLToPath(import.meta.url)), '..');
 const QUELLE = 'figuren/rig-spezifikation.json';

@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Teile-Werkstatt</title>
+<style>
+/* Teile-Werkstatt: Einzelzeichnungen laden, auf das Skelett einpassen, prüfen, als Teilesatz ausgeben. Keine Übergänge. */
+:root { {{TOKENS_CSS}} }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 16px; background: var(--grund); color: var(--text); font-family: var(--schrift); font-size: 16px; }
+h1 { font-size: 24px; margin: 0 16px 0 0; }
+h2 { font-size: 18px; margin: 12px 0 6px; }
+header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 12px; }
+select, input, button { font: inherit; color: var(--text); }
+button, .laden { padding: 4px 12px; border: 2px solid var(--kontur); background: var(--weiss); cursor: pointer; display: inline-block; }
+button.haupt { background: var(--text); color: var(--weiss); }
+.raster { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 1000px) { .raster { grid-template-columns: 1fr; } }
+.kasten { background: var(--weiss); border: 2px solid var(--kontur); padding: 8px 12px; margin-bottom: 16px; }
+#liste ul { list-style: none; margin: 0 0 8px; padding: 0; }
+#liste li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 4px 6px; border-left: 4px solid transparent; cursor: pointer; }
+#liste li.gewaehlt { border-left-color: var(--akzent2); background: var(--grund); }
+#liste li.luecke .name::after { content: " · Lücke"; color: var(--akzent); font-weight: 700; }
+#liste .name { font-weight: 700; }
+#liste .herkunft { grid-column: 1 / -1; font-size: 13px; opacity: 0.85; }
+#liste .laden input { display: none; }
+#einpassen svg { display: block; width: 100%; height: auto; max-height: 62vh; background: var(--weiss); border: 2px solid var(--kontur); touch-action: none; }
+.ziel { stroke: var(--akzent2); stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.gelenk { fill: none; stroke: var(--akzent2); stroke-width: 1.5; }
+.gelenk.offen { stroke: var(--akzent); stroke-width: 3; }
+.griff { fill: var(--akzent); stroke: var(--kontur); stroke-width: 1.5; cursor: grab; }
+.raster-linie { stroke: var(--linie); stroke-width: 0.5; stroke-opacity: 0.2; }
+.teil { cursor: move; }
+.regler { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 8px 0; }
+.regler input[type=number] { width: 88px; }
+#posen { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 1000px) { #posen { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+#posen figure { margin: 0; border: 2px solid var(--kontur); background: var(--weiss); }
+#posen svg { display: block; width: 100%; height: auto; }
+#posen figcaption { font-size: 13px; text-align: center; padding: 2px 0; }
+.farben { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.farbe { display: grid; grid-template-columns: 28px 1fr; gap: 4px 8px; align-items: center; }
+.farbe .feld { width: 28px; height: 28px; border: 2px solid var(--kontur); }
+#meldungen li { margin: 2px 0; }
+.leise { opacity: 0.85; font-size: 14px; }
+.fehler { color: var(--akzent); font-weight: 700; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Teile-Werkstatt</h1>
+  <label>Ansicht <select id="ansicht"><option value="profil">Profil (sitzend, stehend, nah)</option><option value="frontal">Frontal</option></select></label>
+  <label>Satz <input id="satz" value="satz-01" size="9" pattern="satz-[0-9]{2}"></label>
+  <label class="laden">Mehrere Dateien laden<input id="mehrere" type="file" accept=".svg,image/svg+xml" multiple></label>
+  <label><input id="ergaenzen" type="checkbox" checked> Fehlende Teile aus satz-00 ergänzen</label>
+  <button id="export" type="button" class="haupt">ZIP herunterladen</button>
+  <button id="zuruecksetzen" type="button">Alles zurücksetzen</button>
+</header>
+<p class="leise">Je Teil eine SVG-Datei laden, zum Beispiel <code>kopf.svg</code>, <code>oberarm.svg</code>, <code>hand.svg</code>, <code>fuss.svg</code>. Die Werkstatt legt das Teil auf das Skelett; korrigiert wird durch Ziehen am Teil (verschieben) und am roten Griff (drehen und skalieren um das Gelenk). Fehlende hintere oder rechte Glieder und Handvarianten werden aus den vorhandenen abgeleitet. Alle Dateien bleiben in diesem Browser.</p>
+<div class="raster">
+  <section id="liste" class="kasten" aria-label="Teile"></section>
+  <section>
+    <div id="einpassen" class="kasten">
+      <h2 id="titel">Teil</h2>
+      <svg id="flaeche" xmlns="http://www.w3.org/2000/svg" viewBox="-100 -100 200 200" role="img" aria-label="Einpassen des gewählten Teils"></svg>
+      <div class="regler">
+        <label>Maßstab % <input id="r-s" type="number" step="1"></label>
+        <label>Drehung ° <input id="r-rot" type="number" step="0.5"></label>
+        <label>x <input id="r-x" type="number" step="1"></label>
+        <label>y <input id="r-y" type="number" step="1"></label>
+        <button id="neu" type="button">Neu einpassen</button>
+        <button id="umdrehen" type="button">Umdrehen</button>
+        <button id="spiegeln" type="button">Spiegeln</button>
+        <button id="entfernen" type="button">Entfernen</button>
+      </div>
+      <p id="info" class="leise"></p>
+    </div>
+    <div class="kasten">
+      <h2>Vorschau <select id="vorschau"></select></h2>
+      <div id="posen"></div>
+      <p id="gelenke" role="status"></p>
+    </div>
+    <div class="kasten">
+      <h2>Farben</h2>
+      <p class="leise">Flächen, die je Szene umgefärbt werden sollen, hier zuordnen. Alle anderen Farben bleiben, wie gezeichnet.</p>
+      <div id="farben" class="farben"></div>
+    </div>
+    <div class="kasten">
+      <h2>Meldungen</h2>
+      <ul id="meldungen"></ul>
+    </div>
+  </section>
+</div>
+{{IMPORTMAP}}
+<script type="application/json" id="start">{{START_JSON}}</script>
+<script type="module">
+import { SPEZ } from 'tf:lib/rigs/spezifikation.js';
+import { RIGS } from 'tf:lib/rigs/index.js';
+import { testposen } from 'tf:lib/rigs/testposen.js';
+import { gelenke } from 'tf:lib/rigs/vorlage-layout.js';
+import { wendeAn } from 'tf:lib/snapshot.js';
+import { leseTeilSvg, formenAlsSvg, rahmenVon } from 'tf:lib/svgpfad.js';
+import {
+  ARCHETYPEN, VOLL, neuesTeil, wirksameTeile, zeichnung, farbenVon, ebenenInhalt, teileDerAnsicht,
+  zielStrecke, endPunkt, zieheEnde, verschiebe, teilAusDateiname, einpassen, lageAus, teilArt,
+} from 'tf:lib/teile.js';
+import { pruefeZeichnung, gelenkTests, zaehleWeiss, PRUEF } from 'tf:lib/zeichnung.js';
+import { zip } from 'tf:lib/zip.js';
+
+const START = JSON.parse(document.getElementById('start').textContent);
+const $ = (id) => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const SCHLUESSEL_ROLLE = Object.fromEntries(Object.entries(SPEZ.farbschluessel).map(([hex, rolle]) => [hex, rolle]));
+const ERGAENZUNG = Object.fromEntries(Object.entries(START.satz00).map(([name, text]) => [name, ebenenInhalt(text)]));
+const SATZ00_TEILE = Object.fromEntries(Object.entries(START.satz00).map(([name, text]) => [name, pruefeZeichnung(text, name).teile]));
+const SPEICHER = 'teile-werkstatt:v1';
+
+const GLIED = { armF: 'Arm vorn', armB: 'Arm hinten', legF: 'Bein vorn', legB: 'Bein hinten', armL: 'Arm links', armR: 'Arm rechts', legL: 'Bein links', legR: 'Bein rechts' };
+const ART = { upper: (g) => (g.startsWith('arm') ? 'Oberarm' : 'Oberschenkel'), lower: (g) => (g.startsWith('arm') ? 'Unterarm' : 'Unterschenkel'), foot: () => 'Fuß' };
+const HAND = { offen: 'Hand offen', greifend: 'Hand greifend', zeigend: 'Hand zeigend' };
+function bezeichnung(id) {
+  if (id === 'torso') return 'Rumpf';
+  if (id === 'head') return 'Kopf';
+  const [g, art, form] = id.split('-');
+  return art === 'hand' ? HAND[form] : ART[art](g);
+}
+
+// ---------- Zustand ----------
+let zustand = lade() ?? { ansicht: 'profil', satz: 'satz-01', teile: { profil: {}, frontal: {} }, zuordnung: {}, ergaenzen: true, vorschau: 'stehend-profil', gewaehlt: 'torso' };
+let meldungen = [];
+let luecken = [];
+let wirksam = { formen: {}, herkunft: {} };
+let vorschauTeile = null;
+
+function lade() {
+  try {
+    const roh = START.frisch ? null : localStorage.getItem(SPEICHER);
+    return roh ? JSON.parse(roh) : null;
+  } catch {
+    return null;
+  }
+}
+function speichere() {
+  try {
+    localStorage.setItem(SPEICHER, JSON.stringify(zustand));
+  } catch {
+    meldungen.push({ fehler: false, text: 'Zwischenstand passt nicht in den Browser-Speicher; die Arbeit geht beim Neuladen verloren.' });
+  }
+}
+const teile = () => zustand.teile[zustand.ansicht];
+
+// ---------- Laden ----------
+function ladeText(id, datei, text) {
+  try {
+    const { formen, hinweise } = leseTeilSvg(text);
+    teile()[id] = neuesTeil(id, formen, datei);
+    for (const h of hinweise) meldungen.push({ fehler: false, text: `${datei}: ${h}` });
+    // Schlüsselfarben in der Zeichnung gleich zuordnen.
+    for (const f of formen) for (const c of [f.fill, f.stroke]) if (SCHLUESSEL_ROLLE[c] && !(c in zustand.zuordnung)) zustand.zuordnung[c] = SCHLUESSEL_ROLLE[c];
+    zustand.gewaehlt = id;
+  } catch (e) {
+    meldungen.push({ fehler: true, text: `${datei}: ${e.message}` });
+  }
+}
+async function ladeDateien(dateien, zielId = null) {
+  for (const d of dateien) {
+    const id = zielId ?? teilAusDateiname(d.name, zustand.ansicht);
+    if (!id) {
+      meldungen.push({ fehler: true, text: `${d.name}: keinem Teil zugeordnet. Über „Laden“ beim Teil zuordnen oder die Datei nach dem Teil benennen (z. B. kopf.svg, oberarm.svg).` });
+      continue;
+    }
+    ladeText(id, d.name, await d.text());
+  }
+  alles();
+}
+$('mehrere').addEventListener('change', (e) => ladeDateien([...e.target.files]).then(() => (e.target.value = '')));
+
+// ---------- Teileliste ----------
+function zeichneListe() {
+  const ids = teileDerAnsicht(zustand.ansicht);
+  const gruppen = new Map([['Rumpf und Kopf', ['torso', 'head']]]);
+  for (const id of ids.filter((i) => i.includes('-'))) {
+    const g = GLIED[id.split('-')[0]];
+    if (!gruppen.has(g)) gruppen.set(g, []);
+    gruppen.get(g).push(id);
+  }
+  const offen = new Set(luecken.flatMap((l) => [l.eltern, l.kind]));
+  const box = $('liste');
+  box.innerHTML = '';
+  for (const [titel, liste] of gruppen) {
+    const h = document.createElement('h2');
+    h.textContent = titel;
+    const ul = document.createElement('ul');
+    for (const id of liste) {
+      const li = document.createElement('li');
+      if (id === zustand.gewaehlt) li.className = 'gewaehlt';
+      if (offen.has(id)) li.classList.add('luecke');
+      const herkunft = wirksam.herkunft[id] ?? 'fehlt';
+      li.innerHTML = `<span class="name"></span><span><label class="laden">Laden<input type="file" accept=".svg,image/svg+xml"></label>${teile()[id] ? ' <button type="button" title="Datei entfernen">×</button>' : ''}</span><span class="herkunft"></span>`;
+      li.querySelector('.name').textContent = bezeichnung(id);
+      li.querySelector('.herkunft').textContent =
+        herkunft === 'fehlt' ? (zustand.ergaenzen ? 'fehlt · wird aus satz-00 ergänzt' : 'fehlt') : herkunft;
+      li.addEventListener('click', (e) => {
+        if (e.target.closest('label, button')) return;
+        zustand.gewaehlt = id;
+        alles();
+      });
+      li.querySelector('input').addEventListener('change', (e) => ladeDateien([...e.target.files], id));
+      li.querySelector('button')?.addEventListener('click', () => {
+        delete teile()[id];
+        alles();
+      });
+      li.addEventListener('dragover', (e) => e.preventDefault());
+      li.addEventListener('drop', (e) => {
+        e.preventDefault();
+        ladeDateien([...e.dataTransfer.files].slice(0, 1), id);
+      });
+      ul.append(li);
+    }
+    box.append(h, ul);
+  }
+}
+
+// ---------- Einpassen ----------
+const flaeche = $('flaeche');
+function rahmenFuer(id) {
+  const { A, B } = zielStrecke(id);
+  const punkte = [A, B, { x: 0, y: 0 }, ...gelenke(SPEZ, VOLL[zustand.ansicht]).filter((g) => g.eltern === id).map((g) => g.punkt)];
+  const f = wirksam.formen[id];
+  if (f) {
+    const r = rahmenVon(f);
+    punkte.push({ x: r.x0, y: r.y0 }, { x: r.x1, y: r.y1 });
+  }
+  const xs = punkte.map((p) => p.x);
+  const ys = punkte.map((p) => p.y);
+  const rand = 40;
+  let x0 = Math.min(...xs) - rand;
+  let x1 = Math.max(...xs) + rand;
+  let y0 = Math.min(...ys) - rand;
+  let y1 = Math.max(...ys) + rand;
+  // Seitenverhältnis 4:3, damit Griffe und Kreise rund bleiben.
+  const w = x1 - x0;
+  const h = y1 - y0;
+  if (w / h < 4 / 3) {
+    const d = (h * 4) / 3 - w;
+    x0 -= d / 2;
+    x1 += d / 2;
+  } else {
+    const d = (w * 3) / 4 - h;
+    y0 -= d / 2;
+    y1 += d / 2;
+  }
+  return { x0, y0, w: x1 - x0, h: y1 - y0 };
+}
+
+function zeichneEinpassen() {
+  const id = zustand.gewaehlt;
+  const teil = teile()[id];
+  $('titel').textContent = `${bezeichnung(id)} (${id})`;
+  const r = rahmenFuer(id);
+  flaeche.setAttribute('viewBox', `${r.x0} ${r.y0} ${r.w} ${r.h}`);
+  const k = r.w / 600;
+  const { A, B } = zielStrecke(id);
+  const offen = new Set(luecken.filter((l) => l.eltern === id || l.kind === id).map((l) => (l.kind === id ? '0,0' : `${l.punkt.x},${l.punkt.y}`)));
+  const gelenkPunkte = [{ x: 0, y: 0 }, ...gelenke(SPEZ, VOLL[zustand.ansicht]).filter((g) => g.eltern === id).map((g) => g.punkt)];
+  const rund = SPEZ.gelenk_ueberlappung / 2;
+  let inhalt = '';
+  for (let x = Math.ceil(r.x0 / 20) * 20; x < r.x0 + r.w; x += 20) inhalt += `<line class="raster-linie" x1="${x}" y1="${r.y0}" x2="${x}" y2="${r.y0 + r.h}"/>`;
+  for (let y = Math.ceil(r.y0 / 20) * 20; y < r.y0 + r.h; y += 20) inhalt += `<line class="raster-linie" x1="${r.x0}" y1="${y}" x2="${r.x0 + r.w}" y2="${y}"/>`;
+  const geist = SATZ00_TEILE[VOLL[zustand.ansicht]]?.[id];
+  if (geist) inhalt += `<g opacity="0.2">${geist.replace(/@[a-z0-9]+/g, 'var(--linie)')}</g>`;
+  const f = wirksam.formen[id];
+  if (f) inhalt += `<g id="teil" class="teil" opacity="${teil ? 1 : 0.55}">${formenAlsSvg(f)}</g>`;
+  inhalt += `<line class="ziel" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/>`;
+  for (const p of gelenkPunkte) inhalt += `<circle class="gelenk${offen.has(`${p.x},${p.y}`) ? ' offen' : ''}" cx="${p.x}" cy="${p.y}" r="${rund}"/>`;
+  if (teil) {
+    const e = endPunkt(teil);
+    inhalt += `<circle id="endgriff" class="griff" cx="${e.x}" cy="${e.y}" r="${7 * k}"><title>Ziehen: drehen und skalieren um das Gelenk</title></circle>`;
+  }
+  flaeche.innerHTML = inhalt;
+  for (const [feld, wert] of [['r-s', teil ? (teil.lage.s * 100).toFixed(1) : ''], ['r-rot', teil ? teil.lage.rot.toFixed(1) : ''], ['r-x', teil ? teil.lage.tx.toFixed(1) : ''], ['r-y', teil ? teil.lage.ty.toFixed(1) : '']]) {
+    if (document.activeElement !== $(feld)) $(feld).value = wert;
+    $(feld).disabled = !teil;
+  }
+  for (const b of ['neu', 'umdrehen', 'spiegeln', 'entfernen']) $(b).disabled = !teil;
+  $('info').textContent = teil
+    ? `Datei ${teil.datei}. Blaue Strecke: Ziel der Achse; blaue Kreise: Gelenke mit Überlappungskreis ${SPEZ.gelenk_ueberlappung} px (rot = Lücke beim Drehen).`
+    : f
+      ? `${wirksam.herkunft[id]}. Eigene Datei laden, um es frei einzupassen.`
+      : 'Noch keine Datei. „Laden“ in der Liste oder Datei hierher ziehen.';
+}
+
+let ziehen = null;
+const punktIn = (e) => {
+  const pt = flaeche.createSVGPoint();
+  pt.x = e.clientX;
+  pt.y = e.clientY;
+  return pt.matrixTransform(flaeche.getScreenCTM().inverse());
+};
+flaeche.addEventListener('pointerdown', (e) => {
+  const teil = teile()[zustand.gewaehlt];
+  if (!teil) return;
+  const art = e.target.id === 'endgriff' ? 'ende' : e.target.closest('#teil') ? 'teil' : null;
+  if (!art) return;
+  e.preventDefault();
+  flaeche.setPointerCapture(e.pointerId);
+  ziehen = { art, letzter: punktIn(e) };
+});
+flaeche.addEventListener('pointermove', (e) => {
+  if (!ziehen) return;
+  const teil = teile()[zustand.gewaehlt];
+  const p = punktIn(e);
+  teil.lage = ziehen.art === 'ende' ? zieheEnde(teil, p) : verschiebe(teil, p.x - ziehen.letzter.x, p.y - ziehen.letzter.y);
+  ziehen.letzter = p;
+  schnell();
+});
+flaeche.addEventListener('pointerup', () => {
+  if (!ziehen) return;
+  ziehen = null;
+  alles();
+});
+flaeche.addEventListener('dragover', (e) => e.preventDefault());
+flaeche.addEventListener('drop', (e) => {
+  e.preventDefault();
+  ladeDateien([...e.dataTransfer.files].slice(0, 1), zustand.gewaehlt);
+});
+for (const [feld, schreibe] of [
+  ['r-s', (l, v) => ({ ...l, s: v / 100 })],
+  ['r-rot', (l, v) => ({ ...l, rot: v })],
+  ['r-x', (l, v) => ({ ...l, tx: v })],
+  ['r-y', (l, v) => ({ ...l, ty: v })],
+]) {
+  $(feld).addEventListener('change', () => {
+    const teil = teile()[zustand.gewaehlt];
+    const v = Number($(feld).value);
+    if (!teil || !Number.isFinite(v) || (feld === 'r-s' && v <= 0)) return;
+    teil.lage = schreibe(teil.lage, v);
+    alles();
+  });
+}
+$('neu').addEventListener('click', () => {
+  const t = teile()[zustand.gewaehlt];
+  t.lage = { ...einpassen(t.formen, t.id), flip: t.lage.flip };
+  alles();
+});
+$('umdrehen').addEventListener('click', () => {
+  const t = teile()[zustand.gewaehlt];
+  t.achse = { a: t.achse.b, b: t.achse.a };
+  t.lage = { ...lageAus(t.achse, t.id), flip: t.lage.flip };
+  alles();
+});
+$('spiegeln').addEventListener('click', () => {
+  const t = teile()[zustand.gewaehlt];
+  t.lage = { ...t.lage, flip: !t.lage.flip, tx: -t.lage.tx };
+  alles();
+});
+$('entfernen').addEventListener('click', () => {
+  delete teile()[zustand.gewaehlt];
+  alles();
+});
+
+// ---------- Vorschau und Gelenkprüfung ----------
+function zeichnungFuer(name, mitErgaenzung) {
+  return zeichnung(wirksam.formen, name, { zuordnung: zustand.zuordnung, ergaenzung: mitErgaenzung ? ERGAENZUNG[name] : null });
+}
+
+function zeichneVorschau() {
+  const name = zustand.vorschau;
+  const r = RIGS[name];
+  const geprueft = pruefeZeichnung(zeichnungFuer(name, true).text, name);
+  vorschauTeile = geprueft.befunde.length ? null : geprueft.teile;
+  const box = $('posen');
+  box.innerHTML = '';
+  if (!vorschauTeile) {
+    box.innerHTML = '<p class="fehler">Vorschau nicht möglich, siehe Meldungen.</p>';
+    for (const b of geprueft.befunde) meldungen.push({ fehler: true, text: `Vorschau ${name}: ${b.teil}: ${b.text}` });
+    return;
+  }
+  const m = r.spez.massstab;
+  const { x0, y0, x1, y1 } = r.rahmen;
+  testposen(name).forEach((pose, i) => {
+    const P = `V${i}`;
+    const svg = wendeAn(r.markup(P, { teile: vorschauTeile }), r.apply(P, pose.state));
+    const fig = document.createElement('figure');
+    fig.innerHTML = `<svg xmlns="${NS}" viewBox="${x0 * m} ${y0 * m} ${(x1 - x0) * m} ${(y1 - y0) * m}">${svg}</svg><figcaption>${pose.name}</figcaption>`;
+    box.append(fig);
+  });
+}
+
+let pruefNummer = 0;
+async function pruefeGelenkeLive() {
+  const nummer = ++pruefNummer;
+  if (!vorschauTeile) {
+    luecken = [];
+    $('gelenke').textContent = 'Gelenkprüfung: wartet auf eine vollständige Vorschau.';
+    return;
+  }
+  const { tests, svgs, radius } = gelenkTests(vorschauTeile, zustand.vorschau);
+  const c = document.createElement('canvas');
+  c.width = c.height = PRUEF.pixel;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  const gefunden = [];
+  for (let i = 0; i < svgs.length; i++) {
+    const bild = new Image();
+    bild.src = 'data:image/svg+xml;base64,' + btoa(svgs[i]);
+    await bild.decode();
+    if (nummer !== pruefNummer) return; // neuere Änderung, diese Prüfung verwerfen
+    ctx.clearRect(0, 0, PRUEF.pixel, PRUEF.pixel);
+    ctx.drawImage(bild, 0, 0);
+    const weiss = zaehleWeiss(ctx.getImageData(0, 0, PRUEF.pixel, PRUEF.pixel).data, PRUEF.pixel, radius);
+    if (weiss > PRUEF.toleranz) gefunden.push({ ...tests[i], weiss });
+  }
+  luecken = gefunden;
+  const anzahl = gelenke(SPEZ, zustand.vorschau).length;
+  $('gelenke').textContent = luecken.length
+    ? `Gelenkprüfung (${zustand.vorschau}): ${luecken.length} Lücken – ${luecken.map((l) => `${l.eltern} → ${l.kind} bei ${l.winkel}°`).join('; ')}`
+    : `Gelenkprüfung (${zustand.vorschau}): alle ${anzahl} Gelenke bei −60°, 0°, 60°, 120° geschlossen.`;
+  $('gelenke').className = luecken.length ? 'fehler' : '';
+  zeichneListe();
+  zeichneEinpassen();
+}
+
+// ---------- Farben ----------
+function zeichneFarben() {
+  const box = $('farben');
+  box.innerHTML = '';
+  const farben = farbenVon(teile());
+  if (!farben.length) box.innerHTML = '<p class="leise">Noch keine Farben geladen.</p>';
+  for (const hex of farben) {
+    const d = document.createElement('label');
+    d.className = 'farbe';
+    d.innerHTML = `<span class="feld"></span><span>${hex} <select><option value="">bleibt</option><option value="kleidung1">Kleidung 1</option><option value="kleidung2">Kleidung 2</option><option value="zubehoer">Zubehör</option></select></span>`;
+    d.querySelector('.feld').style.background = hex;
+    const s = d.querySelector('select');
+    s.value = zustand.zuordnung[hex] ?? '';
+    s.addEventListener('change', () => {
+      if (s.value) zustand.zuordnung[hex] = s.value;
+      else delete zustand.zuordnung[hex];
+      alles();
+    });
+    box.append(d);
+  }
+}
+
+// ---------- Export ----------
+function zeichnungen() {
+  const aus = {};
+  for (const name of ARCHETYPEN[zustand.ansicht]) aus[name] = zeichnungFuer(name, zustand.ergaenzen);
+  return aus;
+}
+$('export').addEventListener('click', () => {
+  const satz = $('satz').value.trim();
+  if (!/^satz-\d{2}$/.test(satz) || satz === 'satz-00') {
+    meldungen.push({ fehler: true, text: 'Satzname im Format satz-01 bis satz-99 (satz-00 ist der Platzhalter).' });
+    return alles();
+  }
+  const z = zeichnungen();
+  const dateien = [];
+  const zeilen = [`Teilesatz ${satz} aus der Teile-Werkstatt`, '', 'Einlesen:', `  1. Ordner ${satz} nach figuren/teilesaetze/ legen`, `  2. npm run figuren:import -- ${satz}`, '', 'Herkunft der Teile:'];
+  for (const id of teileDerAnsicht(zustand.ansicht)) zeilen.push(`  ${id}: ${wirksam.herkunft[id]}`);
+  let probleme = 0;
+  for (const [name, { text, ergaenzt, fehlend }] of Object.entries(z)) {
+    const befunde = pruefeZeichnung(text, name).befunde;
+    probleme += befunde.length;
+    zeilen.push('', `${name}: ${befunde.length ? `${befunde.length} Befunde` : 'besteht die Strukturprüfung'}${ergaenzt.length ? `; aus satz-00: ${ergaenzt.join(', ')}` : ''}${fehlend.length ? `; fehlt: ${fehlend.join(', ')}` : ''}`);
+    for (const b of befunde) zeilen.push(`  ${b.teil}: ${b.text}`);
+    dateien.push({ name: `${satz}/${name}.svg`, inhalt: text });
+  }
+  dateien.push({ name: `${satz}/LIESMICH.txt`, inhalt: zeilen.join('\n') + '\n' });
+  const url = URL.createObjectURL(new Blob([zip(dateien)], { type: 'application/zip' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${satz}.zip`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  meldungen.push({ fehler: probleme > 0, text: probleme ? `${satz}.zip geschrieben, aber mit ${probleme} Befunden (siehe LIESMICH.txt).` : `${satz}.zip geschrieben: ${Object.keys(z).join(', ')}.` });
+  alles();
+});
+
+// ---------- Steuerung ----------
+function zeichneMeldungen() {
+  const ul = $('meldungen');
+  ul.innerHTML = '';
+  const letzte = meldungen.slice(-12);
+  if (!letzte.length) ul.innerHTML = '<li class="leise">Keine Meldungen.</li>';
+  for (const m of letzte) {
+    const li = document.createElement('li');
+    li.textContent = m.text;
+    if (m.fehler) li.className = 'fehler';
+    ul.append(li);
+  }
+}
+
+/** Während des Ziehens nur Einpass-Fläche und Vorschau, ohne Gelenkprüfung. */
+function schnell() {
+  wirksam = wirksameTeile(teile(), zustand.ansicht);
+  zeichneEinpassen();
+}
+
+function alles() {
+  zustand.satz = $('satz').value;
+  wirksam = wirksameTeile(teile(), zustand.ansicht);
+  if (!teileDerAnsicht(zustand.ansicht).includes(zustand.gewaehlt)) zustand.gewaehlt = 'torso';
+  const v = $('vorschau');
+  v.innerHTML = '';
+  for (const n of ARCHETYPEN[zustand.ansicht]) v.append(new Option(n, n));
+  if (!ARCHETYPEN[zustand.ansicht].includes(zustand.vorschau)) zustand.vorschau = VOLL[zustand.ansicht];
+  v.value = zustand.vorschau;
+  zeichneVorschau();
+  zeichneListe();
+  zeichneEinpassen();
+  zeichneFarben();
+  zeichneMeldungen();
+  speichere();
+  pruefeGelenkeLive();
+}
+
+$('ansicht').addEventListener('change', () => {
+  zustand.ansicht = $('ansicht').value;
+  zustand.gewaehlt = 'torso';
+  alles();
+});
+$('vorschau').addEventListener('change', () => {
+  zustand.vorschau = $('vorschau').value;
+  alles();
+});
+$('ergaenzen').addEventListener('change', () => {
+  zustand.ergaenzen = $('ergaenzen').checked;
+  alles();
+});
+$('satz').addEventListener('change', alles);
+$('zuruecksetzen').addEventListener('click', () => {
+  zustand = { ansicht: zustand.ansicht, satz: zustand.satz, teile: { profil: {}, frontal: {} }, zuordnung: {}, ergaenzen: true, vorschau: VOLL[zustand.ansicht], gewaehlt: 'torso' };
+  meldungen = [];
+  alles();
+});
+
+// Werkzeugschnittstelle für Tests.
+window.werkstatt = {
+  ladeText: (id, datei, text) => {
+    ladeText(id, datei, text);
+    alles();
+  },
+  zustand: () => JSON.parse(JSON.stringify(zustand)),
+  zeichnungen: () => Object.fromEntries(Object.entries(zeichnungen()).map(([n, z]) => [n, z.text])),
+  herkunft: () => ({ ...wirksam.herkunft }),
+  luecken: () => luecken.map(({ eltern, kind, winkel }) => ({ eltern, kind, winkel })),
+  pruefung: () => pruefeGelenkeLive(),
+  meldungen: () => meldungen.map((m) => m.text),
+};
+
+$('ansicht').value = zustand.ansicht;
+$('satz').value = zustand.satz;
+$('ergaenzen').checked = zustand.ergaenzen;
+alles();
+document.documentElement.dataset.bereit = '1';
+</script>
+</body>
+</html>

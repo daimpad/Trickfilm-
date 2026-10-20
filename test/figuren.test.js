@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { leseXml, pruefeZeichnung, pruefeGelenke } from '../tools/import-teilesatz.js';
-import { teileVon } from '../tools/figuren-layout.js';
+import { teileVon } from '../lib/rigs/vorlage-layout.js';
 
 const WURZEL = join(import.meta.dirname, '..');
 const SPEZ = JSON.parse(readFileSync(join(WURZEL, 'figuren/rig-spezifikation.json'), 'utf8'));

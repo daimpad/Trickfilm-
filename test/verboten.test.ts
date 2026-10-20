@@ -26,12 +26,17 @@ test('Farbliterale nur in den Tokens und in erzeugten Dateien', () => {
   assert.deepEqual(regeln('tokens/tokens.js', "rot: '#B23A2B',"), []);
   assert.deepEqual(regeln('szenen/X/dist/index.html', 'fill="#B23A2B"'), []);
   assert.deepEqual(regeln('lib/svg.js', 'const anker = "seite.html#abschnitt";'), []);
+  // Leser fremder Zeichnungen kennen Schwarz, Weiß und CSS-Farbnamen als Formatkonstanten.
+  assert.deepEqual(regeln('lib/svgpfad.js', "white: '#ffffff',"), []);
+  assert.deepEqual(regeln('lib/svgpfad.js', "await fetch('x');"), ['Netzaufruf im Render']);
 });
 
 test('Netzaufrufe im Render werden gefunden, der SVG-Namensraum nicht', () => {
   assert.deepEqual(regeln('lib/stage.js', "await fetch('x');"), ['Netzaufruf im Render']);
   assert.deepEqual(regeln('lib/stage.js', 'const u = "https://example.org/a.png";'), ['Netzaufruf im Render']);
   assert.deepEqual(regeln('lib/stage.js', 'const ns = "http://www.w3.org/2000/svg";'), []);
+  assert.deepEqual(regeln('lib/teile.js', 'xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"'), []);
+  assert.deepEqual(regeln('lib/teile.js', 'const u = "https://www.inkscape.org/release/";'), ['Netzaufruf im Render']);
   assert.deepEqual(regeln('lib/viewer.template.html', '<link href="https://fonts.googleapis.com/css">'), [
     'Webfont',
     'Netzaufruf im Render',

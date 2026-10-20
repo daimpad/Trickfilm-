@@ -28,6 +28,8 @@ const RENDER = /^(lib|szenen|remotion)\//;
 const ERZEUGT = /(^|\/)dist\/|^lib\/teilesaetze\/|^figuren\//;
 // Prüfung, ihr Test und der Build enthalten Verbotenes als Suchmuster; für sie gelten nur die Geheimnisregeln.
 const SELBST = new Set(['tools/pruefen-verboten.ts', 'test/verboten.test.ts', 'lib/build.js']);
+// Leser und Schreiber fremder Zeichnungen: ihre Farben sind Konstanten des Austauschformats (Schwarz, Weiß, CSS-Farbnamen), keine Gestaltung.
+const ZEICHNUNGSFORMAT = new Set(['lib/svgpfad.js', 'lib/zeichnung.js', 'lib/teile.js']);
 
 const imRender = (p: string) => RENDER.test(p) && !ERZEUGT.test(p);
 // Tests nennen Verbotenes als Prüfmuster; sie werden nie gerendert.
@@ -61,14 +63,14 @@ export const REGELN: Regel[] = [
   {
     name: 'Farbliteral außerhalb der Tokens',
     muster: /(?<![\w&/])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b|\b(rgba?|hsla?)\s*\(/,
-    gilt: (p) => imRender(p) && CODE.test(p),
+    gilt: (p) => imRender(p) && CODE.test(p) && !ZEICHNUNGSFORMAT.has(p),
   },
   { name: 'Webfont', muster: /@font-face|fonts\.(googleapis|gstatic)\.com|\.woff2?\b/, gilt: (p) => CODE.test(p) && keinTest(p) },
 
-  // Kein Netz im Render; der SVG-Namensraum ist eine Kennung, kein Abruf.
+  // Kein Netz im Render; die Namensräume von SVG und Inkscape sind Kennungen, kein Abruf.
   {
     name: 'Netzaufruf im Render',
-    muster: /\bfetch\s*\(|\bXMLHttpRequest\b|\bWebSocket\b|['"`]https?:\/\/(?!www\.w3\.org\/)/,
+    muster: /\bfetch\s*\(|\bXMLHttpRequest\b|\bWebSocket\b|['"`]https?:\/\/(?!www\.w3\.org\/|www\.inkscape\.org\/namespaces\/)/,
     gilt: (p) => imRender(p) && CODE.test(p),
   },
 ];
