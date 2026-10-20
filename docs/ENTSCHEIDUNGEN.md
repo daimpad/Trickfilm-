@@ -102,3 +102,13 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Suche | einfache Suche auf der Seite, ohne Netz | entschieden von Regie |
 | Prototyp | läuft im Werkzeug-Bereich | entschieden von Regie |
 
+## 2026-10-20 · Gestaltung der Webseite
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Gestaltung | vorgegebene Farben, Schriften, Rundungen, Schatten und Glas, unter eigenen Namen; der Name der Vorlage erscheint nirgends | entschieden von Regie |
+| Schriften | im Repository unter SIL OFL, nie aus dem Netz, nur auf der Webseite | entschieden von Regie |
+| Stil-Editor | Regler für Schatten, Tiefe, Unschärfe, Deckkraft, Rundung, Akzent und Titelschrift; Ausgabe als CSS | entschieden von Regie |
+| Text | nur das zum Arbeiten Nötige; kein Stand, Datum oder Änderungsverlauf | entschieden von Regie |
+| Umfang | nur die Webseite; Posen-Editor und Teile-Werkstatt bleiben | entschieden von Claude |
+| Bewegung | keine Übergänge, auch nicht auf der Seite | entschieden von Claude |

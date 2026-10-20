@@ -12,7 +12,16 @@ Generierungen (Stimme, Geräusche, Laute) sind je nach Tarif kommerziell nutzbar
 
 ## Schrift
 
-Arial (System) und Liberation Sans (SIL Open Font License 1.1, in der Cloud-Umgebung installiert). Keine Webfonts.
+Film: Arial (System) und Liberation Sans (SIL Open Font License 1.1, in der Cloud-Umgebung installiert). Keine Webfonts.
+
+Webseite (`site/schriften/`, Teilmenge Latein aus dem Google-Fonts-Verzeichnis, geprüft 2026-10-20; Lizenztexte daneben):
+
+| Datei | Schrift | Lizenz |
+|---|---|---|
+| `bricolage-grotesque.woff2` | Bricolage Grotesque, variabel (opsz 12–96, wght 400–800) | SIL OFL 1.1 (`OFL-bricolagegrotesque.txt`) |
+| `fraunces-kursiv.woff2` | Fraunces Italic, variabel (opsz 9–144, wght 300–600) | SIL OFL 1.1 (`OFL-fraunces.txt`) |
+| `instrument-sans.woff2` | Instrument Sans, variabel (wght 400–700) | SIL OFL 1.1 (`OFL-instrumentsans.txt`) |
+| `inter.woff2` | Inter, variabel (wght 400–800) | SIL OFL 1.1 (`OFL-inter.txt`) |
 
 ## Fremdmaterial
 

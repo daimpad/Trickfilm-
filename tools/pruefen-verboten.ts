@@ -65,7 +65,9 @@ export const REGELN: Regel[] = [
     muster: /(?<![\w&/])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b|\b(rgba?|hsla?)\s*\(/,
     gilt: (p) => imRender(p) && CODE.test(p) && !ZEICHNUNGSFORMAT.has(p),
   },
-  { name: 'Webfont', muster: /@font-face|fonts\.(googleapis|gstatic)\.com|\.woff2?\b/, gilt: (p) => CODE.test(p) && keinTest(p) },
+  // Schriften: nie aus dem Netz; eigene Schriftdateien nur auf der Webseite (site/schriften, SIL OFL), nie im Film.
+  { name: 'Webfont aus dem Netz', muster: /fonts\.(googleapis|gstatic)\.com/, gilt: (p) => CODE.test(p) && keinTest(p) },
+  { name: 'Webfont', muster: /@font-face|\.woff2?\b/, gilt: (p) => CODE.test(p) && keinTest(p) && !p.startsWith('site/') },
 
   // Kein Netz im Render; die Namensräume von SVG und Inkscape sind Kennungen, kein Abruf.
   {
