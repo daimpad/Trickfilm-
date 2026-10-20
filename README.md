@@ -13,6 +13,7 @@ npm run studio                          # Remotion Studio im Browser
 npx remotion still Palette out/p.png    # Standbild der Testkarte
 npm run szene:neu -- FILM-01-slug       # neue Szene aus der Vorlage
 npm run szene:bauen -- FILM-01-slug     # prüfen und Prototyp nach szenen/<ID>/dist/index.html
+npm run editor -- --szene FILM-01-slug --figur A   # Posen-Editor nach out/editor/posen-editor.html
 ```
 
 Voraussetzungen: Node ≥ 22, ffmpeg und ffprobe, die Schrift Arial oder Liberation Sans. Chromium kommt örtlich über `npx playwright install chromium`; in Claude-Code-Cloud-Sitzungen liegt es schon vor.
