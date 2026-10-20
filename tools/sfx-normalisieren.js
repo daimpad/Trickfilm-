@@ -53,14 +53,9 @@ export function vorschlag(ordner, ids) {
     }
     let wahl = [bewertet[0].name];
     if ((c.varianten_vorrat ?? 1) > 1) {
-      // Für einen Vorrat so viele Varianten, bis genug Einzelereignisse zusammenkommen.
-      wahl = [];
-      let summe = 0;
-      for (const b of bewertet) {
-        if (summe >= c.varianten_vorrat) break;
-        wahl.push(b.name);
-        summe += b.m.einsaetze;
-      }
+      // Für einen Vorrat alle hörbaren Varianten, die saubersten zuerst: Ein gezählter Einsatz (etwa das
+      // Loslassen einer Taste) ergibt nach dem Kürzen nicht immer ein eigenes Stück.
+      wahl = bewertet.map((b) => b.name);
     }
     auswahl[c.id] = { wahl, vorlaeufig: true };
     meldungen.push(`${c.id}: vorläufig ${wahl.join(', ')}`);

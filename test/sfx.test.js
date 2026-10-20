@@ -193,7 +193,7 @@ test('Werkzeuge: Vorschlag, Normalisieren mit Vorrat, Gegenmessung, Protokoll, �
 
     vorschlag(d, []);
     const auswahl = readFileSync(join(d, 'auswahl.yaml'), 'utf8');
-    assert.match(auswahl, /- id: klick\n {2}wahl: \[v1\]\n {2}vorlaeufig: true/);
+    assert.match(auswahl, /- id: klick\n {2}wahl: \[v1, v2\]\n {2}vorlaeufig: true/, "Vorrat: alle hörbaren Varianten, die sauberste zuerst");
     const r = normalisiere(d, []);
     assert.deepEqual(r.befunde, []);
     assert.deepEqual(r.fehlend, ['oh']);
@@ -269,13 +269,15 @@ test('Ablegen: prüft Ton, nummeriert Varianten, schreibt Herkunft, legt nichts 
     assert.equal(herkunft.length, 3);
     assert.match(herkunft[2], /^klick\tv2\tv2\.wav\televen_text_to_sound_v2\tsingle click\t2026-10-20\tflow F \/ S\tg2\t/);
     assert.throws(() => ablegen(d, 'id\tquelle\n'), /Spalte „modell“ fehlt/);
-    // Plan: Abgelegtes fällt heraus; Vorrat 6 braucht zwei Läufe; Schleifen bekommen Luft für die Naht.
+    // Plan aus dem Bestand: Vorrat 6 braucht acht Takes, zwei liegen vor; Schleifen bekommen Luft für die Naht;
+    // Laute fehlen je Stimme.
     const p = plan(d);
-    assert.deepEqual(p.map((x) => x.id), ['summen', 'oh']);
+    assert.deepEqual(p.map((x) => [x.id, x.fehlend ?? x.stimmen.length]), [['klick', 6], ['summen', 4], ['oh', 4]]);
+    assert.deepEqual(p.find((x) => x.id === 'oh').stimmen.map((s) => s.fehlend), [2, 2, 2, 2]);
     assert.deepEqual(sfxParameter({ dauer_s: 2.0, loop: true }), { duration_seconds: 2.5, prompt_influence: 0.4, loop: true });
     assert.deepEqual(sfxParameter({ dauer_s: 0.2, einzel: true }), { duration_seconds: 1, prompt_influence: 0.5, loop: false });
-    assert.equal(plan(d, { ids: ['klick'] }).length, 0);
-    assert.equal(p.find((x) => x.id === 'oh').wartet, 'Stimmwahl durch Regie');
+    assert.equal(plan(d, { ids: ['summen'] }).length, 1);
+    assert.match(herkunft[0], /\tparameter$/);
   } finally {
     rmSync(d, { recursive: true, force: true });
   }

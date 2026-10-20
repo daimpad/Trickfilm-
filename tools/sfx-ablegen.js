@@ -70,7 +70,7 @@ export function ablegen(ordner, listeText, datum = new Date().toISOString().slic
     bekannt.add(w.generierung);
     neueZeilen.push(
       HERKUNFT_SPALTEN.map((s) =>
-        zelle({ id: w.id, variante: `v${nummer}`, datei: `v${nummer}${endung}`, modell: w.modell, prompt: w.prompt, datum, sitzung: w.sitzung, generierung: w.generierung, lizenz: LIZENZ }[s]),
+        zelle({ id: w.id, variante: `v${nummer}`, datei: `v${nummer}${endung}`, modell: w.modell, prompt: w.prompt, datum, sitzung: w.sitzung, generierung: w.generierung, lizenz: LIZENZ, parameter: w.parameter }[s]),
       ).join('\t'),
     );
     abgelegt.push(`${w.id}/v${nummer} (${dauer.toFixed(2)} s)`);
