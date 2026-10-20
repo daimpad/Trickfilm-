@@ -1,5 +1,4 @@
 # Prüflauf bei jedem Push und Pull Request (Abschnitt 13.3 der Werkstatt).
-# Cue-Listen vergleichen kommt mit Phase 4 hinzu.
 name: Prüfung
 
 on:
@@ -23,6 +22,9 @@ jobs:
 
       - name: Abhängigkeiten
         run: npm ci --no-audit --no-fund
+
+      - name: ffmpeg für Messung und Bearbeitung der Geräusche
+        run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
 
       - name: Chromium für Standbilder und Seitentests
         run: npx playwright install --with-deps chromium
@@ -51,7 +53,7 @@ jobs:
       - name: Jede Szene bauen (Brief gegen Code, keine NaN, Reichweiten)
         run: npm run szene:bauen -- alle
 
-      - name: Erzeugte Dateien aktuell (Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle)
+      - name: Erzeugte Dateien aktuell (Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Cue-Listen, Protokolle)
         run: npm run erzeugt:pruefen
 
       - name: Webseite baut (Befehle beschrieben, Links vorhanden)

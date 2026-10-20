@@ -31,7 +31,7 @@ Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet
 | 1 | Grundgerüst, Tokens, Regeln, Prüflauf, SessionStart-Hook | fertig |
 | 2 | Bibliothek: Bewegung, Rigs, Requisiten, Build, Viewer | fertig |
 | 3 | Figurenbaukasten | fertig, Freigabe der Rig-Spezifikation offen |
-| 4 | Geräusche | offen |
+| 4 | Geräusche | Werkzeuge fertig, Generierung wartet auf Kostenfreigabe |
 | 5 | Demoszene `DEMO-01-buero` | offen |
 | 6 | Stimme und Untertitel | offen |
 | 7 | Render und Lieferung | offen |

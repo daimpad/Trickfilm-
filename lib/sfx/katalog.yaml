@@ -1,0 +1,286 @@
+# Katalog aller Geräusche und Laute (Abschnitt 8.2). IDs und Kommentare deutsch, Prompts englisch.
+# Klangcharakter: dezent, lustig, nicht absurd; leicht überzeichnete echte Geräusche.
+# Felder:
+#   art: sfx (Geräusch, eleven_text_to_sound_v2) oder laut (kurzer Laut ohne Wort, eleven_v3)
+#   prompt / text: Generierung; text mit Audio-Tag in eckigen Klammern
+#   dauer_s: Ziellänge; varianten_vorrat: freigegebene Einzelereignisse je Cue, Auswahl je Ereignis deterministisch
+#   gain_db: Grundpegel im Mix; ereignisse: welche Bewegungsereignisse diesen Cue tragen dürfen
+#   einzel: true, wenn eine Datei genau einen Anschlag trägt (gekürzt vor dem zweiten Einsatz)
+#   nachklang: true, wenn der Klang ausklingen darf (nie im Klang gekürzt)
+#   loop: true, wenn der Klang als Schleife unter einem Vorgang liegt
+
+# Tippen, Klicken, Gehen, Übergänge
+- id: tastenanschlag
+  art: sfx
+  prompt: "single soft office keyboard keystroke, close, dry room"
+  dauer_s: 0.3
+  varianten_vorrat: 8
+  gain_db: -26
+  einzel: true
+  ereignisse: [anschlag]
+- id: schritt
+  art: sfx
+  prompt: "single soft footstep on office carpet, close, dry room"
+  dauer_s: 0.4
+  varianten_vorrat: 6
+  gain_db: -28
+  einzel: true
+  ereignisse: [schritt]
+- id: maus-klick
+  art: sfx
+  prompt: "single crisp computer mouse click, slightly satisfying, close, dry room"
+  dauer_s: 0.2
+  varianten_vorrat: 3
+  gain_db: -24
+  einzel: true
+  ereignisse: [klick]
+- id: whoosh-kurz
+  art: sfx
+  prompt: "short soft airy whoosh of a sheet of paper moving through the air, gentle"
+  dauer_s: 0.5
+  gain_db: -30
+  ereignisse: [abheben]
+
+# Drucker und Papier
+- id: drucker-start
+  art: sfx
+  prompt: "small office laser printer waking up, brief hesitant whir as if thinking, then starts feeding, dry room"
+  dauer_s: 2.0
+  gain_db: -28
+  ereignisse: [geraet]
+- id: papier-raus
+  art: sfx
+  prompt: "single sheet of paper sliding out of a printer tray, soft swish"
+  dauer_s: 0.8
+  gain_db: -28
+  ereignisse: [ausgabe]
+- id: papier-ablegen
+  art: sfx
+  prompt: "single sheet of paper landing softly on a desk, gentle pat"
+  dauer_s: 0.5
+  gain_db: -30
+  einzel: true
+  ereignisse: [ankunft, aufsetzen]
+
+# Laute (höchstens einer je Szene, ohne Wort, kommentieren den Vorgang)
+- id: laut-erstaunt
+  art: laut
+  text: "[surprised] Oh?"
+  dauer_s: 0.8
+  gain_db: -20
+- id: laut-fragend
+  art: laut
+  text: "[curious] Hm...?"
+  dauer_s: 0.9
+  gain_db: -20
+- id: laut-erleichtert
+  art: laut
+  text: "[relieved] Ah."
+  dauer_s: 0.8
+  gain_db: -20
+
+# Aufsetzen, Erscheinen, Stapel
+- id: aufsetzen-weich
+  art: sfx
+  prompt: "soft muted thud of a small object set down on a wooden desk"
+  dauer_s: 0.4
+  varianten_vorrat: 3
+  gain_db: -28
+  einzel: true
+  ereignisse: [aufsetzen, ankunft, aufprall]
+- id: aufspringen
+  art: sfx
+  prompt: "tiny soft pop, like a small card flipping up, light and friendly"
+  dauer_s: 0.3
+  gain_db: -30
+  einzel: true
+  ereignisse: [erscheinen]
+- id: stapel-ablegen
+  art: sfx
+  prompt: "small stack of paper sheets placed on a desk, soft papery thump"
+  dauer_s: 0.6
+  gain_db: -28
+  einzel: true
+  ereignisse: [aufsetzen, ankunft]
+
+# Schreiben, Abhaken, Schalten
+- id: stift-schreiben
+  art: sfx
+  prompt: "ballpoint pen writing quickly on paper, close, dry room"
+  dauer_s: 1.5
+  gain_db: -30
+  loop: true
+  ereignisse: [geraet]
+- id: haken-setzen
+  art: sfx
+  prompt: "single quick pen tick mark stroke on paper, crisp"
+  dauer_s: 0.3
+  gain_db: -28
+  einzel: true
+  ereignisse: [anschlag, erscheinen]
+- id: schalter
+  art: sfx
+  prompt: "single small light switch click, plastic, close"
+  dauer_s: 0.2
+  gain_db: -26
+  einzel: true
+  ereignisse: [klick]
+
+# Türen und Warten
+- id: tuer-auf
+  art: sfx
+  prompt: "office door handle pressed and door opening gently, short, dry room"
+  dauer_s: 1.0
+  gain_db: -28
+  ereignisse: [aufbruch]
+- id: tuer-zu
+  art: sfx
+  prompt: "office door closing softly with a gentle latch click"
+  dauer_s: 0.8
+  gain_db: -28
+  ereignisse: [ankunft]
+- id: uhr-ticken
+  art: sfx
+  prompt: "quiet wall clock ticking steadily, close, dry room"
+  dauer_s: 2.0
+  gain_db: -32
+  loop: true
+  ereignisse: [geraet]
+
+# Büro und Geräte
+- id: stempel
+  art: sfx
+  prompt: "single rubber stamp pressed firmly on paper on a desk, satisfying thump"
+  dauer_s: 0.4
+  varianten_vorrat: 2
+  gain_db: -24
+  einzel: true
+  ereignisse: [stempel, anschlag]
+- id: stecker
+  art: sfx
+  prompt: "single plug pushed into a wall socket, short plastic click"
+  dauer_s: 0.3
+  gain_db: -28
+  einzel: true
+  ereignisse: [klick, ankunft]
+- id: zahnrad
+  art: sfx
+  prompt: "small mechanical gears turning softly, light clockwork whir"
+  dauer_s: 1.5
+  gain_db: -32
+  loop: true
+  ereignisse: [geraet]
+- id: telefon-klingeln
+  art: sfx
+  prompt: "single short ring of a modern desk phone, soft electronic tone"
+  dauer_s: 1.2
+  gain_db: -26
+  nachklang: true
+  ereignisse: [geraet]
+- id: umblaettern
+  art: sfx
+  prompt: "single page of a paper document turned over, soft rustle"
+  dauer_s: 0.6
+  varianten_vorrat: 2
+  gain_db: -30
+  einzel: true
+  ereignisse: [abheben]
+- id: rollen
+  art: sfx
+  prompt: "office chair casters rolling briefly on a hard floor"
+  dauer_s: 1.0
+  gain_db: -30
+  loop: true
+  ereignisse: [aufbruch]
+- id: muenze
+  art: sfx
+  prompt: "single coin dropped on a wooden table, short ring"
+  dauer_s: 0.8
+  gain_db: -28
+  nachklang: true
+  ereignisse: [aufprall, aufsetzen]
+- id: klappe
+  art: sfx
+  prompt: "small plastic flap or lid closing with a light clack"
+  dauer_s: 0.3
+  gain_db: -28
+  einzel: true
+  ereignisse: [ankunft, aufprall]
+- id: scanner
+  art: sfx
+  prompt: "flatbed scanner light bar sliding across with a soft motor hum"
+  dauer_s: 2.5
+  gain_db: -30
+  ereignisse: [geraet]
+- id: hefter
+  art: sfx
+  prompt: "single office stapler press, firm metallic clack"
+  dauer_s: 0.3
+  gain_db: -26
+  einzel: true
+  ereignisse: [anschlag, stempel]
+
+# Wecken, Rollladen, Summen
+- id: wecker
+  art: sfx
+  prompt: "short soft digital alarm beep, two gentle tones"
+  dauer_s: 1.0
+  gain_db: -28
+  ereignisse: [geraet]
+- id: rollladen
+  art: sfx
+  prompt: "window roller shutter rolling up briefly, soft rattle"
+  dauer_s: 1.5
+  gain_db: -30
+  ereignisse: [aufbruch]
+- id: summen
+  art: sfx
+  prompt: "very quiet electrical hum of an office device, steady, close"
+  dauer_s: 2.0
+  gain_db: -36
+  loop: true
+  ereignisse: [geraet]
+
+# Draußen und Besonderes
+- id: schluesselbund
+  art: sfx
+  prompt: "small bunch of keys jingling briefly in a hand"
+  dauer_s: 0.8
+  gain_db: -28
+  nachklang: true
+  ereignisse: [aufbruch, aufsetzen]
+- id: fahrzeug
+  art: sfx
+  prompt: "small car passing by at moderate distance, calm street"
+  dauer_s: 2.5
+  gain_db: -32
+  ereignisse: [aufbruch]
+- id: seil-ruck
+  art: sfx
+  prompt: "single short rope tug, taut fiber snap, soft"
+  dauer_s: 0.4
+  gain_db: -28
+  einzel: true
+  ereignisse: [aufprall, klick]
+- id: waage-kippen
+  art: sfx
+  prompt: "balance scale tipping to one side with a soft metal clink"
+  dauer_s: 0.6
+  gain_db: -28
+  ereignisse: [ankunft]
+- id: scherbe
+  art: sfx
+  prompt: "small porcelain cup cracking softly, single crack, no shattering"
+  dauer_s: 0.5
+  gain_db: -30
+  nachklang: true
+  ereignisse: [aufprall]
+
+# Bestätigung am Bildschirm (nicht auf Papier)
+- id: bestaetigung
+  art: sfx
+  prompt: "soft friendly user interface confirmation chime, single gentle tone, short"
+  dauer_s: 0.6
+  gain_db: -26
+  nachklang: true
+  ereignisse: [erscheinen]

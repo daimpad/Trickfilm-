@@ -58,34 +58,41 @@ let spielt = false;
 let startZeit = 0;
 let startFrame = 0;
 
-// Geräusche: Cues mit Startzeit und eingebetteten OGG-Daten; ein Cue klingt, wenn die Wiedergabe
+// Geräusche: Cues mit Startzeit, je Datei eingebettete OGG-Daten; ein Cue klingt, wenn die Wiedergabe
 // über seinen Start läuft. Springen und Ziehen lösen nichts aus.
-const cues = JSON.parse($('cues').textContent);
+const { cues, toene } = JSON.parse($('cues').textContent);
 const ctx = 'AudioContext' in window ? new AudioContext() : null;
 const puffer = new Map();
+// Ungeduckt wie in 8.6: der lauteste Cue bei 0 dB, die übrigen nach gain_db relativ dazu.
+const lautester = Math.max(...cues.map((c) => c.gain_db ?? 0));
 async function ladeTon() {
   if (!ctx) return;
-  for (const c of cues) {
-    if (!c.daten || puffer.has(c.datei)) continue;
-    const bytes = Uint8Array.from(atob(c.daten), (z) => z.charCodeAt(0));
-    puffer.set(c.datei, await ctx.decodeAudioData(bytes.buffer));
+  for (const [datei, daten] of Object.entries(toene)) {
+    if (puffer.has(datei)) continue;
+    const bytes = Uint8Array.from(atob(daten), (z) => z.charCodeAt(0));
+    puffer.set(datei, await ctx.decodeAudioData(bytes.buffer));
   }
 }
 function klinge(vonFrame, bisFrame) {
   if (!ctx || !$('geraeusche').checked) return;
   for (const c of cues) {
-    const f = Math.round(c.start * fps);
+    const f = Math.round(c.t * fps);
     if (f > vonFrame && f <= bisFrame && puffer.has(c.datei)) {
       const quelle = ctx.createBufferSource();
       quelle.buffer = puffer.get(c.datei);
       const g = ctx.createGain();
-      g.gain.value = Math.pow(10, (c.gain_db ?? 0) / 20);
+      g.gain.value = Math.pow(10, ((c.gain_db ?? 0) - lautester) / 20);
       quelle.connect(g).connect(ctx.destination);
       quelle.start();
     }
   }
 }
-$('tonstatus').textContent = cues.length ? `${cues.length} Cues` : 'keine Cues';
+const mitTon = cues.filter((c) => c.datei in toene).length;
+$('tonstatus').textContent = !cues.length
+  ? 'keine Cues'
+  : mitTon === cues.length
+    ? `${cues.length} Cues`
+    : `${cues.length} Cues, ${cues.length - mitTon} ohne Ton (noch nicht generiert)`;
 
 /** Bild f zeigen: computeState(f / fps), dann die Liste der Attribute schreiben. */
 function zeige(f) {

@@ -24,6 +24,16 @@ beats:                                # gleiche Namen und Reihenfolge wie BEATS 
   - { name: warten, start: 3.0, ende: 3.6, figur: A, aktion: "nimmt die Hände zurück", gefuehl: konzentriert }
   - { name: haken, start: 3.6, ende: 4.4, figur: A, aktion: "Haken erscheint am Monitor", gefuehl: konzentriert, wort: "bestätigt" }
   - { name: reaktion, start: 4.4, ende: 5.4, figur: A, aktion: "lehnt sich zurück", gefuehl: erleichtert }
+sfx:                                  # welche Ereignisse klingen und wo die Größen im Zustand liegen; Zeiten nie
+  ereignisse:
+    anschlag: { cue: tastenanschlag, ausduennen: 3 }
+    erscheinen: { cue: bestaetigung }
+  quellen:
+    anschlag: [ { pfade: [A.armF.hand.y, A.armB.hand.y], beat: tippen, figur: A, requisite: tastatur } ]
+    erscheinen: [ { pfad: haken.deckkraft, beat: haken, requisite: haken } ]
+  stumm: []
+  laute: [ { beat: reaktion, versatz_s: 0.2, cue: laut-erleichtert, figur: A } ]
+  stichprobe: [anschlag, erscheinen]
 beschriftungen: { links: "Eingabe", mitte: "", rechts: "Bestätigung" }
 textaequivalent: "Eine Person sitzt am Schreibtisch und tippt auf der Tastatur. Danach erscheint auf dem Monitor ein grüner Haken, und die Person lehnt sich erleichtert zurück."
 annahmen: []

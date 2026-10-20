@@ -73,6 +73,7 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
     <li><a href="#bewegung">Bewegung und Spielweise</a></li>
     <li><a href="#editor">Posen-Editor</a></li>
     <li><a href="#teile">Teile-Werkstatt</a></li>
+    <li><a href="#geraeusche">Geräusche</a></li>
     <li><a href="#requisiten">Requisiten</a></li>
     <li><a href="#gestaltung">Gestaltung</a></li>
     <li><a href="#pruefungen">Prüfungen</a></li>
@@ -96,7 +97,7 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
 <ul>
   <li><strong>Jedes Bild wird gerechnet.</strong> Zu jedem Zeitpunkt einer Szene ergibt sich das Bild aus einer Rechenvorschrift. Gleiche Eingabe ergibt immer dasselbe Bild.</li>
   <li><strong>Figuren sind Gliederpuppen.</strong> Ein festes Skelett (Rig) trägt austauschbare Zeichnungen (Teilesätze). So lassen sich verschiedene Menschen mit denselben Bewegungen zeigen.</li>
-  <li><strong>Geräusche entstehen aus der Bewegung.</strong> Wo eine Hand auf die Tastatur trifft, entsteht ein Anschlag, nicht dort, wo jemand ihn von Hand hinsetzt. <em>(Kommt mit Phase 4.)</em></li>
+  <li><strong>Geräusche entstehen aus der Bewegung.</strong> Wo eine Hand auf die Tastatur trifft, entsteht ein Anschlag, nicht dort, wo jemand ihn von Hand hinsetzt. <em>(Die Werkzeuge stehen; die Klänge werden nach Kostenfreigabe generiert.)</em></li>
   <li><strong>Was am Bild zu sehen ist, wird am Bild geprüft.</strong> Zu jeder Szene gibt es Standbilder, die ein Mensch ansieht, und Prüfungen, die eine Maschine über jedes einzelne Bild fährt.</li>
 </ul>
 <figure>
@@ -155,13 +156,14 @@ footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); 
 
 <section id="szene">
 <h2>Der Weg einer Szene</h2>
-<p>Jede Szene entsteht in zehn Schritten. Die Befehle laufen in einem Terminal im Ordner des Repositorys.</p>
+<p>Jede Szene entsteht in elf Schritten. Die Befehle laufen in einem Terminal im Ordner des Repositorys.</p>
 <ol class="schritte">
   <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code> kopiert die Vorlage.</li>
   <li><strong>Szenenbrief schreiben</strong> (<code>brief.yaml</code>): der Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, die Abschnitte (Beats) mit Zeiten, Beschriftungen und eine Beschreibung des Bildes für Menschen, die es nicht sehen.</li>
   <li><strong>Geometrie festlegen</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.</li>
   <li><strong>Szene aufbauen</strong> (<code>scene.js</code>): Figuren und Requisiten in einer begründeten Reihenfolge von hinten nach vorn.</li>
   <li><strong>Bewegung schreiben</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht. Posen lassen sich im <a href="#editor">Posen-Editor</a> setzen.</li>
+  <li><strong>Geräusche zuordnen</strong> (im Szenenbrief unter <code>sfx</code>): welche Ereignisse klingen, zum Beispiel jeder dritte Tastenanschlag. <code>npm run sfx:cues -- FILM-01-name --stichprobe</code> findet die Zeitpunkte in der Bewegung. Siehe <a href="#geraeusche">Geräusche</a>.</li>
   <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code> prüft die Szene und erzeugt den Prototyp.</li>
   <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code> erzeugt neun Standbilder. Jedes wird angesehen: Liegt etwas falsch vor dem Körper? Greift ein Arm durch einen Tisch? Ist die Pointe auch klein lesbar?</li>
   <li><strong>Prototyp öffnen</strong> und abspielen.</li>
@@ -310,6 +312,23 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
 </div></details>
 </section>
 
+<section id="geraeusche">
+<h2>Geräusche</h2>
+<p>Geräusche sind dezent und eher zum Schmunzeln: eine etwas zu eifrige Tastatur, ein Drucker, der kurz nachdenkt. Ausgeschlossen sind Boing, Fanfare, Lachen, Applaus, Explosionen und Musik. Je Szene klingen drei bis sechs Geräuscharten, höchstens sechs Geräusche in einer Sekunde und höchstens ein kurzer Laut wie „oh?“.</p>
+<p>Die Zeitpunkte werden nicht von Hand gesetzt. Die Werkstatt spielt die Bewegung Bild für Bild ab und erkennt, wo etwas anschlägt, losgeht, ankommt oder erscheint. Der Szenenbrief sagt nur, welche dieser Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.</p>
+<ol class="schritte">
+  <li><strong>Katalog:</strong> rund 40 Geräusche und drei Laute mit Beschreibung, Länge und Pegel (<code>lib/sfx/katalog.yaml</code>).</li>
+  <li><strong>Kostenfreigabe:</strong> <code>npm run sfx:kosten</code> listet, was generiert werden müsste, und schätzt die Credits. Generiert wird erst nach Zustimmung der Regie.</li>
+  <li><strong>Hörprobe:</strong> <code>npm run sfx:hoerprobe</code> zeigt alle Varianten mit Messwerten zum Anhören und Auswählen.</li>
+  <li><strong>Bearbeiten:</strong> <code>npm run sfx:normalisieren</code> schneidet Stille ab, kürzt auf genau einen Anschlag, blendet weich und bringt alles auf denselben Pegel.</li>
+  <li><strong>Zuordnen:</strong> <code>npm run sfx:cues -- &lt;Szene&gt; --stichprobe</code> schreibt die Liste der Geräusche und zeigt je Ereignis das Bild davor, darauf und danach.</li>
+</ol>
+<details><summary>Technische Einzelheiten</summary><div>
+<p>Erkennungsarten in <code>lib/events.js</code>: Tiefpunkt (Anschlag, Stempel), Beginn (Klick), Nulldurchgang (Schritt), Bewegungsbeginn und -ende (Abheben, Ankunft), Aufprall, Hüllkurve (Gerät) und Schwelle (Erscheinen). Pfade zeigen in den Zustand oder in die Gelenke einer Figur, etwa <code>A.armF.hand.y</code>. Aus einem Vorrat wählt ein Hash über Szene, Typ und laufende Nummer die Variante, nie zweimal dieselbe hintereinander.</p>
+<p>Pegel: −20 LUFS größte Momentanlautheit, True Peak höchstens −3 dBTP, gemessen nach ITU-R BS.1770 in <code>lib/sfx/lautheit.js</code> und mit ffmpeg gegengeprüft. Ausgabe als WAV mono 48 kHz 24 bit und als OGG/Opus für den Prototyp. Im Prototyp liegt der lauteste Cue bei 0 dB, die übrigen relativ dazu.</p>
+</div></details>
+</section>
+
 <section id="requisiten">
 <h2>Requisiten</h2>
 <p>Möbel, Geräte, Büromaterial, Dinge im Freien und Zeichen stehen als fertige Bausteine bereit. Sie sind aus Flächen mit Kontur gebaut, ohne Schatten und Verläufe. Bewegliche Teile wie eine Schublade, das Papierfach eines Druckers oder der Hörer eines Telefons lassen sich einzeln bewegen.</p>
@@ -346,7 +365,7 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
 <h2>Prüfungen</h2>
 <p>Bei jeder Änderung prüft GitHub die ganze Werkstatt automatisch. Erst wenn alles grün ist, wird eine Änderung übernommen. Örtlich läuft dasselbe mit <code>npm run pruefen</code>.</p>
 <ul>
-  <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt)</li>
+  <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt, Geräusche mit Lautheit gegen ffmpeg)</li>
   <li>Verbotsprüfung: Zugangsschlüssel, unerlaubte Animationen, Zufall ohne Startwert, Farben außerhalb der Palette, Abstände außerhalb des Rasters, Webfonts, Netzaufrufe</li>
   <li>jede Szene bauen und über jedes Bild prüfen</li>
   <li>erzeugte Dateien vergleichen: Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle</li>
@@ -372,7 +391,7 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
   <thead><tr><th>Phase</th><th>Inhalt</th><th>Stand</th></tr></thead>
   <tbody>{{STAND}}</tbody>
 </table></div>
-<p>Als Nächstes: die Rig-Spezifikation freigeben (danach bleibt sie fest), den ersten eigenen Teilesatz zeichnen und die Geräusche aufbauen.</p>
+<p>Als Nächstes: die Geräusche nach Kostenfreigabe generieren und auswählen, die Rig-Spezifikation freigeben (danach bleibt sie fest) und den ersten eigenen Teilesatz zeichnen.</p>
 </section>
 
 <section id="zusammenarbeit">

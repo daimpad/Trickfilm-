@@ -71,3 +71,13 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Hilfen | ein Satz für drei Profile, zweite Seite ableiten, Farbschlüssel per Klick, Testposen live | entschieden von Regie |
 | Ort | im Repository (`npm run teile`) und auf der Webseite | entschieden von Regie |
 | Prüfung | dieselbe Struktur- und Gelenkprüfung wie der Importer, aus `lib/` geteilt | entschieden vom Leitstand |
+
+## 2026-10-20 · Phase 4: Geräusche
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Weiter mit Phase 4 nach dem Merge der Teile-Werkstatt | ja („weiter“) | entschieden von Regie |
+| Startbestand | 35 Geräusche und 3 Laute nach Abschnitt 8.2, Prompts englisch | entschieden vom Leitstand |
+| Pfade in die Gelenke, Ereignistyp `aufbruch` | ja, siehe Chronik | entschieden vom Leitstand |
+| Generierung des Startbestands | offen: Kostenfreigabe mit `npm run sfx:kosten` | Regie |
+
