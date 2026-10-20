@@ -1,0 +1,10 @@
+# ERZEUGT von tools/import-teilesatz.js. Nicht von Hand ändern.
+satz	archetyp	pruefpunkt	status	anmerkung
+satz-00	sitzend-profil	struktur	ok	18 Teile
+satz-00	sitzend-profil	gelenke	ok	17 Gelenke × 4 Winkel
+satz-00	stehend-profil	struktur	ok	18 Teile
+satz-00	stehend-profil	gelenke	ok	17 Gelenke × 4 Winkel
+satz-00	stehend-frontal	struktur	ok	18 Teile
+satz-00	stehend-frontal	gelenke	ok	17 Gelenke × 4 Winkel
+satz-00	oberkoerper-nah	struktur	ok	12 Teile
+satz-00	oberkoerper-nah	gelenke	ok	11 Gelenke × 4 Winkel

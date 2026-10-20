@@ -33,3 +33,7 @@ Je Regeländerung ein Absatz: Anlass, Alternativen, Grund, Messung. Die geltende
 ## 2026-10-19 · Autoplay-Test mit document-user-activation-required
 
 **Anlass:** Unter `--autoplay-policy=user-gesture-required` lief der Tonkontext in Chromium sofort (`running`), der Test prüfte also nichts. **Alternativen:** nur von Hand im Desktop-Browser prüfen. **Grund:** Für Web Audio wendet Chromium `document-user-activation-required` an; unter dieser Regel meldet der Tonkontext `suspended`, und die Seite wartet bei 0. **Messung:** Seitentest mit beiden Regeln grün.
+
+## 2026-10-20 · satz-00 geht durch den Importer
+
+**Anlass:** Phase 3 verlangt, dass der Importer `satz-00` fehlerfrei einliest. **Alternativen:** `satz-00` weiter direkt als Modul erzeugen und den Importer nur an Testzeichnungen prüfen. **Grund:** `figuren:erzeugen` schreibt `satz-00` als Zeichnung im Exportformat; der Importer liest sie wie jede Handzeichnung. Damit prüft jeder Prüflauf den ganzen Weg von der Zeichnung bis zum Modul. Die Glieder sind dafür Kapseln als Pfade mit 6-px-Kontur statt dicker Striche, damit sie die Exportregeln selbst einhalten. **Messung:** Import ohne Befund, 0 Gelenklücken in allen Archetypen; Testposen am Bild unverändert.

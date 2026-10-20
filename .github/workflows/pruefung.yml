@@ -51,5 +51,5 @@ jobs:
       - name: Jede Szene bauen (Brief gegen Code, keine NaN, Reichweiten)
         run: npm run szene:bauen -- alle
 
-      - name: Erzeugte Dateien aktuell (Spezifikation, Teilesätze, Protokolle)
+      - name: Erzeugte Dateien aktuell (Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle)
         run: npm run erzeugt:pruefen
