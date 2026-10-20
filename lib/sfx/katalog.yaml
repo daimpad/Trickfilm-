@@ -284,3 +284,210 @@
   gain_db: -26
   nachklang: true
   ereignisse: [erscheinen]
+
+# ---------------------------------------------------------------------------------------------------
+# Erweiterung (entschieden von Regie, 2026-10-20: „alles und darüber hinaus, je größer desto besser“).
+# Eine Zeile je Cue; gleiche Felder und Regeln wie oben.
+
+# Tastatur, Maus, Bildschirm
+- { id: tastatur-leise, art: sfx, prompt: "single quiet laptop keyboard keystroke, close, dry room", dauer_s: 0.25, varianten_vorrat: 8, gain_db: -28, einzel: true, ereignisse: [anschlag] }
+- { id: leertaste, art: sfx, prompt: "single keyboard space bar press, slightly hollow, close", dauer_s: 0.3, varianten_vorrat: 2, gain_db: -26, einzel: true, ereignisse: [anschlag] }
+- { id: enter-taste, art: sfx, prompt: "single firm keyboard enter key press, close, dry room", dauer_s: 0.3, varianten_vorrat: 2, gain_db: -25, einzel: true, ereignisse: [anschlag] }
+- { id: tippen-folge, art: sfx, prompt: "continuous relaxed typing on an office keyboard, close, dry room", dauer_s: 2.0, gain_db: -30, loop: true, ereignisse: [geraet] }
+- { id: maus-scrollen, art: sfx, prompt: "computer mouse scroll wheel ticking briefly, close", dauer_s: 0.8, gain_db: -30, ereignisse: [geraet] }
+- { id: doppelklick, art: sfx, prompt: "quick double click of a computer mouse, close", dauer_s: 0.3, gain_db: -25, ereignisse: [klick] }
+- { id: handy-tippen, art: sfx, prompt: "fingertip tapping a smartphone glass screen once, tiny soft tap", dauer_s: 0.2, varianten_vorrat: 3, gain_db: -30, einzel: true, ereignisse: [anschlag] }
+- { id: handy-vibration, art: sfx, prompt: "smartphone vibrating briefly on a wooden desk", dauer_s: 0.8, gain_db: -28, ereignisse: [geraet] }
+- { id: benachrichtigung, art: sfx, prompt: "soft short smartphone notification tone, single gentle blip", dauer_s: 0.5, gain_db: -27, nachklang: true, ereignisse: [erscheinen] }
+- { id: nachricht-gesendet, art: sfx, prompt: "soft subtle swoosh of a message being sent on a phone, short", dauer_s: 0.4, gain_db: -28, ereignisse: [erscheinen, abheben] }
+- { id: fehler-ton, art: sfx, prompt: "soft low user interface error tone, short, not harsh", dauer_s: 0.5, gain_db: -27, nachklang: true, ereignisse: [erscheinen] }
+- { id: ui-klick, art: sfx, prompt: "soft user interface click, subtle digital tick", dauer_s: 0.2, varianten_vorrat: 3, gain_db: -28, einzel: true, ereignisse: [klick] }
+- { id: ui-pop, art: sfx, prompt: "soft user interface pop as a small panel appears, light", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [erscheinen] }
+- { id: ui-schliessen, art: sfx, prompt: "soft short user interface swipe as a panel closes", dauer_s: 0.3, gain_db: -30, ereignisse: [ankunft] }
+- { id: ui-umschalten, art: sfx, prompt: "soft toggle switch click in a user interface, digital", dauer_s: 0.2, gain_db: -28, einzel: true, ereignisse: [klick] }
+- { id: laptop-aufklappen, art: sfx, prompt: "laptop lid opened, soft hinge creak", dauer_s: 0.6, gain_db: -30, ereignisse: [aufbruch] }
+- { id: laptop-zuklappen, art: sfx, prompt: "laptop lid closed gently, soft plastic thud", dauer_s: 0.5, gain_db: -28, einzel: true, ereignisse: [ankunft] }
+- { id: rechner-luefter, art: sfx, prompt: "quiet computer fan hum, steady, close", dauer_s: 2.0, gain_db: -38, loop: true, ereignisse: [geraet] }
+- { id: usb-stecker, art: sfx, prompt: "usb stick plugged into a laptop, small plastic click", dauer_s: 0.3, gain_db: -28, einzel: true, ereignisse: [klick, ankunft] }
+- { id: kabel-ziehen, art: sfx, prompt: "cable unplugged from a socket, short pull", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [aufbruch] }
+- { id: monitor-an, art: sfx, prompt: "computer monitor switching on, faint electrical click and soft hum", dauer_s: 0.5, gain_db: -30, ereignisse: [erscheinen] }
+- { id: kamera-ausloeser, art: sfx, prompt: "camera shutter click, soft", dauer_s: 0.3, gain_db: -27, einzel: true, ereignisse: [klick] }
+- { id: stoppuhr, art: sfx, prompt: "single stopwatch button click", dauer_s: 0.2, gain_db: -27, einzel: true, ereignisse: [klick] }
+- { id: zaehler-tick, art: sfx, prompt: "single soft mechanical counter tick", dauer_s: 0.2, varianten_vorrat: 4, gain_db: -29, einzel: true, ereignisse: [klick, anschlag] }
+- { id: piepen-geraet, art: sfx, prompt: "single short soft electronic beep", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [erscheinen] }
+- { id: relais-klick, art: sfx, prompt: "small electrical relay clicking once", dauer_s: 0.2, gain_db: -29, einzel: true, ereignisse: [klick] }
+
+# Stift und Papier
+- { id: stift-klick, art: sfx, prompt: "single ballpoint pen click, close", dauer_s: 0.2, varianten_vorrat: 3, gain_db: -27, einzel: true, ereignisse: [klick] }
+- { id: stift-aufsetzen, art: sfx, prompt: "pen tip tapped once on paper on a desk", dauer_s: 0.2, varianten_vorrat: 3, gain_db: -30, einzel: true, ereignisse: [anschlag] }
+- { id: unterschrift, art: sfx, prompt: "quick signature written with a pen on paper, close", dauer_s: 1.2, gain_db: -29, ereignisse: [geraet] }
+- { id: radiergummi, art: sfx, prompt: "eraser rubbing on paper briefly, close", dauer_s: 0.8, gain_db: -31, ereignisse: [geraet] }
+- { id: textmarker, art: sfx, prompt: "highlighter marker stroke across paper, soft squeak", dauer_s: 0.6, gain_db: -30, ereignisse: [geraet] }
+- { id: papier-knuellen, art: sfx, prompt: "sheet of paper crumpled into a ball by hand", dauer_s: 1.0, gain_db: -28, ereignisse: [geraet] }
+- { id: papier-reissen, art: sfx, prompt: "sheet of paper torn in half, single tear", dauer_s: 0.7, gain_db: -28, ereignisse: [aufbruch] }
+- { id: papier-falten, art: sfx, prompt: "sheet of paper folded in half, crisp crease", dauer_s: 0.6, gain_db: -30, ereignisse: [ankunft] }
+- { id: blatt-flattern, art: sfx, prompt: "single paper sheet fluttering in the air briefly", dauer_s: 0.8, gain_db: -31, ereignisse: [abheben] }
+- { id: blatt-wischen, art: sfx, prompt: "soft swipe of a paper sheet across a desk", dauer_s: 0.4, gain_db: -31, ereignisse: [abheben, aufbruch] }
+- { id: umschlag-oeffnen, art: sfx, prompt: "paper envelope torn open by hand", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: umschlag-schliessen, art: sfx, prompt: "envelope flap pressed shut, soft paper", dauer_s: 0.4, gain_db: -31, einzel: true, ereignisse: [ankunft] }
+- { id: ordner-auf, art: sfx, prompt: "ring binder rings snapping open, metallic", dauer_s: 0.4, gain_db: -27, einzel: true, ereignisse: [klick, aufbruch] }
+- { id: ordner-zu, art: sfx, prompt: "ring binder rings snapping shut, metallic", dauer_s: 0.4, gain_db: -27, einzel: true, ereignisse: [klick, ankunft] }
+- { id: locher, art: sfx, prompt: "office hole punch pressed through paper, firm clunk", dauer_s: 0.4, gain_db: -26, einzel: true, ereignisse: [anschlag, stempel] }
+- { id: klebeband-abreissen, art: sfx, prompt: "adhesive tape pulled from a desk dispenser and torn off", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: schere, art: sfx, prompt: "scissors cutting through a sheet of paper, two snips", dauer_s: 0.6, gain_db: -29, ereignisse: [geraet] }
+- { id: bueroklammer, art: sfx, prompt: "small paper clip dropped on a desk, light metallic tick", dauer_s: 0.3, gain_db: -31, einzel: true, ereignisse: [aufprall] }
+- { id: stapel-schieben, art: sfx, prompt: "stack of papers slid across a desk", dauer_s: 0.8, gain_db: -30, ereignisse: [aufbruch] }
+- { id: buch-zuklappen, art: sfx, prompt: "hardcover book closed firmly, soft thump", dauer_s: 0.4, gain_db: -27, einzel: true, ereignisse: [ankunft, aufsetzen] }
+- { id: buch-aufschlagen, art: sfx, prompt: "book opened, pages flutter softly", dauer_s: 0.6, gain_db: -30, ereignisse: [aufbruch] }
+- { id: seiten-blaettern, art: sfx, prompt: "pages of a thick document flipped through quickly", dauer_s: 1.2, gain_db: -30, ereignisse: [geraet] }
+- { id: klemmbrett, art: sfx, prompt: "single pen tap on a plastic clipboard", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [anschlag] }
+- { id: stempelkissen, art: sfx, prompt: "rubber stamp pressed onto an ink pad, soft", dauer_s: 0.3, gain_db: -30, einzel: true, ereignisse: [anschlag] }
+- { id: kalenderblatt, art: sfx, prompt: "single calendar page torn off", dauer_s: 0.5, gain_db: -29, ereignisse: [aufbruch] }
+- { id: pinnwand, art: sfx, prompt: "push pin pressed into a cork board", dauer_s: 0.3, gain_db: -30, einzel: true, ereignisse: [anschlag] }
+- { id: whiteboard-stift, art: sfx, prompt: "marker writing on a whiteboard, soft squeak", dauer_s: 1.2, gain_db: -30, ereignisse: [geraet] }
+- { id: whiteboard-wischen, art: sfx, prompt: "whiteboard eraser wiping a board", dauer_s: 1.0, gain_db: -31, ereignisse: [geraet] }
+- { id: flipchart, art: sfx, prompt: "large flipchart paper sheet flipped over", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: kreide-tafel, art: sfx, prompt: "chalk writing on a blackboard, close", dauer_s: 1.2, gain_db: -30, ereignisse: [geraet] }
+
+# Büromöbel, Geräte, Raum
+- { id: schublade-metall-auf, art: sfx, prompt: "metal filing cabinet drawer sliding open on rails", dauer_s: 1.0, gain_db: -28, ereignisse: [aufbruch] }
+- { id: schublade-metall-zu, art: sfx, prompt: "metal filing cabinet drawer sliding shut with a soft clunk", dauer_s: 0.8, gain_db: -27, ereignisse: [ankunft] }
+- { id: schublade-holz-auf, art: sfx, prompt: "wooden desk drawer sliding open", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: schublade-holz-zu, art: sfx, prompt: "wooden desk drawer closing with a soft knock", dauer_s: 0.6, gain_db: -28, ereignisse: [ankunft] }
+- { id: etikettendrucker, art: sfx, prompt: "small label printer printing and cutting a label", dauer_s: 1.5, gain_db: -30, ereignisse: [geraet, ausgabe] }
+- { id: aktenvernichter, art: sfx, prompt: "paper shredder briefly shredding a sheet", dauer_s: 1.5, gain_db: -29, ereignisse: [geraet] }
+- { id: kopierer, art: sfx, prompt: "office photocopier making a copy, light scanning sweep and paper out", dauer_s: 2.5, gain_db: -30, ereignisse: [geraet] }
+- { id: drucker-laeuft, art: sfx, prompt: "laser printer printing pages steadily, dry room", dauer_s: 2.0, gain_db: -31, loop: true, ereignisse: [geraet] }
+- { id: drucker-hakt, art: sfx, prompt: "office printer grinding briefly, then stopping with a small clunk", dauer_s: 1.2, gain_db: -29, ereignisse: [geraet] }
+- { id: telefon-abheben, art: sfx, prompt: "desk phone handset lifted off the cradle", dauer_s: 0.4, gain_db: -28, einzel: true, ereignisse: [aufbruch] }
+- { id: telefon-auflegen, art: sfx, prompt: "desk phone handset placed back on the cradle with a click", dauer_s: 0.4, gain_db: -27, einzel: true, ereignisse: [ankunft] }
+- { id: telefon-waehlen, art: sfx, prompt: "short series of soft phone keypad tones", dauer_s: 1.0, gain_db: -30, ereignisse: [geraet] }
+- { id: kaffeemaschine, art: sfx, prompt: "office coffee machine grinding and brewing briefly", dauer_s: 3.0, gain_db: -30, ereignisse: [geraet] }
+- { id: kaffee-einschenken, art: sfx, prompt: "coffee poured into a ceramic mug", dauer_s: 1.5, gain_db: -30, ereignisse: [geraet] }
+- { id: tasse-abstellen, art: sfx, prompt: "ceramic mug set down on a desk, soft clink", dauer_s: 0.4, varianten_vorrat: 2, gain_db: -28, einzel: true, ereignisse: [aufsetzen, ankunft] }
+- { id: loeffel-ruehren, art: sfx, prompt: "teaspoon stirring in a ceramic mug, light clinks", dauer_s: 1.2, gain_db: -31, ereignisse: [geraet] }
+- { id: wasserspender, art: sfx, prompt: "office water dispenser filling a paper cup, gurgle", dauer_s: 1.5, gain_db: -30, ereignisse: [geraet] }
+- { id: stuhl-drehen, art: sfx, prompt: "office chair swivelling, soft creak", dauer_s: 0.8, gain_db: -31, ereignisse: [aufbruch] }
+- { id: stuhl-setzen, art: sfx, prompt: "person sitting down on an office chair, cushion and slight creak", dauer_s: 0.6, gain_db: -29, einzel: true, ereignisse: [aufsetzen] }
+- { id: stuhl-aufstehen, art: sfx, prompt: "person getting up from an office chair, soft creak", dauer_s: 0.6, gain_db: -30, ereignisse: [aufbruch] }
+- { id: stuhl-ruecken, art: sfx, prompt: "wooden chair scraped back briefly on a floor", dauer_s: 0.6, gain_db: -29, ereignisse: [aufbruch] }
+- { id: tisch-klopfen, art: sfx, prompt: "single knuckle knock on a wooden desk", dauer_s: 0.3, varianten_vorrat: 3, gain_db: -27, einzel: true, ereignisse: [anschlag] }
+- { id: tuer-klopfen, art: sfx, prompt: "single polite knock on a wooden office door", dauer_s: 0.3, varianten_vorrat: 4, gain_db: -26, einzel: true, ereignisse: [anschlag] }
+- { id: tuerklinke, art: sfx, prompt: "door handle pressed down, metallic click", dauer_s: 0.4, gain_db: -28, einzel: true, ereignisse: [klick] }
+- { id: tuer-knarren, art: sfx, prompt: "door opening slowly with a gentle creak", dauer_s: 1.2, gain_db: -29, ereignisse: [aufbruch] }
+- { id: schluessel-schloss, art: sfx, prompt: "key turned in a door lock, two clicks", dauer_s: 0.8, gain_db: -28, ereignisse: [klick] }
+- { id: aufzug-ankunft, art: sfx, prompt: "elevator arriving, single soft ding", dauer_s: 0.8, gain_db: -27, nachklang: true, ereignisse: [erscheinen, ankunft] }
+- { id: aufzug-tueren, art: sfx, prompt: "elevator doors sliding open smoothly", dauer_s: 1.2, gain_db: -30, ereignisse: [aufbruch] }
+- { id: neonlicht, art: sfx, prompt: "fluorescent ceiling light flickering on with a soft buzz", dauer_s: 1.2, gain_db: -31, ereignisse: [erscheinen] }
+- { id: klimaanlage, art: sfx, prompt: "quiet office air conditioning hum, steady", dauer_s: 2.0, gain_db: -38, loop: true, ereignisse: [geraet] }
+- { id: raumton-buero, art: sfx, prompt: "quiet office room tone, distant soft murmur without words", dauer_s: 3.0, gain_db: -40, loop: true, ereignisse: [geraet] }
+- { id: beamer, art: sfx, prompt: "projector fan whirring quietly, steady", dauer_s: 2.0, gain_db: -36, loop: true, ereignisse: [geraet] }
+- { id: lichtschalter-zug, art: sfx, prompt: "pull cord light switch clicked once", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [klick] }
+- { id: magnet, art: sfx, prompt: "small magnet snapping onto a metal board, small click", dauer_s: 0.3, gain_db: -29, einzel: true, ereignisse: [ankunft] }
+
+# Schalter, Handel, Post
+- { id: kasse, art: sfx, prompt: "cash register drawer opening with a short ring", dauer_s: 0.8, gain_db: -28, nachklang: true, ereignisse: [aufbruch] }
+- { id: kassenbon, art: sfx, prompt: "receipt printer printing a short receipt", dauer_s: 1.2, gain_db: -30, ereignisse: [geraet, ausgabe] }
+- { id: karte-bezahlen, art: sfx, prompt: "contactless card payment terminal confirmation beep, soft", dauer_s: 0.4, gain_db: -28, nachklang: true, ereignisse: [erscheinen] }
+- { id: scanner-piep, art: sfx, prompt: "barcode scanner beep at a checkout, soft", dauer_s: 0.3, gain_db: -28, einzel: true, ereignisse: [erscheinen] }
+- { id: muenzen-zaehlen, art: sfx, prompt: "a few coins counted onto a counter", dauer_s: 1.2, gain_db: -29, ereignisse: [geraet] }
+- { id: geldscheine, art: sfx, prompt: "banknotes counted by hand, crisp paper", dauer_s: 1.0, gain_db: -30, ereignisse: [geraet] }
+- { id: wartemarke, art: sfx, prompt: "queue ticket dispenser printing a paper ticket", dauer_s: 0.8, gain_db: -29, ereignisse: [ausgabe] }
+- { id: aufruf-ton, art: sfx, prompt: "soft two tone waiting room call chime", dauer_s: 1.0, gain_db: -27, nachklang: true, ereignisse: [erscheinen] }
+- { id: schalterglocke, art: sfx, prompt: "small service desk bell tapped once", dauer_s: 0.8, gain_db: -27, nachklang: true, ereignisse: [anschlag] }
+- { id: papiertuete, art: sfx, prompt: "paper shopping bag rustling", dauer_s: 0.8, gain_db: -30, ereignisse: [geraet] }
+- { id: plastiktuete, art: sfx, prompt: "plastic bag rustling briefly", dauer_s: 0.8, gain_db: -31, ereignisse: [geraet] }
+- { id: karton-oeffnen, art: sfx, prompt: "cardboard box flaps opened", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: karton-abstellen, art: sfx, prompt: "cardboard box set down on a floor, hollow thud", dauer_s: 0.5, gain_db: -27, einzel: true, ereignisse: [aufsetzen, ankunft] }
+- { id: paketband, art: sfx, prompt: "packing tape pulled across a cardboard box", dauer_s: 1.0, gain_db: -29, ereignisse: [geraet] }
+- { id: briefkasten, art: sfx, prompt: "letter dropped into a metal mailbox, flap clank", dauer_s: 0.6, gain_db: -28, ereignisse: [ankunft] }
+
+# Gehen und Bewegung
+- { id: schritt-holz, art: sfx, prompt: "single footstep on a wooden floor, indoor, close", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -28, einzel: true, ereignisse: [schritt] }
+- { id: schritt-fliesen, art: sfx, prompt: "single footstep on a tiled floor, light echo", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -28, einzel: true, ereignisse: [schritt] }
+- { id: schritt-strasse, art: sfx, prompt: "single footstep on a city sidewalk, outdoor", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -28, einzel: true, ereignisse: [schritt] }
+- { id: schritt-kies, art: sfx, prompt: "single footstep on gravel", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -28, einzel: true, ereignisse: [schritt] }
+- { id: schritt-absatz, art: sfx, prompt: "single footstep of a heeled shoe on a hard floor", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -28, einzel: true, ereignisse: [schritt] }
+- { id: schritt-gras, art: sfx, prompt: "single soft footstep on grass", dauer_s: 0.4, varianten_vorrat: 6, gain_db: -30, einzel: true, ereignisse: [schritt] }
+- { id: kleidung-rascheln, art: sfx, prompt: "clothing rustle as a person moves, soft fabric", dauer_s: 0.6, gain_db: -34, ereignisse: [aufbruch] }
+- { id: jacke-anziehen, art: sfx, prompt: "jacket put on, fabric rustle", dauer_s: 1.0, gain_db: -31, ereignisse: [geraet] }
+- { id: reissverschluss, art: sfx, prompt: "zipper pulled quickly", dauer_s: 0.5, gain_db: -29, ereignisse: [aufbruch] }
+- { id: klettverschluss, art: sfx, prompt: "velcro strap ripped open", dauer_s: 0.5, gain_db: -29, ereignisse: [aufbruch] }
+- { id: haende-reiben, art: sfx, prompt: "hands rubbed together briefly", dauer_s: 0.8, gain_db: -31, ereignisse: [geraet] }
+- { id: fingerschnippen, art: sfx, prompt: "single finger snap, close", dauer_s: 0.2, gain_db: -27, einzel: true, ereignisse: [klick] }
+- { id: klatschen-einmal, art: sfx, prompt: "single soft hand clap", dauer_s: 0.3, gain_db: -27, einzel: true, ereignisse: [anschlag] }
+- { id: sofa-setzen, art: sfx, prompt: "person sitting down on a sofa, soft cushion", dauer_s: 0.6, gain_db: -30, einzel: true, ereignisse: [aufsetzen] }
+- { id: schulranzen, art: sfx, prompt: "backpack zipper opened and bag set down", dauer_s: 1.0, gain_db: -30, ereignisse: [aufbruch, aufsetzen] }
+
+# Stadt, Verkehr, Draußen
+- { id: fahrradklingel, art: sfx, prompt: "single bicycle bell ring", dauer_s: 0.8, gain_db: -27, nachklang: true, ereignisse: [erscheinen] }
+- { id: fahrrad-rollen, art: sfx, prompt: "bicycle rolling past, chain ticking softly", dauer_s: 2.0, gain_db: -31, loop: true, ereignisse: [geraet] }
+- { id: autotuer-zu, art: sfx, prompt: "car door closing, solid thud", dauer_s: 0.6, gain_db: -27, einzel: true, ereignisse: [ankunft] }
+- { id: autotuer-auf, art: sfx, prompt: "car door opening, handle click", dauer_s: 0.6, gain_db: -29, ereignisse: [aufbruch] }
+- { id: motor-start, art: sfx, prompt: "small car engine starting and idling briefly", dauer_s: 2.0, gain_db: -30, ereignisse: [aufbruch] }
+- { id: motor-leerlauf, art: sfx, prompt: "small car engine idling steadily", dauer_s: 2.0, gain_db: -33, loop: true, ereignisse: [geraet] }
+- { id: bus-tueren, art: sfx, prompt: "city bus doors opening with a pneumatic hiss", dauer_s: 1.2, gain_db: -29, ereignisse: [aufbruch] }
+- { id: bus-haelt, art: sfx, prompt: "city bus braking to a stop, soft air brake", dauer_s: 1.5, gain_db: -30, ereignisse: [ankunft] }
+- { id: strassenbahn, art: sfx, prompt: "tram passing at moderate distance, rails humming", dauer_s: 3.0, gain_db: -32, ereignisse: [aufbruch] }
+- { id: ampel-ticken, art: sfx, prompt: "pedestrian crossing signal ticking steadily", dauer_s: 2.0, gain_db: -33, loop: true, ereignisse: [geraet] }
+- { id: verkehr-stadt, art: sfx, prompt: "distant city traffic ambience, calm", dauer_s: 3.0, gain_db: -40, loop: true, ereignisse: [geraet] }
+- { id: park, art: sfx, prompt: "calm park ambience with birds chirping softly", dauer_s: 3.0, gain_db: -40, loop: true, ereignisse: [geraet] }
+- { id: regen, art: sfx, prompt: "light rain on a window, steady", dauer_s: 3.0, gain_db: -36, loop: true, ereignisse: [geraet] }
+- { id: wind, art: sfx, prompt: "gentle wind outdoors, steady", dauer_s: 3.0, gain_db: -38, loop: true, ereignisse: [geraet] }
+- { id: donner-fern, art: sfx, prompt: "distant soft thunder rumble", dauer_s: 2.5, gain_db: -32, nachklang: true, ereignisse: [geraet] }
+- { id: vogel, art: sfx, prompt: "single small bird chirping briefly", dauer_s: 0.8, gain_db: -32, ereignisse: [erscheinen] }
+- { id: hund-fern, art: sfx, prompt: "small dog barking twice in the distance", dauer_s: 1.0, gain_db: -32, ereignisse: [erscheinen] }
+- { id: katze, art: sfx, prompt: "soft short cat meow", dauer_s: 0.8, gain_db: -30, ereignisse: [erscheinen] }
+- { id: regenschirm, art: sfx, prompt: "umbrella opening with a soft swish and click", dauer_s: 0.8, gain_db: -29, ereignisse: [aufbruch] }
+- { id: baustelle-fern, art: sfx, prompt: "distant construction site ambience, faint hammering", dauer_s: 3.0, gain_db: -40, loop: true, ereignisse: [geraet] }
+- { id: gartentor, art: sfx, prompt: "small metal garden gate opening with a creak", dauer_s: 1.0, gain_db: -29, ereignisse: [aufbruch] }
+- { id: schulglocke-fern, art: sfx, prompt: "distant school bell ringing briefly", dauer_s: 2.0, gain_db: -32, nachklang: true, ereignisse: [erscheinen] }
+
+# Haushalt und Küche
+- { id: wasserhahn, art: sfx, prompt: "kitchen tap running briefly", dauer_s: 1.5, gain_db: -30, ereignisse: [geraet] }
+- { id: wasserkocher, art: sfx, prompt: "electric kettle heating and clicking off", dauer_s: 3.0, gain_db: -31, ereignisse: [geraet] }
+- { id: toaster, art: sfx, prompt: "toaster popping up", dauer_s: 0.6, gain_db: -28, einzel: true, ereignisse: [erscheinen] }
+- { id: kuehlschrank, art: sfx, prompt: "fridge door opening with a soft seal pop", dauer_s: 0.8, gain_db: -30, ereignisse: [aufbruch] }
+- { id: mikrowelle, art: sfx, prompt: "microwave finished, three soft beeps", dauer_s: 1.2, gain_db: -29, nachklang: true, ereignisse: [erscheinen] }
+- { id: teller-abstellen, art: sfx, prompt: "ceramic plate set down on a table, soft clink", dauer_s: 0.4, gain_db: -28, einzel: true, ereignisse: [aufsetzen] }
+- { id: besteck, art: sfx, prompt: "cutlery placed on a plate, light clink", dauer_s: 0.4, gain_db: -29, einzel: true, ereignisse: [aufsetzen] }
+- { id: glas-abstellen, art: sfx, prompt: "drinking glass set down on a wooden table", dauer_s: 0.4, gain_db: -28, einzel: true, ereignisse: [aufsetzen] }
+- { id: glaeser-anstossen, art: sfx, prompt: "two glasses touching lightly, soft clink", dauer_s: 0.6, gain_db: -28, nachklang: true, ereignisse: [anschlag] }
+- { id: flasche-oeffnen, art: sfx, prompt: "plastic bottle cap twisted open with a soft hiss", dauer_s: 0.6, gain_db: -29, ereignisse: [aufbruch] }
+- { id: wasser-einschenken, art: sfx, prompt: "water poured into a glass", dauer_s: 1.2, gain_db: -30, ereignisse: [geraet] }
+- { id: staubsauger, art: sfx, prompt: "vacuum cleaner running in the next room, muffled", dauer_s: 2.0, gain_db: -36, loop: true, ereignisse: [geraet] }
+- { id: waschmaschine, art: sfx, prompt: "washing machine running quietly", dauer_s: 3.0, gain_db: -38, loop: true, ereignisse: [geraet] }
+- { id: vorhang, art: sfx, prompt: "curtain pulled open on a rail", dauer_s: 1.0, gain_db: -30, ereignisse: [aufbruch] }
+- { id: fenster-oeffnen, art: sfx, prompt: "window opened, latch click and soft rush of outside air", dauer_s: 1.0, gain_db: -30, ereignisse: [aufbruch] }
+- { id: schluessel-ablegen, art: sfx, prompt: "keys dropped into a small ceramic bowl", dauer_s: 0.6, gain_db: -28, nachklang: true, ereignisse: [aufprall, aufsetzen] }
+- { id: bettdecke, art: sfx, prompt: "duvet rustling", dauer_s: 1.0, gain_db: -32, ereignisse: [geraet] }
+
+# Werkzeug und Technik
+- { id: hammer, art: sfx, prompt: "single hammer hit on a nail into wood", dauer_s: 0.4, varianten_vorrat: 3, gain_db: -26, einzel: true, ereignisse: [anschlag] }
+- { id: bohrer, art: sfx, prompt: "cordless drill running briefly", dauer_s: 1.5, gain_db: -29, ereignisse: [geraet] }
+- { id: schraubenzieher, art: sfx, prompt: "screwdriver turning a screw, small ratchet clicks", dauer_s: 1.0, gain_db: -30, ereignisse: [geraet] }
+- { id: saege, art: sfx, prompt: "hand saw cutting wood briefly", dauer_s: 1.5, gain_db: -30, ereignisse: [geraet] }
+- { id: werkzeug-ablegen, art: sfx, prompt: "metal tool set down on a workbench", dauer_s: 0.4, gain_db: -28, einzel: true, ereignisse: [aufsetzen] }
+- { id: zollstock, art: sfx, prompt: "folding wooden ruler unfolded, small clicks", dauer_s: 0.8, gain_db: -30, ereignisse: [aufbruch] }
+- { id: massband, art: sfx, prompt: "tape measure retracting with a snap", dauer_s: 0.6, gain_db: -29, ereignisse: [ankunft] }
+- { id: servo, art: sfx, prompt: "small robotic arm servo whirring briefly", dauer_s: 1.0, gain_db: -30, ereignisse: [aufbruch] }
+- { id: motor-surren, art: sfx, prompt: "small electric motor whirring up", dauer_s: 1.0, gain_db: -30, ereignisse: [aufbruch] }
+- { id: dampf, art: sfx, prompt: "short soft hiss of steam release", dauer_s: 0.8, gain_db: -30, ereignisse: [geraet] }
+- { id: druckluft, art: sfx, prompt: "short pneumatic hiss", dauer_s: 0.5, gain_db: -30, ereignisse: [erscheinen] }
+
+# Körper und Ruhe
+- { id: herzschlag, art: sfx, prompt: "calm heartbeat, soft and low", dauer_s: 2.0, gain_db: -32, loop: true, ereignisse: [geraet] }
+- { id: atmen-ruhig, art: sfx, prompt: "calm slow breath in and out, soft", dauer_s: 2.0, gain_db: -34, ereignisse: [geraet] }
+
+# Übergänge und Effektzeichen
+- { id: whoosh-weich, art: sfx, prompt: "soft gentle whoosh, slow, airy", dauer_s: 0.8, gain_db: -30, ereignisse: [abheben] }
+- { id: whoosh-schnell, art: sfx, prompt: "quick short whoosh, light", dauer_s: 0.4, gain_db: -30, ereignisse: [abheben] }
+- { id: whoosh-tief, art: sfx, prompt: "deeper soft whoosh, smooth", dauer_s: 0.8, gain_db: -31, ereignisse: [abheben] }
+- { id: pling-leise, art: sfx, prompt: "very soft tiny bell tick, single", dauer_s: 0.4, gain_db: -30, nachklang: true, ereignisse: [erscheinen] }
+
+# Weitere Laute (höchstens einer je Szene)
+- { id: laut-zustimmend, art: laut, text: "[agreeing] Mm-hm.", dauer_s: 0.8, gain_db: -20 }
+- { id: laut-nachdenklich, art: laut, text: "[thoughtful] Hmm...", dauer_s: 0.9, gain_db: -20 }
+- { id: laut-zoegernd, art: laut, text: "[hesitant] Uh...", dauer_s: 0.8, gain_db: -20 }
+- { id: laut-beeindruckt, art: laut, text: "[impressed] Ooh.", dauer_s: 0.8, gain_db: -20 }
+- { id: laut-erschoepft, art: laut, text: "[exhausted] Phew.", dauer_s: 0.9, gain_db: -20 }
