@@ -90,3 +90,15 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Weg der Generierung | ElevenLabs-Connector, Ablage über `npm run sfx:ablegen` | entschieden vom Leitstand |
 | Stimme der Laute | alle vier Stimmen aus den Proben (Linda, Julia, Jordan, Lo), je Take 2 („jeweils Take 2“); jeder Laut in allen vier Stimmen, Wahl in der Hörprobe | entschieden von Regie |
 
+## 2026-10-20 · Aufbau der Webseite
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Gliederung | vier Bereiche nach Zweck: Werkzeuge, Anleitungen, Bausteine und Regeln, Nachschlagen | entschieden von Regie |
+| Navigation | Reiter und je Kapitel eine eigene Ansicht mit Zurück, Übersicht, Weiter | entschieden von Regie |
+| Werkzeuge | eigener Bereich mit Kacheln, Querverweise in beide Richtungen | entschieden von Regie |
+| Startansicht | ein Satz und vier Einstiege, ohne Scrollen | entschieden von Regie |
+| Ebenen | seitenweiter Umschalter „Kurz / Mit Technik“ | entschieden von Regie |
+| Suche | einfache Suche auf der Seite, ohne Netz | entschieden von Regie |
+| Prototyp | läuft im Werkzeug-Bereich | entschieden von Regie |
+

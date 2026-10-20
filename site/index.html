@@ -4,35 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trickfilm-Werkstatt</title>
-<meta name="description" content="Was die Trickfilm-Werkstatt kann und wie man sie bedient: Szenen, Figuren, Bewegung, Requisiten, Prüfungen, Befehle.">
+<meta name="description" content="Was die Trickfilm-Werkstatt kann und wie man sie bedient: Werkzeuge, Anleitungen, Bausteine und Regeln, Nachschlagen.">
 <style>
-/* Vorlage der Webseite; tools/seite-bauen.js setzt Tokens, Palette, Befehle, Stand und Bilder ein. */
+/* Vorlage der Webseite; tools/seite-bauen.js setzt Tokens, Palette, Befehle, Stand und Bilder ein.
+   Aufbau: Start und vier Bereiche (Werkzeuge, Anleitungen, Bausteine und Regeln, Nachschlagen), jedes Kapitel
+   eine eigene Ansicht. Ohne JavaScript ist alles eine lange Seite mit Sprungmarken. Keine Übergänge, keine Animation. */
 :root { {{TOKENS_CSS}} }
 * { box-sizing: border-box; }
-html { scroll-behavior: auto; }
 body { margin: 0; background: var(--grund); color: var(--text); font-family: var(--schrift); font-size: 18px; line-height: 1.55; }
 a { color: var(--link); }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
-.rahmen { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 32px; max-width: 1280px; margin: 0 auto; padding: 24px 16px 64px; }
-nav { position: sticky; top: 16px; align-self: start; max-height: calc(100vh - 32px); overflow: auto; font-size: 16px; }
-nav ol { list-style: none; padding: 0; margin: 0; }
-nav li { margin: 4px 0; }
-nav a { text-decoration: none; color: var(--text); display: block; padding: 2px 8px; border-left: 3px solid transparent; }
-nav a:hover { border-left-color: var(--link); }
-main { min-width: 0; max-width: 860px; }
-header.kopf { border-bottom: 4px solid var(--kontur); margin-bottom: 24px; padding-bottom: 16px; }
-h1 { font-size: 40px; line-height: 1.15; margin: 0 0 8px; }
-h2 { font-size: 28px; margin: 48px 0 8px; padding-top: 8px; border-top: 2px solid var(--linie); }
-#ueberblick h2 { border-top: none; margin-top: 24px; }
-h3 { font-size: 21px; margin: 24px 0 4px; }
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+/* Kopfzeile: Name, Reiter, Suche, Ebenen; bleibt oben stehen. */
+.kopf { position: sticky; top: 0; z-index: 2; background: var(--weiss); border-bottom: 4px solid var(--kontur); }
+.kopf-innen { max-width: 1120px; margin: 0 auto; padding: 8px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.marke { font-weight: 700; font-size: 18px; color: var(--text); text-decoration: none; }
+.reiter { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.reiter a { display: block; padding: 5px 8px; font-size: 16px; color: var(--text); text-decoration: none; border: 2px solid transparent; border-bottom-width: 4px; }
+.reiter a:hover { border-color: var(--linie); }
+.reiter a[aria-current="true"] { border-color: var(--kontur); border-bottom-color: var(--link); font-weight: 700; }
+.werkzeugleiste { display: flex; align-items: center; gap: 8px 12px; margin-left: auto; }
+.suche { position: relative; }
+.suche input { font: inherit; font-size: 16px; width: 190px; padding: 6px 10px; border: 2px solid var(--kontur); background: var(--weiss); color: var(--text); }
+.treffer { position: absolute; right: 0; top: calc(100% + 4px); width: min(480px, calc(100vw - 32px)); background: var(--weiss); border: 2px solid var(--kontur); margin: 0; padding: 0; list-style: none; max-height: 60vh; overflow: auto; }
+.treffer li a { display: block; padding: 8px 12px; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--linie); }
+.treffer li a:hover, .treffer li a:focus { background: var(--flaeche); }
+.treffer .ort { display: block; font-size: 14px; font-weight: 700; }
+.treffer .auszug { display: block; font-size: 15px; }
+.treffer .leer { padding: 8px 12px; font-size: 15px; }
+.ebenen { display: inline-flex; border: 2px solid var(--kontur); }
+.ebenen button { font: inherit; font-size: 15px; padding: 5px 10px; border: 0; background: var(--weiss); color: var(--text); cursor: pointer; }
+.ebenen button[aria-pressed="true"] { background: var(--text); color: var(--weiss); font-weight: 700; }
+
+/* Inhalt */
+main { max-width: 1120px; margin: 0 auto; padding: 16px 16px 48px; }
+.ansicht { padding-top: 8px; }
+.ansicht + .ansicht { border-top: 2px solid var(--linie); margin-top: 32px; }
+.js .ansicht + .ansicht { border-top: 0; margin-top: 0; }
+.ansicht > h1, .ansicht > h2 { font-size: 32px; line-height: 1.2; margin: 8px 0 8px; }
+.ansicht h3 { font-size: 21px; margin: 24px 0 4px; }
+.lauftext { max-width: 760px; }
 p, li { max-width: 72ch; }
 .lead { font-size: 20px; }
+.krume { font-size: 15px; margin: 0; }
+.krume a { color: var(--text); }
 code, kbd { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.88em; background: var(--flaeche); padding: 1px 5px; }
 pre { background: var(--flaeche); padding: 12px 16px; overflow-x: auto; font-size: 15px; line-height: 1.45; border-left: 4px solid var(--linie); }
 pre code { background: none; padding: 0; }
-details { margin: 12px 0; border: 2px solid var(--linie); background: var(--weiss); }
-summary { cursor: pointer; padding: 8px 12px; font-weight: 700; }
-details > div { padding: 0 16px 8px; }
 .tabelle { overflow-x: auto; margin: 12px 0; }
 table { border-collapse: collapse; width: 100%; font-size: 16px; background: var(--weiss); }
 th, td { text-align: left; vertical-align: top; padding: 6px 10px; border: 1px solid var(--linie); }
@@ -40,137 +58,224 @@ th { background: var(--flaeche); }
 figure { margin: 16px 0; }
 figure img { max-width: 100%; height: auto; border: 2px solid var(--kontur); background: var(--weiss); display: block; }
 figcaption { font-size: 15px; margin-top: 4px; }
-.karten { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
-.karte { background: var(--weiss); border: 2px solid var(--kontur); padding: 12px 16px; }
-.karte h3 { margin-top: 0; }
-.knopf { display: inline-block; padding: 8px 16px; border: 3px solid var(--kontur); background: var(--weiss); color: var(--text); text-decoration: none; font-weight: 700; margin: 4px 8px 4px 0; }
+ol.schritte > li { margin: 8px 0; }
+
+/* Kacheln: Einstiege, Kapitel eines Bereichs, Werkzeuge */
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; padding: 0; list-style: none; }
+.kachel { background: var(--weiss); border: 2px solid var(--kontur); padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+.kachel h3 { margin: 0; font-size: 20px; }
+.kachel p { margin: 0; font-size: 16px; }
+.kachel .wann { font-size: 15px; }
+.kachel .aktionen { margin-top: auto; padding-top: 8px; }
+a.kachel { color: var(--text); text-decoration: none; }
+a.kachel:hover { border-color: var(--link); }
+a.kachel h3 { color: var(--link); }
+.einstiege .kachel { min-height: 140px; border-width: 3px; }
+.einstiege .kachel h3 { font-size: 24px; }
+.knopf { display: inline-block; padding: 6px 14px; border: 3px solid var(--kontur); background: var(--weiss); color: var(--text); text-decoration: none; font-weight: 700; margin: 4px 8px 4px 0; }
 .knopf:hover { background: var(--text); color: var(--weiss); }
+.querverweis { border-left: 4px solid var(--link); background: var(--weiss); padding: 8px 16px; margin: 12px 0; font-size: 16px; }
+.querverweis p { margin: 4px 0; }
 iframe { width: 100%; aspect-ratio: 16 / 12; border: 2px solid var(--kontur); background: var(--weiss); }
 .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
 .farbe { border: 2px solid var(--kontur); background: var(--weiss); font-size: 14px; }
 .farbe span { display: block; height: 48px; border-bottom: 2px solid var(--kontur); }
 .farbe p { margin: 4px 8px; }
-ol.schritte > li { margin: 8px 0; }
 .stand-fertig { font-weight: 700; }
-footer { margin-top: 64px; font-size: 14px; border-top: 2px solid var(--linie); padding-top: 12px; }
-@media (max-width: 900px) {
-  .rahmen { grid-template-columns: 1fr; }
-  nav { position: static; max-height: none; border: 2px solid var(--linie); padding: 8px; background: var(--weiss); }
-  nav ol { columns: 2; column-gap: 8px; }
-  h1 { font-size: 32px; }
+
+/* Technik-Blöcke: mit JavaScript nur sichtbar, wenn „Mit Technik“ gewählt ist. */
+.technik { border: 2px solid var(--linie); background: var(--weiss); padding: 4px 16px 8px; margin: 16px 0; }
+.technik::before { content: "Technik"; display: block; font-size: 14px; font-weight: 700; padding-top: 4px; }
+.js:not(.mit-technik) .technik { display: none; }
+.hinweis-technik { font-size: 15px; }
+.mit-technik .hinweis-technik, html:not(.js) .hinweis-technik { display: none; }
+.markiert { outline: 3px solid var(--link); outline-offset: 4px; }
+/* Überschriften bekommen beim Wechsel den Fokus für Bildschirmleser; ein Rahmen wäre dort nur Lärm. */
+.ansicht > h1[tabindex="-1"]:focus, .ansicht > h2[tabindex="-1"]:focus { outline: none; }
+
+/* Blättern am Ende eines Kapitels */
+.blaettern { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; border-top: 2px solid var(--linie); margin-top: 32px; padding-top: 12px; font-size: 16px; }
+.blaettern a { font-weight: 700; }
+footer { max-width: 1120px; margin: 0 auto; padding: 12px 16px 32px; font-size: 14px; border-top: 2px solid var(--linie); }
+
+/* Schmal: Kopfzeile scrollt mit, Reiter als zwei Spalten, Suche und Ebene in einer Zeile. */
+@media (max-width: 760px) {
+  .kopf { position: static; }
+  nav[aria-label="Bereiche"] { width: 100%; }
+  .reiter { display: grid; grid-template-columns: 1fr 1fr; }
+  .werkzeugleiste { margin-left: 0; width: 100%; }
+  .suche { flex: 1; }
+  .suche input { width: 100%; }
+  .ansicht > h1, .ansicht > h2 { font-size: 26px; }
+  .einstiege .kachel { min-height: 0; }
 }
 </style>
 </head>
 <body>
-<div class="rahmen">
-<nav aria-label="Inhalt">
-  <ol>
-    <li><a href="#ueberblick">Überblick</a></li>
-    <li><a href="#ausprobieren">Ausprobieren</a></li>
-    <li><a href="#grundsaetze">Grundsätze</a></li>
-    <li><a href="#szene">Der Weg einer Szene</a></li>
-    <li><a href="#figuren">Figuren</a></li>
-    <li><a href="#bewegung">Bewegung und Spielweise</a></li>
-    <li><a href="#editor">Posen-Editor</a></li>
-    <li><a href="#teile">Teile-Werkstatt</a></li>
-    <li><a href="#geraeusche">Geräusche</a></li>
-    <li><a href="#requisiten">Requisiten</a></li>
-    <li><a href="#gestaltung">Gestaltung</a></li>
-    <li><a href="#pruefungen">Prüfungen</a></li>
-    <li><a href="#befehle">Alle Befehle</a></li>
-    <li><a href="#stand">Stand und nächste Schritte</a></li>
-    <li><a href="#zusammenarbeit">Zusammenarbeit</a></li>
-    <li><a href="#begriffe">Begriffe</a></li>
-  </ol>
-</nav>
-<main>
 <header class="kopf">
-  <h1>Trickfilm-Werkstatt</h1>
-  <p class="lead">Eine Werkstatt für Trickfilme mit Figuren, Vertonung und Geräuschen. Diese Seite erklärt, was die Werkstatt kann und wie man sie bedient. Jeder Abschnitt beginnt mit dem Wesentlichen; technische Einzelheiten stehen aufklappbar darunter.</p>
-  <p>Stand: {{ERSTELLT}} · Quelle: <a href="https://github.com/daimpad/trickfilm">github.com/daimpad/trickfilm</a></p>
+  <div class="kopf-innen">
+    <a class="marke" href="#start">Trickfilm-Werkstatt</a>
+    <nav aria-label="Bereiche">
+      <ul class="reiter">
+        <li><a href="#werkzeuge" data-bereich="werkzeuge">Werkzeuge</a></li>
+        <li><a href="#anleitungen" data-bereich="anleitungen">Anleitungen</a></li>
+        <li><a href="#bausteine" data-bereich="bausteine">Bausteine und Regeln</a></li>
+        <li><a href="#nachschlagen" data-bereich="nachschlagen">Nachschlagen</a></li>
+      </ul>
+    </nav>
+    <div class="werkzeugleiste">
+      <div class="suche" role="search">
+        <input id="suchfeld" type="search" placeholder="Suchen, z. B. Kontaktbogen" aria-label="Seite durchsuchen" aria-controls="treffer" autocomplete="off" hidden>
+        <ul id="treffer" class="treffer" hidden></ul>
+      </div>
+      <div class="ebenen" role="group" aria-label="Ebene der Erklärung" hidden>
+        <button type="button" id="ebene-kurz" aria-pressed="true">Kurz</button>
+        <button type="button" id="ebene-technik" aria-pressed="false">Mit Technik</button>
+      </div>
+    </div>
+  </div>
 </header>
 
-<section id="ueberblick">
-<h2>Überblick</h2>
-<p>Die Werkstatt baut kurze Trickfilm-Szenen, wie man sie aus Lern- und Erklärvideos kennt: Menschen am Schreibtisch, am Schalter, unterwegs, dazu Geräte, Papiere und Zeichen. Sie ist unabhängig von einem bestimmten Auftrag. Inhalte, Sprechtexte und das Erscheinungsbild eines Auftraggebers kommen später als Eingaben dazu.</p>
-<p>Vier Ideen tragen alles:</p>
-<ul>
-  <li><strong>Jedes Bild wird gerechnet.</strong> Zu jedem Zeitpunkt einer Szene ergibt sich das Bild aus einer Rechenvorschrift. Gleiche Eingabe ergibt immer dasselbe Bild.</li>
-  <li><strong>Figuren sind Gliederpuppen.</strong> Ein festes Skelett (Rig) trägt austauschbare Zeichnungen (Teilesätze). So lassen sich verschiedene Menschen mit denselben Bewegungen zeigen.</li>
-  <li><strong>Geräusche entstehen aus der Bewegung.</strong> Wo eine Hand auf die Tastatur trifft, entsteht ein Anschlag, nicht dort, wo jemand ihn von Hand hinsetzt. <em>(Die Werkzeuge stehen; die Klänge werden nach Kostenfreigabe generiert.)</em></li>
-  <li><strong>Was am Bild zu sehen ist, wird am Bild geprüft.</strong> Zu jeder Szene gibt es Standbilder, die ein Mensch ansieht, und Prüfungen, die eine Maschine über jedes einzelne Bild fährt.</li>
-</ul>
-<figure>
-  <img src="bilder/kontaktbogen-vorlage.png" alt="Neun Standbilder der Vorlage-Szene: eine Person am Schreibtisch tippt, auf dem Monitor erscheint ein grüner Haken, die Person lehnt sich zurück." loading="lazy">
-  <figcaption>Kontaktbogen der Vorlage-Szene: neun Standbilder zu festen Zeitpunkten. Die gestrichelte Linie markiert die Schutzzone für Untertitel.</figcaption>
-</figure>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Die Bibliothek unter <code>lib/</code> ist reines JavaScript ohne Zugriff auf eine Webseite (DOM-frei). Sie läuft unverändert in drei Umgebungen: im Browser-Prototyp, in Node (Prüfungen, Standbilder) und in Remotion (fertiges Video). Eine Szene besteht aus vier Dateien: <code>brief.yaml</code> (Szenenbrief), <code>geometry.js</code> (Positionen und Palette), <code>scene.js</code> (Aufbau aus Figuren und Requisiten) und <code>animation.js</code> (die Zeitfunktion <code>computeState(t)</code>).</p>
-<p>Format: 1920 × 1080 Pixel, 30 Bilder je Sekunde. Werkzeuge in TypeScript, Bibliothek in JavaScript, Render mit Remotion 4, Standbilder und Tests mit Chromium über Playwright.</p>
-</div></details>
+<main id="inhalt">
+
+<!-- ===================================================================== Start -->
+<section class="ansicht" id="start" data-titel="Start">
+  <h1 tabindex="-1">Trickfilm-Werkstatt</h1>
+  <p class="lead lauftext">Eine Werkstatt für kurze Trickfilme mit Figuren, Vertonung und Geräuschen, wie man sie aus Lern- und Erklärvideos kennt. Wohin möchtest du?</p>
+  <ul class="kacheln einstiege">
+    <li><a class="kachel" href="#werkzeuge"><h3>Ausprobieren</h3><p>Prototyp abspielen, eine Figur stellen, eine Figur aus Einzelteilen bauen.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/szene"><h3>Eine Szene bauen</h3><p>In elf Schritten vom Szenenbrief zum geprüften Prototyp.</p></a></li>
+    <li><a class="kachel" href="#anleitungen/figur"><h3>Eine Figur zeichnen</h3><p>Eigene Zeichnungen auf das Skelett bringen, mit Vorlage oder Teile-Werkstatt.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen"><h3>Nachschlagen</h3><p>Alle Befehle, Begriffe, Stand und Regeln der Zusammenarbeit.</p></a></li>
+  </ul>
+  <p class="krume">Stand: {{ERSTELLT}} · Quelle: <a href="https://github.com/daimpad/trickfilm">github.com/daimpad/trickfilm</a> · Wie die Werkstatt denkt: <a href="#bausteine/ideen">vier Grundideen</a></p>
 </section>
 
-<section id="ausprobieren">
-<h2>Ausprobieren</h2>
-<p>Drei Werkzeuge laufen direkt hier im Browser, ohne Installation.</p>
-<div class="karten">
-  <div class="karte">
-    <h3>Prototyp der Vorlage-Szene</h3>
-    <p>Die Szene läuft so, wie sie im fertigen Film läuft. Abspielen mit der Leertaste, ein Bild vor oder zurück mit den Pfeiltasten, Sprungmarken je Abschnitt (Beat).</p>
-    <a class="knopf" href="prototyp/index.html">Prototyp öffnen</a>
-  </div>
-  <div class="karte">
-    <h3>Posen-Editor</h3>
-    <p>Eine Figur greifen und stellen: Hände ziehen, Rumpf neigen, Schlüsselposen auf einer Zeitleiste setzen und als Code übernehmen.</p>
-    <a class="knopf" href="editor/index.html">Editor öffnen</a>
-  </div>
-  <div class="karte">
-    <h3>Teile-Werkstatt</h3>
-    <p>Eine eigene Figur aus Einzelzeichnungen bauen: Kopf, Rumpf, Arm, Hand, Bein als einzelne SVG-Dateien laden, einpassen, in Testposen prüfen und als Teilesatz herunterladen.</p>
-    <a class="knopf" href="teile/index.html">Werkstatt öffnen</a>
-  </div>
-</div>
-<iframe src="prototyp/index.html" title="Prototyp der Vorlage-Szene" loading="lazy"></iframe>
-<p>Erlaubt der Browser keinen Ton ohne Klick, wartet die Szene auf „Abspielen“. Wer im System „Bewegung reduzieren“ eingestellt hat, sieht die Szene zunächst angehalten.</p>
+<!-- ===================================================================== Werkzeuge -->
+<section class="ansicht bereich" id="werkzeuge" data-titel="Werkzeuge">
+  <h2 tabindex="-1">Werkzeuge</h2>
+  <p class="lauftext">Drei Werkzeuge laufen direkt hier im Browser, ohne Installation; die Hörprobe läuft im Repository. Jede Kachel sagt, wann man das Werkzeug braucht, und führt zur Erklärung.</p>
+  <ul class="kacheln">
+    <li class="kachel">
+      <h3>Prototyp</h3>
+      <p>Die Vorlage-Szene läuft so, wie sie im fertigen Film läuft, mit Geräuschen.</p>
+      <p class="wann">Wann: nach jedem Bauen einer Szene, zum Abspielen, Anhalten und Springen.</p>
+      <p class="aktionen"><a class="knopf" href="#werkzeuge/prototyp">Hier abspielen</a> <a href="prototyp/index.html">Eigenes Fenster</a></p>
+    </li>
+    <li class="kachel">
+      <h3>Posen-Editor</h3>
+      <p>Eine Figur greifen und stellen, Schlüsselposen setzen und als Code übernehmen.</p>
+      <p class="wann">Wann: beim Schreiben der Bewegung einer Szene.</p>
+      <p class="aktionen"><a class="knopf" href="editor/index.html">Editor öffnen</a> <a href="#werkzeuge/posen-editor">Erklärung</a></p>
+    </li>
+    <li class="kachel">
+      <h3>Teile-Werkstatt</h3>
+      <p>Kopf, Rumpf, Arm, Hand, Bein als einzelne SVG-Dateien laden, einpassen, prüfen, als Teilesatz herunterladen.</p>
+      <p class="wann">Wann: wenn eine neue Figur gezeichnet wird.</p>
+      <p class="aktionen"><a class="knopf" href="teile/index.html">Werkstatt öffnen</a> <a href="#werkzeuge/teile-werkstatt">Erklärung</a></p>
+    </li>
+    <li class="kachel">
+      <h3>Hörprobe</h3>
+      <p>Alle Varianten jedes Geräuschs mit Messwerten anhören und auswählen.</p>
+      <p class="wann">Wann: nach jeder Generierungsrunde, bevor Geräusche in Szenen kommen.</p>
+      <p class="aktionen"><a class="knopf" href="#werkzeuge/hoerprobe">Erklärung</a> im Repository: <code>npm run sfx:hoerprobe</code></p>
+    </li>
+  </ul>
+  <p>Alle übrigen Werkzeuge laufen als Befehle im Terminal: <a href="#nachschlagen/befehle">Alle Befehle</a>.</p>
 </section>
 
-<section id="grundsaetze">
-<h2>Grundsätze</h2>
-<p>Zehn Regeln gelten überall. Sie sorgen dafür, dass Szenen wiederholbar, prüfbar und unabhängig von einzelnen Rechnern bleiben.</p>
-<ol>
-  <li><strong>Jedes Bild ist eine Funktion der Zeit.</strong> Keine Animation läuft „von selbst“; Zufall gibt es nur mit festem Startwert.</li>
-  <li><strong>Die Bibliothek ist unabhängig vom Browser.</strong> Dieselbe Rechnung läuft im Prototyp, in Prüfungen und im Video.</li>
-  <li><strong>Geometrie ist Daten.</strong> Positionen, Maße und Farben stehen in eigenen Dateien, nie verstreut im Bildaufbau.</li>
-  <li><strong>Bild und Ton werden nicht beide geraten.</strong> Mit Aufnahme folgen die Bewegungen den gemessenen Wortzeiten; ohne Aufnahme wird die Dauer geschätzt (15 Zeichen je Sekunde plus 10–15 % Luft) und als Schätzung markiert.</li>
-  <li><strong>Geräusche entstehen aus der Bewegung.</strong></li>
-  <li><strong>Was gerechnet ist, wird nie von Hand gepflegt.</strong> Erzeugte Dateien tragen den Vermerk „ERZEUGT von …“ und werden immer neu erzeugt, nie nachgebessert.</li>
-  <li><strong>Was am Bild zu prüfen ist, wird am Bild geprüft.</strong></li>
-  <li><strong>Ein Lauf, der etwas nicht weiß, sagt es.</strong> Kein Werkzeug liefert ein leeres Ergebnis, das wie „nichts zu tun“ aussieht.</li>
-  <li><strong>Kein Netz beim Rendern.</strong> Alles, was generiert wird, liegt vorher im Repository.</li>
-  <li><strong>Keine Geheimnisse im Repository.</strong> Zugangsschlüssel kommen nur aus der Umgebung.</li>
-</ol>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Verboten sind CSS-Animationen, SMIL, <code>transition</code>, <code>requestAnimationFrame</code> als Zeitgeber, GSAP und Framer Motion. Zufall läuft über den Generator <code>prng(seed)</code> aus <code>lib/zufall.js</code>. Die Verbotsprüfung (<code>npm run verboten</code>) sucht im Repository nach Verstößen, zum Beispiel <code>Math.random</code>, <code>Date.now</code> und Farbwerte außerhalb der Tokens im Bildcode, Webfonts, Netzaufrufe und Zugangsschlüssel.</p>
-</div></details>
+<section class="ansicht" id="werkzeuge/prototyp" data-bereich="werkzeuge" data-titel="Prototyp">
+  <h2 tabindex="-1">Prototyp</h2>
+  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 9. Eigenes Fenster: <a href="prototyp/index.html">Prototyp öffnen</a>.</p></aside>
+  <p class="lauftext">Abspielen mit der Leertaste, ein Bild vor oder zurück mit den Pfeiltasten, Sprungmarken je Abschnitt (Beat). Erlaubt der Browser keinen Ton ohne Klick, wartet die Szene auf „Abspielen“. Wer im System „Bewegung reduzieren“ eingestellt hat, sieht die Szene zunächst angehalten.</p>
+  <iframe src="prototyp/index.html" title="Prototyp der Vorlage-Szene" loading="lazy"></iframe>
+  <div class="technik">
+    <p>Das Ergebnis des Builds ist <code>szenen/&lt;ID&gt;/dist/index.html</code>, eine einzige Datei, die nichts nachlädt. Die Bibliothek ist darin über eine Import-Map eingebettet; jedes Modul bleibt ein echtes JavaScript-Modul. Zeitgeber ist <code>performance.now()</code>; ein Geräusch klingt, wenn die Wiedergabe über seinen Zeitpunkt läuft, Springen und Ziehen lösen nichts aus. Der lauteste Cue liegt bei 0 dB, die übrigen relativ dazu.</p>
+  </div>
 </section>
 
-<section id="szene">
-<h2>Der Weg einer Szene</h2>
-<p>Jede Szene entsteht in elf Schritten. Die Befehle laufen in einem Terminal im Ordner des Repositorys.</p>
-<ol class="schritte">
-  <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code> kopiert die Vorlage.</li>
-  <li><strong>Szenenbrief schreiben</strong> (<code>brief.yaml</code>): der Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, die Abschnitte (Beats) mit Zeiten, Beschriftungen und eine Beschreibung des Bildes für Menschen, die es nicht sehen.</li>
-  <li><strong>Geometrie festlegen</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.</li>
-  <li><strong>Szene aufbauen</strong> (<code>scene.js</code>): Figuren und Requisiten in einer begründeten Reihenfolge von hinten nach vorn.</li>
-  <li><strong>Bewegung schreiben</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht. Posen lassen sich im <a href="#editor">Posen-Editor</a> setzen.</li>
-  <li><strong>Geräusche zuordnen</strong> (im Szenenbrief unter <code>sfx</code>): welche Ereignisse klingen, zum Beispiel jeder dritte Tastenanschlag. <code>npm run sfx:cues -- FILM-01-name --stichprobe</code> findet die Zeitpunkte in der Bewegung. Siehe <a href="#geraeusche">Geräusche</a>.</li>
-  <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code> prüft die Szene und erzeugt den Prototyp.</li>
-  <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code> erzeugt neun Standbilder. Jedes wird angesehen: Liegt etwas falsch vor dem Körper? Greift ein Arm durch einen Tisch? Ist die Pointe auch klein lesbar?</li>
-  <li><strong>Prototyp öffnen</strong> und abspielen.</li>
-  <li><strong>Protokoll schreiben:</strong> <code>npm run szene:protokoll -- FILM-01-name</code>.</li>
-  <li><strong>Anhalten</strong> und den Stand in wenigen Zeilen melden.</li>
-</ol>
-<details><summary>Technische Einzelheiten: Szenenbrief</summary><div>
+<section class="ansicht" id="werkzeuge/posen-editor" data-bereich="werkzeuge" data-titel="Posen-Editor">
+  <h2 tabindex="-1">Posen-Editor</h2>
+  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 5. <a class="knopf" href="editor/index.html">Editor öffnen</a></p></aside>
+  <div class="lauftext">
+  <p>Der Posen-Editor macht das Stellen einer Figur anschaulich. Man zieht an Griffen direkt auf der Bühne: dunkel an der Hüfte, weiß an Rumpf und Kopf, farbig an Händen und Füßen. Eine gezogene Hand folgt ihrem Ziel; ein Ring zeigt die Reichweite und wird rot, wenn das Ziel zu weit weg liegt. Regler erlauben genaue Werte, die Pfeiltasten verschieben den gewählten Griff um 1 px, mit Umschalt um 8 px.</p>
+  <p>Mehrere Posen lassen sich als Schlüsselposen auf einer Zeitleiste setzen und in einer Vorschau abspielen. Der Editor schreibt daraus Code, der in die Szene kopiert wird.</p>
+  </div>
+  <div class="technik">
+    <p>Aufruf im Repository: <code>npm run editor -- --szene &lt;ID&gt; --figur A</code>. Dann liegt das Standbild der Szene blass unter der Figur, und Position, Blick und Palette kommen aus der Szene.</p>
+<pre><code>// in geometry.js
+export const POSEN_A = {
+  archetyp: 'stehend-profil',
+  torso: [[0, 0], [1, 17.1]],                      // [Zeit, Wert]
+  armF: { ziel: [[0, 1060, 470], [1, 1040, 520]], beugeseite: -1 },
+};
+// in animation.js
+const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
+    <p>Zahlen werden zwischen den Schlüsseln weich verbunden, Handformen gelten ab ihrem Zeitpunkt. Arme mit Handzielen laufen über <code>greife()</code>, damit der Build ihre Reichweite prüft.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="werkzeuge/teile-werkstatt" data-bereich="werkzeuge" data-titel="Teile-Werkstatt">
+  <h2 tabindex="-1">Teile-Werkstatt</h2>
+  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/figur">Eine Figur zeichnen</a>. <a class="knopf" href="teile/index.html">Werkstatt öffnen</a> Alle Dateien bleiben im Browser; nichts wird hochgeladen.</p></aside>
+  <div class="lauftext">
+  <p>Statt eine ganze Zeichenvorlage mit allen Ebenen auszufüllen, zeichnet man jedes Körperteil für sich, in einem beliebigen Programm und Maßstab, und lädt es als SVG-Datei. Heißt die Datei nach dem Teil, etwa <code>kopf.svg</code>, <code>oberarm.svg</code>, <code>hand.svg</code> oder <code>fuss.svg</code>, findet die Werkstatt ihren Platz selbst.</p>
+  <ul>
+    <li><strong>Einpassen:</strong> Die Werkstatt legt die Längsachse des Teils auf das Skelett. Korrigiert wird durch Ziehen am Teil (verschieben) und am roten Griff (drehen und skalieren um das Gelenk) oder über Zahlenfelder.</li>
+    <li><strong>Ableiten:</strong> Fehlen hintere oder rechte Glieder, werden sie aus den vorhandenen gewonnen, frontal gespiegelt. Fehlende Handformen entstehen aus der offenen Hand. Was dann noch fehlt, ergänzt auf Wunsch der Platzhalter <code>satz-00</code>.</li>
+    <li><strong>Prüfen:</strong> Sechs Testposen zeigen die Figur sofort in Bewegung. Jedes Gelenk wird bei −60°, 0°, 60° und 120° auf Lücken geprüft; eine Lücke erscheint rot an Teil und Gelenk.</li>
+    <li><strong>Farben:</strong> Flächen, die je Szene umgefärbt werden sollen (Kleidung, Zubehör), werden per Auswahl zugeordnet. Alle anderen Farben bleiben, wie gezeichnet.</li>
+    <li><strong>Ausgabe:</strong> Ein Satz Einzelteile ergibt alle drei Profilfiguren (sitzend, stehend, nah). Das ZIP-Archiv enthält sie im Austauschformat und eine Anleitung zum Einlesen.</li>
+  </ul>
+  </div>
+  <div class="technik">
+    <p>Aufruf im Repository: <code>npm run teile</code>, Ergebnis unter <code>out/teile/teile-werkstatt.html</code>. Das heruntergeladene Archiv wird unter <code>figuren/teilesaetze/</code> entpackt und mit <code>npm run figuren:import -- satz-01</code> eingelesen; der Importer prüft dieselben Regeln noch einmal.</p>
+    <p>Die Werkstatt liest Pfade, Grundformen, Gruppen-Transformationen, CSS-Klassen und Bögen, wie Illustrator, Inkscape oder Affinity sie schreiben. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen; beides meldet sie. Konturen werden auf die erlaubten Stärken 4 und 6 px gerundet. Die Rechnung liegt in <code>lib/svgpfad.js</code> und <code>lib/teile.js</code>, die Prüfung in <code>lib/zeichnung.js</code>, gemeinsam mit dem Importer.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="werkzeuge/hoerprobe" data-bereich="werkzeuge" data-titel="Hörprobe">
+  <h2 tabindex="-1">Hörprobe</h2>
+  <aside class="querverweis"><p>Gebraucht in: <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a>, Schritt 3. Die Hörprobe läuft im Repository, weil sie alle Rohaufnahmen enthält (viele Megabyte Ton).</p></aside>
+  <div class="lauftext">
+  <p><code>npm run sfx:hoerprobe</code> erzeugt <code>out/sfx/hoerprobe.html</code>. Dort steht jedes Geräusch mit allen Varianten zum Anhören, dazu Länge, Zahl der Einsätze, Lautheit, Spitzenpegel, Vorgeräusch und eine Gütezahl (kleiner ist sauberer). Bei Lauten steht die Stimme dabei.</p>
+  <p>Je Geräusch wählt man eine Variante, bei einem Vorrat mehrere, und setzt „bestätigt“. Die Seite gibt eine CSV-Datei aus; <code>npm run sfx:hoerprobe -- --uebernehmen auswahl.csv</code> trägt die Wahl ein. Danach bearbeitet <code>npm run sfx:normalisieren</code> die gewählten Varianten.</p>
+  </div>
+  <div class="technik">
+    <p>Die Wahl steht in <code>lib/sfx/auswahl.yaml</code> (<code>vorlaeufig: true</code>, bis bestätigt). <code>npm run sfx:normalisieren -- --vorschlag</code> wählt vorläufig die sauberste Variante und lässt Bestätigtes unberührt.</p>
+  </div>
+</section>
+
+<!-- ===================================================================== Anleitungen -->
+<section class="ansicht bereich" id="anleitungen" data-titel="Anleitungen">
+  <h2 tabindex="-1">Anleitungen</h2>
+  <p class="lauftext">Schritt für Schritt durch die drei Wege, die man in der Werkstatt am häufigsten geht. Die Befehle laufen in einem Terminal im Ordner des Repositorys.</p>
+  <ul class="kacheln">
+    <li><a class="kachel" href="#anleitungen/szene"><h3>Eine Szene bauen</h3><p>Vom Szenenbrief über Bewegung und Geräusche zum geprüften Prototyp, in elf Schritten.</p><p class="wann">Werkzeuge: Posen-Editor, Prototyp</p></a></li>
+    <li><a class="kachel" href="#anleitungen/figur"><h3>Eine Figur zeichnen</h3><p>Einen eigenen Teilesatz zeichnen und einlesen, mit Zeichenvorlage oder aus Einzelteilen.</p><p class="wann">Werkzeug: Teile-Werkstatt</p></a></li>
+    <li><a class="kachel" href="#anleitungen/geraeusche"><h3>Geräusche zuordnen und pflegen</h3><p>Geräusche aus der Bewegung einer Szene finden und die Bibliothek erweitern.</p><p class="wann">Werkzeug: Hörprobe</p></a></li>
+  </ul>
+</section>
+
+<section class="ansicht" id="anleitungen/szene" data-bereich="anleitungen" data-titel="Eine Szene bauen">
+  <h2 tabindex="-1">Eine Szene bauen</h2>
+  <aside class="querverweis"><p>Werkzeuge auf diesem Weg: <a href="#werkzeuge/posen-editor">Posen-Editor</a> (Schritt 5) · <a href="#werkzeuge/prototyp">Prototyp</a> (Schritt 9). Hintergrund: <a href="#bausteine/bewegung">Bewegung und Spielweise</a>, <a href="#bausteine/gestaltung">Gestaltung</a>.</p></aside>
+  <ol class="schritte">
+    <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code> kopiert die Vorlage.</li>
+    <li><strong>Szenenbrief schreiben</strong> (<code>brief.yaml</code>): der Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, die Abschnitte (Beats) mit Zeiten, Beschriftungen und eine Beschreibung des Bildes für Menschen, die es nicht sehen.</li>
+    <li><strong>Geometrie festlegen</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.</li>
+    <li><strong>Szene aufbauen</strong> (<code>scene.js</code>): Figuren und Requisiten in einer begründeten Reihenfolge von hinten nach vorn.</li>
+    <li><strong>Bewegung schreiben</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht. Posen lassen sich im <a href="#werkzeuge/posen-editor">Posen-Editor</a> setzen.</li>
+    <li><strong>Geräusche zuordnen</strong> (im Szenenbrief unter <code>sfx</code>): welche Ereignisse klingen, zum Beispiel jeder dritte Tastenanschlag. Siehe <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a>.</li>
+    <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code> prüft die Szene und erzeugt den Prototyp.</li>
+    <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code> erzeugt neun Standbilder. Jedes wird angesehen: Liegt etwas falsch vor dem Körper? Greift ein Arm durch einen Tisch? Ist die Pointe auch klein lesbar?</li>
+    <li><strong>Prototyp öffnen</strong> und abspielen: <code>szenen/FILM-01-name/dist/index.html</code>, so wie der <a href="#werkzeuge/prototyp">Prototyp der Vorlage</a>.</li>
+    <li><strong>Protokoll schreiben:</strong> <code>npm run szene:protokoll -- FILM-01-name</code>.</li>
+    <li><strong>Anhalten</strong> und den Stand in wenigen Zeilen melden.</li>
+  </ol>
+  <p class="hinweis-technik">Beispiel eines Szenenbriefs und was der Build prüft: „Mit Technik“ oben rechts.</p>
+  <div class="technik">
+    <h3>Szenenbrief</h3>
 <pre><code>id: DEMO-01-buero
 film: DEMO
 sprechtext:
@@ -192,250 +297,491 @@ beats:
 beschriftungen: { links: "Eingabe", mitte: "", rechts: "Bestätigung" }
 textaequivalent: "Zwei bis vier Sätze, die das Bild beschreiben."
 sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
-<p>Der Brief wird von einem eigenen Leser für eine Teilmenge von YAML gelesen; was nicht hineinpasst, meldet er mit Zeilennummer.</p>
-</div></details>
-<details><summary>Technische Einzelheiten: was der Build prüft</summary><div>
-<ul>
-  <li>Brief und Code stimmen überein: Dauer, Abschnitte mit Namen und Zeiten, Palette (nur Farben der Tokens), Beschriftungen, Textäquivalent, Figuren mit Rig und Teilesatz.</li>
-  <li>Das Bild enthält keine Animationen, Verläufe, Filter, Masken oder abgerundeten Ecken.</li>
-  <li>Für <em>jedes einzelne Bild</em> der Szene: jede bewegte ID existiert, jedes Attribut ist vorhanden, kein Wert ist ungültig (NaN).</li>
-  <li>Jede Hand erreicht ihr Ziel; sonst nennt der Build Bild, Arm und Abstand.</li>
-  <li>Kein Text reicht in die Schutzzone für Untertitel; jede Beschriftung steht lange genug, um sie zu lesen.</li>
-  <li>Gleiche Zeit ergibt denselben Zustand (Wiederholbarkeit).</li>
-</ul>
-<p>Das Ergebnis ist <code>szenen/&lt;ID&gt;/dist/index.html</code>, eine einzige Datei, die nichts nachlädt. Die Bibliothek ist darin über eine Import-Map eingebettet; jedes Modul bleibt ein echtes JavaScript-Modul.</p>
-</div></details>
+    <p>Der Brief wird von einem eigenen Leser für eine Teilmenge von YAML gelesen; was nicht hineinpasst, meldet er mit Zeilennummer.</p>
+    <h3>Was der Build prüft</h3>
+    <ul>
+      <li>Brief und Code stimmen überein: Dauer, Abschnitte mit Namen und Zeiten, Palette (nur Farben der Tokens), Beschriftungen, Textäquivalent, Figuren mit Rig und Teilesatz.</li>
+      <li>Das Bild enthält keine Animationen, Verläufe, Filter, Masken oder abgerundeten Ecken.</li>
+      <li>Für <em>jedes einzelne Bild</em> der Szene: jede bewegte ID existiert, jedes Attribut ist vorhanden, kein Wert ist ungültig (NaN).</li>
+      <li>Jede Hand erreicht ihr Ziel; sonst nennt der Build Bild, Arm und Abstand.</li>
+      <li>Kein Text reicht in die Schutzzone für Untertitel; jede Beschriftung steht lange genug, um sie zu lesen.</li>
+      <li>Gleiche Zeit ergibt denselben Zustand (Wiederholbarkeit).</li>
+    </ul>
+  </div>
 </section>
 
-<section id="figuren">
-<h2>Figuren</h2>
-<p>Eine Figur setzt sich aus vier Dingen zusammen: einem <strong>Archetyp</strong> (dem Skelett), einem <strong>Teilesatz</strong> (den Zeichnungen), einer <strong>Palette</strong> (Farben der Kleidung) und einer <strong>Blickrichtung</strong>. Figuren haben keine Gesichter; Gefühle zeigen sich in Haltung, Tempo und Pausen.</p>
-<div class="tabelle"><table>
-  <thead><tr><th>Archetyp</th><th>Wofür</th><th>Bewegliche Teile</th></tr></thead>
-  <tbody>
-    <tr><td><code>sitzend-profil</code></td><td>Schreibtisch, Schalter, Gespräch</td><td>Rumpf, Kopf, zwei Arme mit Händen; Beine sitzend, Fuß kann wippen</td></tr>
-    <tr><td><code>stehend-profil</code></td><td>Gehen, Warten, Tragen</td><td>dazu zwei Beine mit Füßen und Gang</td></tr>
-    <tr><td><code>stehend-frontal</code></td><td>Zeigen, Erklären, Reagieren</td><td>Arme seitlich, Schultern heben, Haltung „vor dem Körper halten“</td></tr>
-    <tr><td><code>oberkoerper-nah</code></td><td>Reaktion, Dialog, Pointe</td><td>Oberkörper in größerem Maßstab</td></tr>
-  </tbody>
-</table></div>
-<figure>
-  <img src="bilder/testposen.png" alt="Vier Reihen mit je sechs Posen: Ruhe, Greifen, Zeigen, Tippen, Gehen oder Sitzen, Reaktion, für jeden Archetyp." loading="lazy">
-  <figcaption>Testposen aller Archetypen mit dem Platzhalter-Teilesatz <code>satz-00</code>.</figcaption>
-</figure>
-<h3>Einen eigenen Teilesatz zeichnen</h3>
-<ol class="schritte">
-  <li>Die Zeichenvorlage <code>figuren/vorlage_&lt;archetyp&gt;.svg</code> nach <code>figuren/teilesaetze/satz-01/&lt;archetyp&gt;.svg</code> kopieren.</li>
-  <li>In Illustrator oder Inkscape jedes Teil in die Ebene mit genau seinem Namen zeichnen (<code>torso</code>, <code>head</code>, <code>armF-upper</code> …). Die blassen Formen und blauen Kreise sind Hilfen und dürfen bleiben.</li>
-  <li>Jedes Teil deckt den blauen Kreis an seinen Gelenken, sonst entstehen beim Drehen Lücken.</li>
-  <li>Kleidung in den Schlüsselfarben zeichnen: Magenta für Kleidung 1, Gelb für Kleidung 2, Grün für Zubehör. Diese Flächen färbt jede Szene um; alle anderen Farben bleiben, wie gezeichnet.</li>
-  <li>Als SVG exportieren und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
-</ol>
-<p>Einfacher geht es mit der <a href="#teile">Teile-Werkstatt</a>: jedes Teil als eigene Datei zeichnen, laden und einpassen.</p>
-<figure>
-  <img src="bilder/vorlagen.png" alt="Vier Zeichenvorlagen mit blassen Grundformen, blauen Drehpunkten und einer Legende mit Farbschlüssel und Regeln." loading="lazy">
-  <figcaption>Die vier Zeichenvorlagen. Blaue Kreise: Drehpunkte mit Überlappungskreis.</figcaption>
-</figure>
-<details><summary>Technische Einzelheiten: Rig und Importer</summary><div>
-<p>Die Maße stehen in <code>figuren/rig-spezifikation.json</code> (Oberarm und Unterarm je 90 px, Schulter 130 px über der Hüfte, Boden bei y 760, Tischplatte bei y 560). Der Zustand einer Figur steht im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf. Die Spiegelung für den Blick nach links übernimmt das Rig selbst.</p>
-<p>Der Importer prüft die Zeichnung (alle Teile vorhanden, keine fremden Ebenen, keine Transformationen, nur erlaubte Formen, Farben und Konturen von 4 oder 6 px), verschiebt jedes Teil um seinen Drehpunkt und dreht jedes Gelenk in Chromium auf −60°, 0°, +60° und +120°. Bleibt dabei im Überlappungskreis eine Lücke, meldet er sie. Er ändert keine Zeichnung; Befunde stehen in <code>figuren/import.tsv</code>.</p>
-<p>Exportregeln: SVG mit Präsentationsattributen (kein <code>style</code>, keine Klassen), Ebenennamen als IDs, zwei Nachkommastellen; keine Verläufe, Filter, Masken, Schatten, Deckkraft, Texte oder Bilder.</p>
-</div></details>
+<section class="ansicht" id="anleitungen/figur" data-bereich="anleitungen" data-titel="Eine Figur zeichnen">
+  <h2 tabindex="-1">Eine Figur zeichnen</h2>
+  <aside class="querverweis"><p>Werkzeug: <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> (<a href="teile/index.html">öffnen</a>). Hintergrund: <a href="#bausteine/figuren">Figuren und Archetypen</a>.</p></aside>
+  <div class="lauftext">
+  <p>Eine Figur ist eine Gliederpuppe mit festem Skelett; gezeichnet wird nur ihr Aussehen, der <strong>Teilesatz</strong>. Es gibt zwei Wege.</p>
+  <h3>Weg A: aus Einzelteilen (einfacher)</h3>
+  <ol class="schritte">
+    <li>Jedes Körperteil als eigene SVG-Datei zeichnen, in beliebigem Programm und Maßstab; Dateiname nach dem Teil, etwa <code>kopf.svg</code>.</li>
+    <li>In der <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> laden, einpassen, in den Testposen prüfen, Farben zuordnen.</li>
+    <li>Das ZIP herunterladen, unter <code>figuren/teilesaetze/</code> entpacken und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
+  </ol>
+  <h3>Weg B: mit der Zeichenvorlage</h3>
+  <ol class="schritte">
+    <li>Die Zeichenvorlage <code>figuren/vorlage_&lt;archetyp&gt;.svg</code> nach <code>figuren/teilesaetze/satz-01/&lt;archetyp&gt;.svg</code> kopieren.</li>
+    <li>In Illustrator oder Inkscape jedes Teil in die Ebene mit genau seinem Namen zeichnen (<code>torso</code>, <code>head</code>, <code>armF-upper</code> …). Die blassen Formen und blauen Kreise sind Hilfen und dürfen bleiben.</li>
+    <li>Jedes Teil deckt den blauen Kreis an seinen Gelenken, sonst entstehen beim Drehen Lücken.</li>
+    <li>Kleidung in den Schlüsselfarben zeichnen: Magenta für Kleidung 1, Gelb für Kleidung 2, Grün für Zubehör. Diese Flächen färbt jede Szene um; alle anderen Farben bleiben, wie gezeichnet.</li>
+    <li>Als SVG exportieren und einlesen: <code>npm run figuren:import -- satz-01</code>.</li>
+  </ol>
+  </div>
+  <figure>
+    <img src="bilder/vorlagen.png" alt="Vier Zeichenvorlagen mit blassen Grundformen, blauen Drehpunkten und einer Legende mit Farbschlüssel und Regeln." loading="lazy">
+    <figcaption>Die vier Zeichenvorlagen. Blaue Kreise: Drehpunkte mit Überlappungskreis.</figcaption>
+  </figure>
+  <div class="technik">
+    <p>Der Importer prüft die Zeichnung (alle Teile vorhanden, keine fremden Ebenen, keine Transformationen, nur erlaubte Formen, Farben und Konturen von 4 oder 6 px), verschiebt jedes Teil um seinen Drehpunkt und dreht jedes Gelenk in Chromium auf −60°, 0°, +60° und +120°. Bleibt dabei im Überlappungskreis eine Lücke, meldet er sie. Er ändert keine Zeichnung; Befunde stehen in <code>figuren/import.tsv</code>.</p>
+    <p>Exportregeln: SVG mit Präsentationsattributen (kein <code>style</code>, keine Klassen), Ebenennamen als IDs, zwei Nachkommastellen; keine Verläufe, Filter, Masken, Schatten, Deckkraft, Texte oder Bilder.</p>
+  </div>
 </section>
 
-<section id="bewegung">
-<h2>Bewegung und Spielweise</h2>
-<p>Bewegung entsteht aus wenigen Bausteinen:</p>
-<ul>
-  <li><strong>Kurven</strong> geben einer Bewegung ihren Charakter: weich, mit Anlauf, mit Überschwingen, mit Nachschwingen oder von Pose zu Pose.</li>
-  <li><strong>Handziele:</strong> Arme werden über den Punkt gesteuert, an dem die Hand sein soll. Die Werkstatt rechnet die Gelenkwinkel selbst aus und meldet, wenn ein Ziel zu weit weg ist.</li>
-  <li><strong>Gang:</strong> ein Doppelschritt auf etwa 140 px Strecke; der tiefste Fuß steht immer auf dem Boden, das Knie zeigt immer nach vorn.</li>
-  <li><strong>Spielweise:</strong> Gefühle wie konzentriert, genervt, überrascht, erleichtert, stolz oder ratlos sind fertige Rezepte für Haltung und Tempo, die sich addieren lassen.</li>
-  <li><strong>Charakter:</strong> Je Figur bestimmen Tempo, Grundhaltung, Stärke der Reaktion und eine kleine Eigenheit (zum Beispiel Fußwippen), wie sie sich bewegt.</li>
-</ul>
-<p>Der Witz liegt immer in der Situation, nie in der Person. Eine Pointe ist ein eigener Abschnitt und folgt auf einen Anlauf.</p>
-<details><summary>Technische Einzelheiten: Funktionen</summary><div>
-<div class="tabelle"><table>
-  <thead><tr><th>Modul</th><th>Funktionen</th></tr></thead>
-  <tbody>
-    <tr><td><code>lib/easing.js</code></td><td><code>linear</code>, <code>inOut</code>, <code>anticipate</code> (8 % Anlauf), <code>overshoot</code> (12 % Überschwingen), <code>settle</code>, <code>snap</code>, <code>snapBei</code>, <code>movingHold</code> (1–2 px Drift in Pausen)</td></tr>
-    <tr><td><code>lib/motion.js</code></td><td><code>interp</code>, <code>schluessel</code>, <code>envelope</code>, <code>pulse</code>, <code>bezier2</code>, <code>entlang</code>, <code>ik</code>, <code>fk</code>, <code>walkCycle</code>, <code>gangPhase</code>, <code>umblenden</code>, <code>haengend</code>, <code>summe</code></td></tr>
-    <tr><td><code>lib/spielweise.js</code></td><td><code>charakter</code>, <code>dauer</code>, <code>HALTUNGEN</code>, <code>atmen</code>, <code>konzentriert</code>, <code>genervt</code>, <code>ueberrascht</code>, <code>erleichtert</code>, <code>stolz</code>, <code>ratlos</code>, <code>tippen</code>, <code>fussWippen</code></td></tr>
-    <tr><td><code>lib/rigs/</code></td><td>je Archetyp <code>markup</code>, <code>apply</code>, <code>gelenke</code>, <code>greife</code> (Hand zum Ziel), <code>fuss</code> (Knöchel zum Ziel), <code>pruefeReichweite</code>, <code>defaults</code>; frontal dazu <code>posen</code></td></tr>
-    <tr><td><code>lib/posen.js</code></td><td><code>posenZustand</code> liest Schlüsselposen aus dem Posen-Editor</td></tr>
-    <tr><td><code>lib/zufall.js</code></td><td><code>prng(seed)</code>, <code>hash</code></td></tr>
-  </tbody>
-</table></div>
+<section class="ansicht" id="anleitungen/geraeusche" data-bereich="anleitungen" data-titel="Geräusche zuordnen und pflegen">
+  <h2 tabindex="-1">Geräusche zuordnen und pflegen</h2>
+  <aside class="querverweis"><p>Werkzeug: <a href="#werkzeuge/hoerprobe">Hörprobe</a>. Hintergrund: <a href="#bausteine/geraeusche">Klangcharakter und Regeln</a>.</p></aside>
+  <div class="lauftext">
+  <p>Die Zeitpunkte werden nicht von Hand gesetzt. Die Werkstatt spielt die Bewegung Bild für Bild ab und erkennt, wo etwas anschlägt, losgeht, ankommt oder erscheint. Der Szenenbrief sagt nur, welche dieser Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.</p>
+  <h3>In einer Szene</h3>
+  <ol class="schritte">
+    <li>Im Szenenbrief unter <code>sfx</code> nennen, welche Ereignisse klingen, wo die Größen im Zustand liegen und was still bleibt.</li>
+    <li><code>npm run sfx:cues -- FILM-01-name --stichprobe</code> schreibt die Liste der Geräusche und zeigt je Ereignis das Bild davor, darauf und danach. Bewegt sich das Ding im Ereignisbild zuerst, ist die Szene synchron.</li>
+    <li>Neu bauen; der Prototyp spielt die Geräusche mit.</li>
+  </ol>
+  <h3>Die Bibliothek erweitern</h3>
+  <ol class="schritte">
+    <li><strong>Kosten:</strong> <code>npm run sfx:kosten</code> listet, was fehlt, und schätzt die Credits. Generiert wird erst nach Zustimmung der Regie.</li>
+    <li><strong>Generieren und ablegen:</strong> über den ElevenLabs-Connector; <code>npm run sfx:ablegen -- liste.tsv</code> prüft jede Datei und schreibt ihre Herkunft.</li>
+    <li><strong>Anhören und wählen</strong> in der <a href="#werkzeuge/hoerprobe">Hörprobe</a>.</li>
+    <li><strong>Bearbeiten:</strong> <code>npm run sfx:normalisieren</code> schneidet Stille ab, kürzt auf genau einen Anschlag, blendet weich und bringt alles auf denselben Pegel.</li>
+  </ol>
+  </div>
+  <div class="technik">
+<pre><code>sfx:
+  ereignisse:
+    anschlag: { cue: tastenanschlag, ausduennen: 3 }    # nur jeder dritte klingt
+    erscheinen: { cue: bestaetigung, versatz_s: -0.03 }
+  quellen:
+    anschlag: [ { pfade: [A.armF.hand.y, A.armB.hand.y], beat: tippen, figur: A } ]
+    erscheinen: [ { pfad: haken.deckkraft, beat: haken } ]
+  stumm: []
+  laute: [ { beat: reaktion, versatz_s: 0.2, cue: laut-erleichtert, figur: A } ]
+  stichprobe: [anschlag, erscheinen]</code></pre>
+    <p>Erkennungsarten in <code>lib/events.js</code>: Tiefpunkt (Anschlag, Stempel), Beginn (Klick), Nulldurchgang (Schritt), Bewegungsbeginn und -ende (Abheben, Ankunft), Aufprall, Hüllkurve (Gerät) und Schwelle (Erscheinen). Pfade zeigen in den Zustand oder in die Gelenke einer Figur. Aus einem Vorrat wählt ein Hash über Szene, Typ und laufende Nummer die Variante, nie zweimal dieselbe hintereinander. Ausführlich: <code>docs/GERAEUSCHE.md</code>.</p>
+  </div>
+</section>
+
+<!-- ===================================================================== Bausteine und Regeln -->
+<section class="ansicht bereich" id="bausteine" data-titel="Bausteine und Regeln">
+  <h2 tabindex="-1">Bausteine und Regeln</h2>
+  <p class="lauftext">Woraus Szenen bestehen und welche Regeln für sie gelten.</p>
+  <ul class="kacheln">
+    <li><a class="kachel" href="#bausteine/ideen"><h3>Wie die Werkstatt denkt</h3><p>Vier Grundideen und der Kontaktbogen der Vorlage-Szene.</p></a></li>
+    <li><a class="kachel" href="#bausteine/grundsaetze"><h3>Grundsätze</h3><p>Zehn Regeln, die Szenen wiederholbar und prüfbar halten.</p></a></li>
+    <li><a class="kachel" href="#bausteine/figuren"><h3>Figuren und Archetypen</h3><p>Skelett, Teilesatz, Palette, Blickrichtung; die vier Archetypen.</p></a></li>
+    <li><a class="kachel" href="#bausteine/bewegung"><h3>Bewegung und Spielweise</h3><p>Kurven, Handziele, Gang, Gefühle als Rezepte.</p></a></li>
+    <li><a class="kachel" href="#bausteine/geraeusche"><h3>Geräusche</h3><p>Klangcharakter, Dichte, Katalog und Pegel.</p></a></li>
+    <li><a class="kachel" href="#bausteine/requisiten"><h3>Requisiten</h3><p>Möbel, Geräte, Büro, Außen, Zeichen als fertige Bausteine.</p></a></li>
+    <li><a class="kachel" href="#bausteine/gestaltung"><h3>Gestaltung</h3><p>Bühne, Schutzzone, Raster, Farben, Kontraste, Startpalette.</p></a></li>
+    <li><a class="kachel" href="#bausteine/pruefungen"><h3>Prüfungen</h3><p>Was bei jeder Änderung automatisch geprüft wird.</p></a></li>
+  </ul>
+</section>
+
+<section class="ansicht" id="bausteine/ideen" data-bereich="bausteine" data-titel="Wie die Werkstatt denkt">
+  <h2 tabindex="-1">Wie die Werkstatt denkt</h2>
+  <div class="lauftext">
+  <p>Die Werkstatt baut kurze Trickfilm-Szenen: Menschen am Schreibtisch, am Schalter, unterwegs, dazu Geräte, Papiere und Zeichen. Sie ist unabhängig von einem bestimmten Auftrag. Inhalte, Sprechtexte und das Erscheinungsbild eines Auftraggebers kommen später als Eingaben dazu. Vier Ideen tragen alles:</p>
+  <ul>
+    <li><strong>Jedes Bild wird gerechnet.</strong> Zu jedem Zeitpunkt einer Szene ergibt sich das Bild aus einer Rechenvorschrift. Gleiche Eingabe ergibt immer dasselbe Bild.</li>
+    <li><strong>Figuren sind Gliederpuppen.</strong> Ein festes Skelett (Rig) trägt austauschbare Zeichnungen (Teilesätze). So lassen sich verschiedene Menschen mit denselben Bewegungen zeigen.</li>
+    <li><strong>Geräusche entstehen aus der Bewegung.</strong> Wo eine Hand auf die Tastatur trifft, entsteht ein Anschlag, nicht dort, wo jemand ihn von Hand hinsetzt.</li>
+    <li><strong>Was am Bild zu sehen ist, wird am Bild geprüft.</strong> Zu jeder Szene gibt es Standbilder, die ein Mensch ansieht, und Prüfungen, die eine Maschine über jedes einzelne Bild fährt.</li>
+  </ul>
+  </div>
+  <figure>
+    <img src="bilder/kontaktbogen-vorlage.png" alt="Neun Standbilder der Vorlage-Szene: eine Person am Schreibtisch tippt, auf dem Monitor erscheint ein grüner Haken, die Person lehnt sich zurück." loading="lazy">
+    <figcaption>Kontaktbogen der Vorlage-Szene: neun Standbilder zu festen Zeitpunkten. Die gestrichelte Linie markiert die Schutzzone für Untertitel.</figcaption>
+  </figure>
+  <div class="technik">
+    <p>Die Bibliothek unter <code>lib/</code> ist reines JavaScript ohne Zugriff auf eine Webseite (DOM-frei). Sie läuft unverändert in drei Umgebungen: im Browser-Prototyp, in Node (Prüfungen, Standbilder) und in Remotion (fertiges Video). Eine Szene besteht aus vier Dateien: <code>brief.yaml</code> (Szenenbrief), <code>geometry.js</code> (Positionen und Palette), <code>scene.js</code> (Aufbau aus Figuren und Requisiten) und <code>animation.js</code> (die Zeitfunktion <code>computeState(t)</code>).</p>
+    <p>Format: 1920 × 1080 Pixel, 30 Bilder je Sekunde. Werkzeuge in TypeScript, Bibliothek in JavaScript, Render mit Remotion 4, Standbilder und Tests mit Chromium über Playwright.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="bausteine/grundsaetze" data-bereich="bausteine" data-titel="Grundsätze">
+  <h2 tabindex="-1">Grundsätze</h2>
+  <p class="lauftext">Zehn Regeln gelten überall. Sie sorgen dafür, dass Szenen wiederholbar, prüfbar und unabhängig von einzelnen Rechnern bleiben.</p>
+  <ol class="lauftext">
+    <li><strong>Jedes Bild ist eine Funktion der Zeit.</strong> Keine Animation läuft „von selbst“; Zufall gibt es nur mit festem Startwert.</li>
+    <li><strong>Die Bibliothek ist unabhängig vom Browser.</strong> Dieselbe Rechnung läuft im Prototyp, in Prüfungen und im Video.</li>
+    <li><strong>Geometrie ist Daten.</strong> Positionen, Maße und Farben stehen in eigenen Dateien, nie verstreut im Bildaufbau.</li>
+    <li><strong>Bild und Ton werden nicht beide geraten.</strong> Mit Aufnahme folgen die Bewegungen den gemessenen Wortzeiten; ohne Aufnahme wird die Dauer geschätzt (15 Zeichen je Sekunde plus 10–15 % Luft) und als Schätzung markiert.</li>
+    <li><strong>Geräusche entstehen aus der Bewegung.</strong></li>
+    <li><strong>Was gerechnet ist, wird nie von Hand gepflegt.</strong> Erzeugte Dateien tragen den Vermerk „ERZEUGT von …“ und werden immer neu erzeugt, nie nachgebessert.</li>
+    <li><strong>Was am Bild zu prüfen ist, wird am Bild geprüft.</strong></li>
+    <li><strong>Ein Lauf, der etwas nicht weiß, sagt es.</strong> Kein Werkzeug liefert ein leeres Ergebnis, das wie „nichts zu tun“ aussieht.</li>
+    <li><strong>Kein Netz beim Rendern.</strong> Alles, was generiert wird, liegt vorher im Repository.</li>
+    <li><strong>Keine Geheimnisse im Repository.</strong> Zugangsschlüssel kommen nur aus der Umgebung.</li>
+  </ol>
+  <div class="technik">
+    <p>Verboten sind CSS-Animationen, SMIL, <code>transition</code>, <code>requestAnimationFrame</code> als Zeitgeber, GSAP und Framer Motion. Zufall läuft über den Generator <code>prng(seed)</code> aus <code>lib/zufall.js</code>. Die Verbotsprüfung (<code>npm run verboten</code>) sucht im Repository nach Verstößen, zum Beispiel <code>Math.random</code>, <code>Date.now</code> und Farbwerte außerhalb der Tokens im Bildcode, Webfonts, Netzaufrufe und Zugangsschlüssel.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="bausteine/figuren" data-bereich="bausteine" data-titel="Figuren und Archetypen">
+  <h2 tabindex="-1">Figuren und Archetypen</h2>
+  <aside class="querverweis"><p>Selbst zeichnen: <a href="#anleitungen/figur">Eine Figur zeichnen</a> · Stellen: <a href="#werkzeuge/posen-editor">Posen-Editor</a></p></aside>
+  <p class="lauftext">Eine Figur setzt sich aus vier Dingen zusammen: einem <strong>Archetyp</strong> (dem Skelett), einem <strong>Teilesatz</strong> (den Zeichnungen), einer <strong>Palette</strong> (Farben der Kleidung) und einer <strong>Blickrichtung</strong>. Figuren haben keine Gesichter; Gefühle zeigen sich in Haltung, Tempo und Pausen.</p>
+  <div class="tabelle"><table>
+    <thead><tr><th>Archetyp</th><th>Wofür</th><th>Bewegliche Teile</th></tr></thead>
+    <tbody>
+      <tr><td><code>sitzend-profil</code></td><td>Schreibtisch, Schalter, Gespräch</td><td>Rumpf, Kopf, zwei Arme mit Händen; Beine sitzend, Fuß kann wippen</td></tr>
+      <tr><td><code>stehend-profil</code></td><td>Gehen, Warten, Tragen</td><td>dazu zwei Beine mit Füßen und Gang</td></tr>
+      <tr><td><code>stehend-frontal</code></td><td>Zeigen, Erklären, Reagieren</td><td>Arme seitlich, Schultern heben, Haltung „vor dem Körper halten“</td></tr>
+      <tr><td><code>oberkoerper-nah</code></td><td>Reaktion, Dialog, Pointe</td><td>Oberkörper in größerem Maßstab</td></tr>
+    </tbody>
+  </table></div>
+  <figure>
+    <img src="bilder/testposen.png" alt="Vier Reihen mit je sechs Posen: Ruhe, Greifen, Zeigen, Tippen, Gehen oder Sitzen, Reaktion, für jeden Archetyp." loading="lazy">
+    <figcaption>Testposen aller Archetypen mit dem Platzhalter-Teilesatz <code>satz-00</code>.</figcaption>
+  </figure>
+  <div class="technik">
+    <p>Die Maße stehen in <code>figuren/rig-spezifikation.json</code> (Oberarm und Unterarm je 90 px, Schulter 130 px über der Hüfte, Boden bei y 760, Tischplatte bei y 560). Der Zustand einer Figur steht im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf. Die Spiegelung für den Blick nach links übernimmt das Rig selbst.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="bausteine/bewegung" data-bereich="bausteine" data-titel="Bewegung und Spielweise">
+  <h2 tabindex="-1">Bewegung und Spielweise</h2>
+  <aside class="querverweis"><p>Anwenden: <a href="#anleitungen/szene">Eine Szene bauen</a>, Schritt 5 · Werkzeug: <a href="#werkzeuge/posen-editor">Posen-Editor</a></p></aside>
+  <div class="lauftext">
+  <p>Bewegung entsteht aus wenigen Bausteinen:</p>
+  <ul>
+    <li><strong>Kurven</strong> geben einer Bewegung ihren Charakter: weich, mit Anlauf, mit Überschwingen, mit Nachschwingen oder von Pose zu Pose.</li>
+    <li><strong>Handziele:</strong> Arme werden über den Punkt gesteuert, an dem die Hand sein soll. Die Werkstatt rechnet die Gelenkwinkel selbst aus und meldet, wenn ein Ziel zu weit weg ist.</li>
+    <li><strong>Gang:</strong> ein Doppelschritt auf etwa 140 px Strecke; der tiefste Fuß steht immer auf dem Boden, das Knie zeigt immer nach vorn.</li>
+    <li><strong>Spielweise:</strong> Gefühle wie konzentriert, genervt, überrascht, erleichtert, stolz oder ratlos sind fertige Rezepte für Haltung und Tempo, die sich addieren lassen.</li>
+    <li><strong>Charakter:</strong> Je Figur bestimmen Tempo, Grundhaltung, Stärke der Reaktion und eine kleine Eigenheit (zum Beispiel Fußwippen), wie sie sich bewegt.</li>
+  </ul>
+  <p>Der Witz liegt immer in der Situation, nie in der Person. Eine Pointe ist ein eigener Abschnitt und folgt auf einen Anlauf.</p>
+  </div>
+  <div class="technik">
+    <div class="tabelle"><table>
+      <thead><tr><th>Modul</th><th>Funktionen</th></tr></thead>
+      <tbody>
+        <tr><td><code>lib/easing.js</code></td><td><code>linear</code>, <code>inOut</code>, <code>anticipate</code> (8 % Anlauf), <code>overshoot</code> (12 % Überschwingen), <code>settle</code>, <code>snap</code>, <code>snapBei</code>, <code>movingHold</code> (1–2 px Drift in Pausen)</td></tr>
+        <tr><td><code>lib/motion.js</code></td><td><code>interp</code>, <code>schluessel</code>, <code>envelope</code>, <code>pulse</code>, <code>bezier2</code>, <code>entlang</code>, <code>ik</code>, <code>fk</code>, <code>walkCycle</code>, <code>gangPhase</code>, <code>umblenden</code>, <code>haengend</code>, <code>summe</code></td></tr>
+        <tr><td><code>lib/spielweise.js</code></td><td><code>charakter</code>, <code>dauer</code>, <code>HALTUNGEN</code>, <code>atmen</code>, <code>konzentriert</code>, <code>genervt</code>, <code>ueberrascht</code>, <code>erleichtert</code>, <code>stolz</code>, <code>ratlos</code>, <code>tippen</code>, <code>fussWippen</code></td></tr>
+        <tr><td><code>lib/rigs/</code></td><td>je Archetyp <code>markup</code>, <code>apply</code>, <code>gelenke</code>, <code>greife</code> (Hand zum Ziel), <code>fuss</code> (Knöchel zum Ziel), <code>pruefeReichweite</code>, <code>defaults</code>; frontal dazu <code>posen</code></td></tr>
+        <tr><td><code>lib/posen.js</code></td><td><code>posenZustand</code> liest Schlüsselposen aus dem Posen-Editor</td></tr>
+        <tr><td><code>lib/zufall.js</code></td><td><code>prng(seed)</code>, <code>hash</code></td></tr>
+      </tbody>
+    </table></div>
 <pre><code>// animation.js, gekürzt
 export function computeState(t) {
   const A = { ...rigA.defaults, x: F.x, y: F.y, torso: haltung(t).torso };
   A.armF = rigA.greife(A, 'armF', handZiel(t));   // IK zum Handziel
   return { A };
 }</code></pre>
-</div></details>
+  </div>
 </section>
 
-<section id="editor">
-<h2>Posen-Editor</h2>
-<p>Der Posen-Editor macht das Stellen einer Figur anschaulich. Man zieht an Griffen direkt auf der Bühne: dunkel an der Hüfte, weiß an Rumpf und Kopf, farbig an Händen und Füßen. Eine gezogene Hand folgt ihrem Ziel; ein Ring zeigt die Reichweite und wird rot, wenn das Ziel zu weit weg liegt. Regler erlauben genaue Werte, die Pfeiltasten verschieben den gewählten Griff um 1 px, mit Umschalt um 8 px.</p>
-<p>Mehrere Posen lassen sich als Schlüsselposen auf einer Zeitleiste setzen und in einer Vorschau abspielen. Der Editor schreibt daraus Code, der in die Szene kopiert wird.</p>
-<p><a class="knopf" href="editor/index.html">Editor öffnen</a></p>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Aufruf im Repository: <code>npm run editor -- --szene &lt;ID&gt; --figur A</code>. Dann liegt das Standbild der Szene blass unter der Figur, und Position, Blick und Palette kommen aus der Szene.</p>
-<pre><code>// in geometry.js
-export const POSEN_A = {
-  archetyp: 'stehend-profil',
-  torso: [[0, 0], [1, 17.1]],                      // [Zeit, Wert]
-  armF: { ziel: [[0, 1060, 470], [1, 1040, 520]], beugeseite: -1 },
-};
-// in animation.js
-const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
-<p>Zahlen werden zwischen den Schlüsseln weich verbunden, Handformen gelten ab ihrem Zeitpunkt. Arme mit Handzielen laufen über <code>greife()</code>, damit der Build ihre Reichweite prüft.</p>
-</div></details>
+<section class="ansicht" id="bausteine/geraeusche" data-bereich="bausteine" data-titel="Geräusche">
+  <h2 tabindex="-1">Geräusche</h2>
+  <aside class="querverweis"><p>Anwenden: <a href="#anleitungen/geraeusche">Geräusche zuordnen und pflegen</a> · Werkzeug: <a href="#werkzeuge/hoerprobe">Hörprobe</a></p></aside>
+  <div class="lauftext">
+  <p>Geräusche sind dezent und eher zum Schmunzeln: eine etwas zu eifrige Tastatur, ein Drucker, der kurz nachdenkt. Ausgeschlossen sind Boing, Fanfare, Lachen, Applaus, Explosionen und Musik. Je Szene klingen drei bis sechs Geräuscharten, höchstens sechs Geräusche in einer Sekunde und höchstens ein kurzer Laut wie „oh?“. Nur Physisches klingt; eine Grafik, die bloß einblendet, nicht.</p>
+  <p>Der Katalog umfasst 219 Cues: Büro, Schalter und Handel, Stadt und Verkehr, Haushalt, Werkzeug, Körper, Übergänge und Bildschirmklänge, dazu acht Laute ohne Wort in vier Stimmen. Jeder Cue hat mehrere Varianten; die Regie wählt in der Hörprobe.</p>
+  </div>
+  <div class="technik">
+    <p>Pegel: −20 LUFS größte Momentanlautheit, True Peak höchstens −3 dBTP, gemessen nach ITU-R BS.1770 in <code>lib/sfx/lautheit.js</code> und mit ffmpeg gegengeprüft. Ausgabe als WAV mono 48 kHz 24 bit (<code>lib/sfx/final/</code>) und als OGG/Opus für den Prototyp (<code>lib/sfx/prototyp/</code>). Herkunft jeder Aufnahme mit Modell, Prompt, Parametern und Stimme in <code>lib/sfx/roh/herkunft.tsv</code>.</p>
+  </div>
 </section>
 
-<section id="teile">
-<h2>Teile-Werkstatt</h2>
-<p>Die Teile-Werkstatt vereinfacht das Zeichnen einer neuen Figur. Statt eine ganze Zeichenvorlage mit allen Ebenen auszufüllen, zeichnet man jedes Körperteil für sich, in einem beliebigen Programm und Maßstab, und lädt es als SVG-Datei. Heißt die Datei nach dem Teil, etwa <code>kopf.svg</code>, <code>oberarm.svg</code>, <code>hand.svg</code> oder <code>fuss.svg</code>, findet die Werkstatt ihren Platz selbst.</p>
-<ul>
-  <li><strong>Einpassen:</strong> Die Werkstatt legt die Längsachse des Teils auf das Skelett. Korrigiert wird durch Ziehen am Teil (verschieben) und am roten Griff (drehen und skalieren um das Gelenk) oder über Zahlenfelder.</li>
-  <li><strong>Ableiten:</strong> Fehlen hintere oder rechte Glieder, werden sie aus den vorhandenen gewonnen, frontal gespiegelt. Fehlende Handformen entstehen aus der offenen Hand. Was dann noch fehlt, ergänzt auf Wunsch der Platzhalter <code>satz-00</code>.</li>
-  <li><strong>Prüfen:</strong> Sechs Testposen zeigen die Figur sofort in Bewegung. Jedes Gelenk wird bei −60°, 0°, 60° und 120° auf Lücken geprüft; eine Lücke erscheint rot an Teil und Gelenk.</li>
-  <li><strong>Farben:</strong> Flächen, die je Szene umgefärbt werden sollen (Kleidung, Zubehör), werden per Auswahl zugeordnet. Alle anderen Farben bleiben, wie gezeichnet.</li>
-  <li><strong>Ausgabe:</strong> Ein Satz Einzelteile ergibt alle drei Profilfiguren (sitzend, stehend, nah). Das ZIP-Archiv enthält sie im Austauschformat und eine Anleitung zum Einlesen.</li>
-</ul>
-<p><a class="knopf" href="teile/index.html">Werkstatt öffnen</a></p>
-<p>Alle Dateien bleiben im Browser; nichts wird hochgeladen.</p>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Aufruf im Repository: <code>npm run teile</code>, Ergebnis unter <code>out/teile/teile-werkstatt.html</code>. Das heruntergeladene Archiv wird unter <code>figuren/teilesaetze/</code> entpackt und mit <code>npm run figuren:import -- satz-01</code> eingelesen; der Importer prüft dieselben Regeln noch einmal.</p>
-<p>Die Werkstatt liest Pfade, Grundformen, Gruppen-Transformationen, CSS-Klassen und Bögen, wie Illustrator, Inkscape oder Affinity sie schreiben. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen; beides meldet sie. Konturen werden auf die erlaubten Stärken 4 und 6 px gerundet. Die Rechnung liegt in <code>lib/svgpfad.js</code> und <code>lib/teile.js</code>, die Prüfung in <code>lib/zeichnung.js</code>, gemeinsam mit dem Importer.</p>
-</div></details>
+<section class="ansicht" id="bausteine/requisiten" data-bereich="bausteine" data-titel="Requisiten">
+  <h2 tabindex="-1">Requisiten</h2>
+  <p class="lauftext">Möbel, Geräte, Büromaterial, Dinge im Freien und Zeichen stehen als fertige Bausteine bereit. Sie sind aus Flächen mit Kontur gebaut, ohne Schatten und Verläufe. Bewegliche Teile wie eine Schublade, das Papierfach eines Druckers oder der Hörer eines Telefons lassen sich einzeln bewegen.</p>
+  <figure>
+    <img src="bilder/requisiten.png" alt="Katalog aller Requisiten in fünf Gruppen: Möbel, Geräte, Büro, Außen, Zeichen." loading="lazy">
+    <figcaption>Katalog aller Requisiten im selben Maßstab, mit ihren beweglichen Teilen.</figcaption>
+  </figure>
+  <div class="technik">
+    <p>Jede Requisite bietet <code>markup(id, pos, farben, opts)</code>, <code>ids(id)</code> (bewegliche Gruppen), <code>anker(pos)</code> (benannte Punkte, etwa die Tasten einer Tastatur als Handziel) und <code>rahmen()</code>. Braucht eine Szene etwas, das fehlt, baut sie es in ihrer eigenen <code>requisiten.js</code>; braucht es eine zweite Szene, wandert es in die Bibliothek.</p>
+  </div>
 </section>
 
-<section id="geraeusche">
-<h2>Geräusche</h2>
-<p>Geräusche sind dezent und eher zum Schmunzeln: eine etwas zu eifrige Tastatur, ein Drucker, der kurz nachdenkt. Ausgeschlossen sind Boing, Fanfare, Lachen, Applaus, Explosionen und Musik. Je Szene klingen drei bis sechs Geräuscharten, höchstens sechs Geräusche in einer Sekunde und höchstens ein kurzer Laut wie „oh?“.</p>
-<p>Die Zeitpunkte werden nicht von Hand gesetzt. Die Werkstatt spielt die Bewegung Bild für Bild ab und erkennt, wo etwas anschlägt, losgeht, ankommt oder erscheint. Der Szenenbrief sagt nur, welche dieser Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.</p>
-<ol class="schritte">
-  <li><strong>Katalog:</strong> rund 40 Geräusche und drei Laute mit Beschreibung, Länge und Pegel (<code>lib/sfx/katalog.yaml</code>).</li>
-  <li><strong>Kostenfreigabe:</strong> <code>npm run sfx:kosten</code> listet, was generiert werden müsste, und schätzt die Credits. Generiert wird erst nach Zustimmung der Regie.</li>
-  <li><strong>Hörprobe:</strong> <code>npm run sfx:hoerprobe</code> zeigt alle Varianten mit Messwerten zum Anhören und Auswählen.</li>
-  <li><strong>Bearbeiten:</strong> <code>npm run sfx:normalisieren</code> schneidet Stille ab, kürzt auf genau einen Anschlag, blendet weich und bringt alles auf denselben Pegel.</li>
-  <li><strong>Zuordnen:</strong> <code>npm run sfx:cues -- &lt;Szene&gt; --stichprobe</code> schreibt die Liste der Geräusche und zeigt je Ereignis das Bild davor, darauf und danach.</li>
-</ol>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Erkennungsarten in <code>lib/events.js</code>: Tiefpunkt (Anschlag, Stempel), Beginn (Klick), Nulldurchgang (Schritt), Bewegungsbeginn und -ende (Abheben, Ankunft), Aufprall, Hüllkurve (Gerät) und Schwelle (Erscheinen). Pfade zeigen in den Zustand oder in die Gelenke einer Figur, etwa <code>A.armF.hand.y</code>. Aus einem Vorrat wählt ein Hash über Szene, Typ und laufende Nummer die Variante, nie zweimal dieselbe hintereinander.</p>
-<p>Pegel: −20 LUFS größte Momentanlautheit, True Peak höchstens −3 dBTP, gemessen nach ITU-R BS.1770 in <code>lib/sfx/lautheit.js</code> und mit ffmpeg gegengeprüft. Ausgabe als WAV mono 48 kHz 24 bit und als OGG/Opus für den Prototyp. Im Prototyp liegt der lauteste Cue bei 0 dB, die übrigen relativ dazu.</p>
-</div></details>
+<section class="ansicht" id="bausteine/gestaltung" data-bereich="bausteine" data-titel="Gestaltung">
+  <h2 tabindex="-1">Gestaltung</h2>
+  <ul class="lauftext">
+    <li><strong>Bühne</strong> 1920 × 1080; die Grafik steht im Bereich x 128–1792, y 96–816, Beschriftungen in festen Plätzen darunter.</li>
+    <li><strong>Schutzzone:</strong> Die unteren 140 px bleiben frei von Text und wichtiger Bildaussage, damit Untertitel nichts verdecken.</li>
+    <li><strong>Abstände</strong> auf einem 8-px-Raster: 8, 16, 24, 32, 48, 64, 96, 128.</li>
+    <li><strong>Farben</strong> nur aus der Palette; je Szene eine helle Grundfläche, eine Akzentfarbe, höchstens eine zweite. <strong>Farbe nie allein:</strong> Jede Unterscheidung trägt zusätzlich eine Form oder ein Wort.</li>
+    <li><strong>Kontraste</strong> werden gerechnet: Text mindestens 4,5:1, Grafik mindestens 3:1.</li>
+    <li><strong>Lesetakt:</strong> Jeder Text steht so lange, dass man ihn lesen kann.</li>
+    <li><strong>Keine Dekoration:</strong> keine Schatten, Verläufe, Emojis oder abgerundeten Ecken; runde Linienenden nur an Figuren und Zeichen.</li>
+    <li><strong>Schrift:</strong> Arial (in der Cloud Liberation Sans mit gleichen Maßen), nie Webfonts.</li>
+  </ul>
+  <h3>Startpalette</h3>
+  <p class="lauftext">Eine neutrale Palette, bis ein Auftrag sein eigenes Erscheinungsbild mitbringt. Neben jeder Farbe steht ihr gemessener Kontrast auf Weiß.</p>
+  <div class="palette">{{PALETTE}}</div>
+  <div class="technik">
+    <p>Alle Werte stehen in <code>tokens/tokens.js</code>, der einzigen Quelle für Farben, Strichstärken (8 / 6 / 4 px), Schrift, Raster und Bühne. Ein Auftrag ersetzt diese Datei, sonst nichts. Die Funktion <code>kontrast()</code> rechnet nach WCAG; ein Test prüft, dass jeder Farbkommentar den gerechneten Wert nennt. <code>lesezeitFrames(zeichen)</code> = (Zeichen / 12) · 30 + 45 Bilder.</p>
+  </div>
 </section>
 
-<section id="requisiten">
-<h2>Requisiten</h2>
-<p>Möbel, Geräte, Büromaterial, Dinge im Freien und Zeichen stehen als fertige Bausteine bereit. Sie sind aus Flächen mit Kontur gebaut, ohne Schatten und Verläufe. Bewegliche Teile wie eine Schublade, das Papierfach eines Druckers oder der Hörer eines Telefons lassen sich einzeln bewegen.</p>
-<figure>
-  <img src="bilder/requisiten.png" alt="Katalog aller Requisiten in fünf Gruppen: Möbel, Geräte, Büro, Außen, Zeichen." loading="lazy">
-  <figcaption>Katalog aller Requisiten im selben Maßstab, mit ihren beweglichen Teilen.</figcaption>
-</figure>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Jede Requisite bietet <code>markup(id, pos, farben, opts)</code>, <code>ids(id)</code> (bewegliche Gruppen), <code>anker(pos)</code> (benannte Punkte, etwa die Tasten einer Tastatur als Handziel) und <code>rahmen()</code>. Braucht eine Szene etwas, das fehlt, baut sie es in ihrer eigenen <code>requisiten.js</code>; braucht es eine zweite Szene, wandert es in die Bibliothek.</p>
-</div></details>
+<section class="ansicht" id="bausteine/pruefungen" data-bereich="bausteine" data-titel="Prüfungen">
+  <h2 tabindex="-1">Prüfungen</h2>
+  <p class="lauftext">Bei jeder Änderung prüft GitHub die ganze Werkstatt automatisch. Erst wenn alles grün ist, wird eine Änderung übernommen. Örtlich läuft dasselbe mit <code>npm run pruefen</code>.</p>
+  <ul class="lauftext">
+    <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt, Geräusche mit Lautheit gegen ffmpeg, diese Seite)</li>
+    <li>Verbotsprüfung: Zugangsschlüssel, unerlaubte Animationen, Zufall ohne Startwert, Farben außerhalb der Palette, Abstände außerhalb des Rasters, Webfonts, Netzaufrufe</li>
+    <li>jede Szene bauen und über jedes Bild prüfen</li>
+    <li>erzeugte Dateien vergleichen: Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Cue-Listen, Protokolle</li>
+  </ul>
+  <div class="technik">
+    <p>Der Prüflauf steht in <code>.github/workflows/pruefung.yml</code>, die Verbotsprüfung in <code>tools/pruefen-verboten.ts</code>. Der Prototyp wird in Chromium mit zwei Regeln für automatischen Ton getestet: Erlaubt der Browser Ton, startet die Szene; verlangt er einen Klick, wartet sie bei 0. Ein Test baut absichtlich gestörte Kopien der Vorlage und belegt, dass der Build Fehler tatsächlich meldet.</p>
+  </div>
 </section>
 
-<section id="gestaltung">
-<h2>Gestaltung</h2>
-<ul>
-  <li><strong>Bühne</strong> 1920 × 1080; die Grafik steht im Bereich x 128–1792, y 96–816, Beschriftungen in festen Plätzen darunter.</li>
-  <li><strong>Schutzzone:</strong> Die unteren 140 px bleiben frei von Text und wichtiger Bildaussage, damit Untertitel nichts verdecken.</li>
-  <li><strong>Abstände</strong> auf einem 8-px-Raster: 8, 16, 24, 32, 48, 64, 96, 128.</li>
-  <li><strong>Farben</strong> nur aus der Palette; je Szene eine helle Grundfläche, eine Akzentfarbe, höchstens eine zweite. <strong>Farbe nie allein:</strong> Jede Unterscheidung trägt zusätzlich eine Form oder ein Wort.</li>
-  <li><strong>Kontraste</strong> werden gerechnet: Text mindestens 4,5:1, Grafik mindestens 3:1.</li>
-  <li><strong>Lesetakt:</strong> Jeder Text steht so lange, dass man ihn lesen kann.</li>
-  <li><strong>Keine Dekoration:</strong> keine Schatten, Verläufe, Emojis oder abgerundeten Ecken; runde Linienenden nur an Figuren und Zeichen.</li>
-  <li><strong>Schrift:</strong> Arial (in der Cloud Liberation Sans mit gleichen Maßen), nie Webfonts.</li>
-</ul>
-<h3>Startpalette</h3>
-<p>Eine neutrale Palette, bis ein Auftrag sein eigenes Erscheinungsbild mitbringt. Neben jeder Farbe steht ihr gemessener Kontrast auf Weiß.</p>
-<div class="palette">{{PALETTE}}</div>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Alle Werte stehen in <code>tokens/tokens.js</code>, der einzigen Quelle für Farben, Strichstärken (8 / 6 / 4 px), Schrift, Raster und Bühne. Ein Auftrag ersetzt diese Datei, sonst nichts. Die Funktion <code>kontrast()</code> rechnet nach WCAG; ein Test prüft, dass jeder Farbkommentar den gerechneten Wert nennt. <code>lesezeitFrames(zeichen)</code> = (Zeichen / 12) · 30 + 45 Bilder.</p>
-</div></details>
+<!-- ===================================================================== Nachschlagen -->
+<section class="ansicht bereich" id="nachschlagen" data-titel="Nachschlagen">
+  <h2 tabindex="-1">Nachschlagen</h2>
+  <ul class="kacheln">
+    <li><a class="kachel" href="#nachschlagen/befehle"><h3>Alle Befehle</h3><p>Jeder <code>npm run</code>-Befehl mit Beschreibung und Stand.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/begriffe"><h3>Begriffe</h3><p>Archetyp, Beat, Cue, Rig, Teilesatz und weitere.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/stand"><h3>Stand und nächste Schritte</h3><p>Welche Phase fertig ist und was als Nächstes kommt.</p></a></li>
+    <li><a class="kachel" href="#nachschlagen/zusammenarbeit"><h3>Zusammenarbeit</h3><p>Wer entscheidet, was nie ohne Rückfrage geschieht.</p></a></li>
+  </ul>
 </section>
 
-<section id="pruefungen">
-<h2>Prüfungen</h2>
-<p>Bei jeder Änderung prüft GitHub die ganze Werkstatt automatisch. Erst wenn alles grün ist, wird eine Änderung übernommen. Örtlich läuft dasselbe mit <code>npm run pruefen</code>.</p>
-<ul>
-  <li>Typen und Bibliothekstests (Kurven, Bewegung, Rigs, Requisiten, Briefleser, Build, Prototyp im Browser, Posen-Editor, Importer, Teile-Werkstatt, Geräusche mit Lautheit gegen ffmpeg)</li>
-  <li>Verbotsprüfung: Zugangsschlüssel, unerlaubte Animationen, Zufall ohne Startwert, Farben außerhalb der Palette, Abstände außerhalb des Rasters, Webfonts, Netzaufrufe</li>
-  <li>jede Szene bauen und über jedes Bild prüfen</li>
-  <li>erzeugte Dateien vergleichen: Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle</li>
-</ul>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Der Prüflauf steht in <code>.github/workflows/pruefung.yml</code>, die Verbotsprüfung in <code>tools/pruefen-verboten.ts</code>. Der Prototyp wird in Chromium mit zwei Regeln für automatischen Ton getestet: Erlaubt der Browser Ton, startet die Szene; verlangt er einen Klick, wartet sie bei 0. Ein Test baut absichtlich gestörte Kopien der Vorlage und belegt, dass der Build Fehler tatsächlich meldet.</p>
-</div></details>
+<section class="ansicht" id="nachschlagen/befehle" data-bereich="nachschlagen" data-titel="Alle Befehle">
+  <h2 tabindex="-1">Alle Befehle</h2>
+  <p class="lauftext">Jeder Befehl läuft mit <code>npm run &lt;name&gt;</code>. Werkzeuge, die noch nicht gebaut sind, nennen ihre Phase und tun nichts. Für die häufigsten Wege gibt es Starter zum Doppelklick im Ordner <code>scripts/</code>.</p>
+  <div class="tabelle"><table>
+    <thead><tr><th>Befehl</th><th>Was er tut</th><th>Stand</th></tr></thead>
+    <tbody>{{SKRIPTE}}</tbody>
+  </table></div>
 </section>
 
-<section id="befehle">
-<h2>Alle Befehle</h2>
-<p>Jeder Befehl läuft mit <code>npm run &lt;name&gt;</code>. Werkzeuge, die noch nicht gebaut sind, nennen ihre Phase und tun nichts. Für die häufigsten Wege gibt es Starter zum Doppelklick im Ordner <code>scripts/</code>.</p>
-<div class="tabelle"><table>
-  <thead><tr><th>Befehl</th><th>Was er tut</th><th>Stand</th></tr></thead>
-  <tbody>{{SKRIPTE}}</tbody>
-</table></div>
+<section class="ansicht" id="nachschlagen/begriffe" data-bereich="nachschlagen" data-titel="Begriffe">
+  <h2 tabindex="-1">Begriffe</h2>
+  <div class="tabelle"><table>
+    <tbody>
+      <tr><th>Archetyp</th><td>Skelett einer Figur mit festen Maßen, zum Beispiel sitzend im Profil.</td></tr>
+      <tr><th>Beat</th><td>Abschnitt einer Szene mit Anfang, Ende und einer Handlung.</td></tr>
+      <tr><th>Cue</th><td>Ein Geräusch aus dem Katalog, das an einer Stelle klingt.</td></tr>
+      <tr><th>Handziel</th><td>Der Punkt, an dem eine Hand sein soll; die Gelenkwinkel rechnet die Werkstatt.</td></tr>
+      <tr><th>Kontaktbogen</th><td>Neun Standbilder einer Szene auf einem Bild, zum Ansehen und Prüfen.</td></tr>
+      <tr><th>Laut</th><td>Ein kurzer Ausruf ohne Wort, etwa „oh?“; höchstens einer je Szene.</td></tr>
+      <tr><th>Pointe</th><td>Der Moment, über den man schmunzelt; er liegt im Ablauf, nie in der Person.</td></tr>
+      <tr><th>Prototyp</th><td>Die Szene als Webseite zum Abspielen, Anhalten und Springen.</td></tr>
+      <tr><th>Regie</th><td>Die Person, die das Repository führt und inhaltlich entscheidet.</td></tr>
+      <tr><th>Rig</th><td>Gliederpuppe einer Figur: Gelenke, Längen und die Rechnung, die Winkel in ein Bild übersetzt.</td></tr>
+      <tr><th>Schlüsselpose</th><td>Eine festgelegte Pose zu einem Zeitpunkt; dazwischen wird weich verbunden.</td></tr>
+      <tr><th>Schutzzone</th><td>Die unteren 140 px des Bildes, frei für Untertitel.</td></tr>
+      <tr><th>Teilesatz</th><td>Die Zeichnungen aller Teile einer Figur, zum Beispiel <code>satz-01</code>.</td></tr>
+      <tr><th>Tokens</th><td>Die eine Datei mit allen Farben, Strichstärken und Maßen.</td></tr>
+      <tr><th>Vorrat</th><td>Mehrere Varianten eines Einzelgeräuschs, etwa acht Tastenanschläge, damit sich nichts hörbar wiederholt.</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
-<section id="stand">
-<h2>Stand und nächste Schritte</h2>
-<p>Die Werkstatt entsteht in Phasen; nach jeder Phase wird angehalten und gesichtet.</p>
-<div class="tabelle"><table>
-  <thead><tr><th>Phase</th><th>Inhalt</th><th>Stand</th></tr></thead>
-  <tbody>{{STAND}}</tbody>
-</table></div>
-<p>Als Nächstes: die Geräusche nach Kostenfreigabe generieren und auswählen, die Rig-Spezifikation freigeben (danach bleibt sie fest) und den ersten eigenen Teilesatz zeichnen.</p>
+<section class="ansicht" id="nachschlagen/stand" data-bereich="nachschlagen" data-titel="Stand und nächste Schritte">
+  <h2 tabindex="-1">Stand und nächste Schritte</h2>
+  <p class="lauftext">Die Werkstatt entsteht in Phasen; nach jeder Phase wird angehalten und gesichtet.</p>
+  <div class="tabelle"><table>
+    <thead><tr><th>Phase</th><th>Inhalt</th><th>Stand</th></tr></thead>
+    <tbody>{{STAND}}</tbody>
+  </table></div>
+  <p class="lauftext">Als Nächstes: die Geräuschbibliothek vervollständigen und in der Hörprobe auswählen, die Rig-Spezifikation freigeben (danach bleibt sie fest) und den ersten eigenen Teilesatz zeichnen.</p>
 </section>
 
-<section id="zusammenarbeit">
-<h2>Zusammenarbeit</h2>
-<p>Inhaltliche und gestalterische Entscheidungen trifft die Regie. Wo sie zu entscheiden hat, bekommt sie zwei bis vier Möglichkeiten mit einer Empfehlung. Ohne Rückfrage geschieht nicht:</p>
-<ul>
-  <li>eine neue Abhängigkeit aufnehmen;</li>
-  <li>Farben, Maße oder Schrift der Palette ändern;</li>
-  <li>die Rig-Spezifikation ändern (nach ihrer Freigabe);</li>
-  <li>Sprech- oder Bildschirmtext umformulieren;</li>
-  <li>etwas generieren, das Kosten verursacht;</li>
-  <li>eine Seite öffentlich machen.</li>
-</ul>
-<p>Solange das Repository öffentlich ist, enthält es keine Kundeninhalte, kein Erscheinungsbild eines Auftrags, keine personenbezogenen Daten und keine unveröffentlichten Sprechtexte.</p>
-<details><summary>Technische Einzelheiten</summary><div>
-<p>Die Regeln stehen in <code>CLAUDE.md</code>, ihre Geschichte in <code>docs/CHRONIK.md</code>, Entscheidungen in <code>docs/ENTSCHEIDUNGEN.md</code>. Jede Änderung läuft auf einem eigenen Zweig mit Pull Request gegen <code>main</code>. Renderergebnisse liegen nie im Repository.</p>
-</div></details>
+<section class="ansicht" id="nachschlagen/zusammenarbeit" data-bereich="nachschlagen" data-titel="Zusammenarbeit">
+  <h2 tabindex="-1">Zusammenarbeit</h2>
+  <div class="lauftext">
+  <p>Inhaltliche und gestalterische Entscheidungen trifft die Regie. Wo sie zu entscheiden hat, bekommt sie zwei bis vier Möglichkeiten mit einer Empfehlung. Ohne Rückfrage geschieht nicht:</p>
+  <ul>
+    <li>eine neue Abhängigkeit aufnehmen;</li>
+    <li>Farben, Maße oder Schrift der Palette ändern;</li>
+    <li>die Rig-Spezifikation ändern (nach ihrer Freigabe);</li>
+    <li>Sprech- oder Bildschirmtext umformulieren;</li>
+    <li>etwas generieren, das Kosten verursacht;</li>
+    <li>eine Seite öffentlich machen.</li>
+  </ul>
+  <p>Solange das Repository öffentlich ist, enthält es keine Kundeninhalte, kein Erscheinungsbild eines Auftrags, keine personenbezogenen Daten und keine unveröffentlichten Sprechtexte.</p>
+  </div>
+  <div class="technik">
+    <p>Die Regeln stehen in <code>CLAUDE.md</code>, ihre Geschichte in <code>docs/CHRONIK.md</code>, Entscheidungen in <code>docs/ENTSCHEIDUNGEN.md</code>. Jede Änderung läuft auf einem eigenen Zweig mit Pull Request gegen <code>main</code>. Renderergebnisse liegen nie im Repository.</p>
+  </div>
 </section>
 
-<section id="begriffe">
-<h2>Begriffe</h2>
-<div class="tabelle"><table>
-  <tbody>
-    <tr><th>Archetyp</th><td>Skelett einer Figur mit festen Maßen, zum Beispiel sitzend im Profil.</td></tr>
-    <tr><th>Beat</th><td>Abschnitt einer Szene mit Anfang, Ende und einer Handlung.</td></tr>
-    <tr><th>Cue</th><td>Ein Geräusch aus dem Katalog, das an einer Stelle klingt.</td></tr>
-    <tr><th>Handziel</th><td>Der Punkt, an dem eine Hand sein soll; die Gelenkwinkel rechnet die Werkstatt.</td></tr>
-    <tr><th>Kontaktbogen</th><td>Neun Standbilder einer Szene auf einem Bild, zum Ansehen und Prüfen.</td></tr>
-    <tr><th>Pointe</th><td>Der Moment, über den man schmunzelt; er liegt im Ablauf, nie in der Person.</td></tr>
-    <tr><th>Prototyp</th><td>Die Szene als Webseite zum Abspielen, Anhalten und Springen.</td></tr>
-    <tr><th>Regie</th><td>Die Person, die das Repository führt und inhaltlich entscheidet.</td></tr>
-    <tr><th>Rig</th><td>Gliederpuppe einer Figur: Gelenke, Längen und die Rechnung, die Winkel in ein Bild übersetzt.</td></tr>
-    <tr><th>Schlüsselpose</th><td>Eine festgelegte Pose zu einem Zeitpunkt; dazwischen wird weich verbunden.</td></tr>
-    <tr><th>Schutzzone</th><td>Die unteren 140 px des Bildes, frei für Untertitel.</td></tr>
-    <tr><th>Teilesatz</th><td>Die Zeichnungen aller Teile einer Figur, zum Beispiel <code>satz-01</code>.</td></tr>
-    <tr><th>Tokens</th><td>Die eine Datei mit allen Farben, Strichstärken und Maßen.</td></tr>
-  </tbody>
-</table></div>
-</section>
-
+</main>
 <footer>
   <p>Diese Seite wird bei jeder Änderung an <code>main</code> aus dem Repository neu gebaut (<code>tools/seite-bauen.js</code>). Stand: {{ERSTELLT}}.</p>
 </footer>
-</main>
-</div>
+
+<script>
+// Navigation in Ansichten: Jede Ansicht (Start, Bereich, Kapitel) hat eine Adresse #id; gezeigt wird nur die aktuelle.
+// Ohne dieses Skript bleibt die Seite eine lange Seite mit Sprungmarken. Keine Übergänge, keine Animation.
+(() => {
+  const wurzel = document.documentElement;
+  wurzel.classList.add('js');
+  const ansichten = [...document.querySelectorAll('.ansicht')];
+  // Die Adresse wandert von id nach data-adresse: So findet der Browser zur Adresse kein Element mehr und
+  // springt nicht selbst dorthin (sonst landet ein Kapitel unter der Kopfzeile). Ohne Skript bleiben die ids.
+  for (const a of ansichten) {
+    a.dataset.adresse = a.id;
+    a.removeAttribute('id');
+  }
+  const adresse = (a) => a.dataset.adresse;
+  const nachId = new Map(ansichten.map((a) => [adresse(a), a]));
+  const titelVon = (a) => a.dataset.titel;
+  // Alte Sprungmarken der früheren Seite führen zum neuen Ort.
+  const ALT = {
+    ueberblick: 'bausteine/ideen', ausprobieren: 'werkzeuge', grundsaetze: 'bausteine/grundsaetze', szene: 'anleitungen/szene',
+    figuren: 'bausteine/figuren', bewegung: 'bausteine/bewegung', editor: 'werkzeuge/posen-editor', teile: 'werkzeuge/teile-werkstatt',
+    geraeusche: 'anleitungen/geraeusche', requisiten: 'bausteine/requisiten', gestaltung: 'bausteine/gestaltung',
+    pruefungen: 'bausteine/pruefungen', befehle: 'nachschlagen/befehle', stand: 'nachschlagen/stand',
+    zusammenarbeit: 'nachschlagen/zusammenarbeit', begriffe: 'nachschlagen/begriffe',
+  };
+
+  // Brotkrume oben und Blättern unten in jedem Kapitel, aus der Reihenfolge der Ansichten.
+  for (const a of ansichten.filter((x) => x.dataset.bereich)) {
+    const bereich = nachId.get(a.dataset.bereich);
+    const geschwister = ansichten.filter((x) => x.dataset.bereich === a.dataset.bereich);
+    const i = geschwister.indexOf(a);
+    const krume = document.createElement('p');
+    krume.className = 'krume';
+    krume.innerHTML = `<a href="#${adresse(bereich)}"></a> › <span></span>`;
+    krume.querySelector('a').textContent = titelVon(bereich);
+    krume.querySelector('span').textContent = titelVon(a);
+    a.prepend(krume);
+    const nav = document.createElement('nav');
+    nav.className = 'blaettern';
+    nav.setAttribute('aria-label', 'Blättern');
+    const link = (ziel, text) => (ziel ? `<a href="#${adresse(ziel)}">${text}</a>` : '<span></span>');
+    nav.innerHTML = link(geschwister[i - 1], `← ${geschwister[i - 1] ? titelVon(geschwister[i - 1]) : ''}`) + link(bereich, `Übersicht ${titelVon(bereich)}`) + link(geschwister[i + 1], `${geschwister[i + 1] ? titelVon(geschwister[i + 1]) : ''} →`);
+    a.append(nav);
+  }
+
+  // Ebene: Kurz oder mit Technik; die Wahl gilt seitenweit und bleibt im Browser gespeichert.
+  const knopfKurz = document.getElementById('ebene-kurz');
+  const knopfTechnik = document.getElementById('ebene-technik');
+  function setzeEbene(technik) {
+    wurzel.classList.toggle('mit-technik', technik);
+    knopfKurz.setAttribute('aria-pressed', String(!technik));
+    knopfTechnik.setAttribute('aria-pressed', String(technik));
+    try { localStorage.setItem('werkstatt-ebene', technik ? 'technik' : 'kurz'); } catch {}
+  }
+  knopfKurz.addEventListener('click', () => setzeEbene(false));
+  knopfTechnik.addEventListener('click', () => setzeEbene(true));
+  let gespeichert = 'kurz';
+  try { gespeichert = localStorage.getItem('werkstatt-ebene') ?? 'kurz'; } catch {}
+  setzeEbene(gespeichert === 'technik');
+  document.querySelector('.ebenen').hidden = false;
+
+  // Ansicht wechseln
+  let markiert = null;
+  function zeige(ziel, { fokus = true, element = null } = {}) {
+    const a = nachId.get(ziel) ?? nachId.get('start');
+    for (const x of ansichten) x.hidden = x !== a;
+    const bereich = a.dataset.bereich ?? (a.classList.contains('bereich') ? adresse(a) : null);
+    for (const r of document.querySelectorAll('.reiter a')) r.setAttribute('aria-current', String(r.dataset.bereich === bereich));
+    document.title = adresse(a) === 'start' ? 'Trickfilm-Werkstatt' : `${titelVon(a)} · Trickfilm-Werkstatt`;
+    markiert?.classList.remove('markiert');
+    markiert = null;
+    if (element) {
+      element.classList.add('markiert');
+      markiert = element;
+      element.scrollIntoView({ block: 'center' });
+    } else {
+      window.scrollTo(0, 0);
+    }
+    if (fokus) a.querySelector('h1, h2').focus({ preventScroll: true });
+  }
+  function ausAdresse({ fokus = true } = {}) {
+    let ziel = decodeURIComponent(location.hash.slice(1));
+    if (ALT[ziel]) {
+      ziel = ALT[ziel];
+      history.replaceState(null, '', `#${ziel}`);
+    }
+    zeige(ziel || 'start', { fokus });
+  }
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('hashchange', () => ausAdresse());
+  ausAdresse({ fokus: false });
+
+  // Suche: Überschriften, Absätze, Listenpunkte und Tabellenzeilen aller Ansichten, ohne Netz.
+  const feld = document.getElementById('suchfeld');
+  const liste = document.getElementById('treffer');
+  const eintraege = [];
+  const BLOCK = /^(H\d|P|TD|TH|LI|DIV|UL|OL|PRE|FIGCAPTION)$/;
+  const mitLuecken = (el) => [...el.childNodes].map((n) => (n.nodeType === 1 ? (BLOCK.test(n.tagName) ? ` ${mitLuecken(n)} ` : mitLuecken(n)) : n.textContent)).join('');
+  for (const a of ansichten) {
+    for (const el of a.querySelectorAll('h2, h3, p, li, tr, figcaption, pre')) {
+      if (el.closest('.blaettern, .krume') || (el.tagName === 'LI' && el.querySelector('li')) || (el.tagName === 'P' && el.closest('li, .kachel'))) continue;
+      const text = mitLuecken(el).replace(/\s+/g, ' ').trim();
+      if (text) eintraege.push({ ansicht: a, el, text, klein: text.toLowerCase(), technik: Boolean(el.closest('.technik')) });
+    }
+  }
+  function auszug(text, i, laenge) {
+    const von = Math.max(0, i - 40);
+    return (von ? '…' : '') + text.slice(von, i + laenge + 60) + (i + laenge + 60 < text.length ? '…' : '');
+  }
+  function suche() {
+    const q = feld.value.trim().toLowerCase();
+    liste.innerHTML = '';
+    if (q.length < 2) return void (liste.hidden = true);
+    const treffer = eintraege.filter((e) => e.klein.includes(q));
+    // Treffer in Überschriften zuerst, dann nach Reihenfolge der Seite; höchstens zwölf.
+    treffer.sort((x, y) => (/^H/.test(y.el.tagName) - /^H/.test(x.el.tagName)));
+    for (const t of treffer.slice(0, 12)) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${adresse(t.ansicht)}`;
+      const ort = document.createElement('span');
+      ort.className = 'ort';
+      ort.textContent = titelVon(t.ansicht) + (t.technik ? ' · Technik' : '');
+      const text = document.createElement('span');
+      text.className = 'auszug';
+      text.textContent = auszug(t.text, t.klein.indexOf(q), q.length);
+      a.append(ort, text);
+      a.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        if (t.technik) setzeEbene(true);
+        history.pushState(null, '', `#${adresse(t.ansicht)}`);
+        zeige(adresse(t.ansicht), { fokus: false, element: t.el });
+        liste.hidden = true;
+        feld.value = '';
+      });
+      li.append(a);
+      liste.append(li);
+    }
+    if (!treffer.length) liste.innerHTML = '<li class="leer">Nichts gefunden.</li>';
+    liste.hidden = false;
+  }
+  feld.hidden = false;
+  feld.addEventListener('input', suche);
+  feld.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') liste.querySelector('a')?.click();
+    if (ev.key === 'Escape') { liste.hidden = true; feld.value = ''; }
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); liste.querySelector('a')?.focus(); }
+  });
+  liste.addEventListener('keydown', (ev) => {
+    const links = [...liste.querySelectorAll('a')];
+    const i = links.indexOf(document.activeElement);
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); links[Math.min(links.length - 1, i + 1)]?.focus(); }
+    if (ev.key === 'ArrowUp') { ev.preventDefault(); (i > 0 ? links[i - 1] : feld).focus(); }
+    if (ev.key === 'Escape') { liste.hidden = true; feld.focus(); }
+  });
+  document.addEventListener('click', (ev) => { if (!ev.target.closest('.suche')) liste.hidden = true; });
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { ev.preventDefault(); feld.focus(); }
+  });
+})();
+</script>
 </body>
 </html>
