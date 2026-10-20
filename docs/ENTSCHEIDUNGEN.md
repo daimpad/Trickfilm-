@@ -81,3 +81,12 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Pfade in die Gelenke, Ereignistyp `aufbruch` | ja, siehe Chronik | entschieden vom Leitstand |
 | Generierung des Startbestands | offen: Kostenfreigabe mit `npm run sfx:kosten` | Regie |
 
+## 2026-10-20 · Geräuschbibliothek
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Generierung des Startbestands | ja, alles | entschieden von Regie |
+| Umfang darüber hinaus | „je größer desto besser“: Katalog auf 219 Cues erweitert (211 Geräusche, 8 Laute), je Cue mindestens vier Varianten | entschieden von Regie, Auswahl der Cues vom Leitstand |
+| Weg der Generierung | ElevenLabs-Connector, Ablage über `npm run sfx:ablegen` | entschieden vom Leitstand |
+| Stimme der Laute | offen: Auswahl aus vier Proben | Regie |
+

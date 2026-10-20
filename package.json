@@ -29,6 +29,7 @@
     "sfx:normalisieren": "node tools/sfx-normalisieren.js",
     "sfx:hoerprobe": "node tools/sfx-hoerprobe.js",
     "sfx:kosten": "node tools/sfx-kosten.js",
+    "sfx:ablegen": "node tools/sfx-ablegen.js",
     "stimme": "node tools/noch-nicht.js 6 stimme",
     "wortzeit": "node tools/noch-nicht.js 6 wortzeit",
     "untertitel": "node tools/noch-nicht.js 6 untertitel",

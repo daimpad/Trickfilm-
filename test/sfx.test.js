@@ -244,3 +244,39 @@ test('Prototyp: Cues eingebettet, Status nennt fehlenden Ton, vorhandener Ton wi
     rmSync(d, { recursive: true, force: true });
   }
 });
+
+test('Ablegen: prüft Ton, nummeriert Varianten, schreibt Herkunft, legt nichts doppelt ab; Plan folgt dem Katalog', async () => {
+  const { ablegen } = await import('../tools/sfx-ablegen.js');
+  const { plan, sfxParameter } = await import('../tools/sfx-kosten.js');
+  const d = temp('ablegen');
+  try {
+    writeFileSync(join(d, 'katalog.yaml'), ['- { id: klick, art: sfx, prompt: "single click", dauer_s: 0.2, varianten_vorrat: 6, gain_db: -26, einzel: true, ereignisse: [klick] }', '- { id: summen, art: sfx, prompt: "hum", dauer_s: 2.0, gain_db: -36, loop: true, ereignisse: [geraet] }', '- { id: oh, art: laut, text: "[surprised] Oh?", dauer_s: 0.8, gain_db: -20 }', ''].join('\n'));
+    const quelle = join(d, 'download');
+    mkdirSync(quelle);
+    schreibeWav(signal(0.5, (t) => 0.3 * Math.sin(2 * Math.PI * 800 * t)), join(quelle, 'a.wav'));
+    schreibeWav(signal(0.5, (t) => 0.3 * Math.sin(2 * Math.PI * 900 * t)), join(quelle, 'b.wav'));
+    writeFileSync(join(quelle, 'kaputt.mp3'), 'kein Ton');
+    const kopf = 'id\tquelle\tmodell\tprompt\tsitzung\tgenerierung\tparameter\n';
+    const zeile = (datei, gen) => `klick\t${join(quelle, datei)}\televen_text_to_sound_v2\tsingle click\tflow F / S\t${gen}\tduration 1\n`;
+    const r = ablegen(d, kopf + zeile('a.wav', 'g1') + zeile('b.wav', 'g2') + zeile('kaputt.mp3', 'g3'), '2026-10-20');
+    assert.deepEqual(r.abgelegt.map((a) => a.split(' ')[0]), ['klick/v1', 'klick/v2']);
+    assert.equal(r.fehler.length, 1);
+    assert.match(r.fehler[0], /kaputt\.mp3/);
+    const nochmal = ablegen(d, kopf + zeile('a.wav', 'g1'), '2026-10-20');
+    assert.equal(nochmal.abgelegt.length, 0);
+    assert.equal(nochmal.uebergangen.length, 1);
+    const herkunft = readFileSync(join(d, 'roh', 'herkunft.tsv'), 'utf8').trim().split('\n');
+    assert.equal(herkunft.length, 3);
+    assert.match(herkunft[2], /^klick\tv2\tv2\.wav\televen_text_to_sound_v2\tsingle click\t2026-10-20\tflow F \/ S\tg2\t/);
+    assert.throws(() => ablegen(d, 'id\tquelle\n'), /Spalte „modell“ fehlt/);
+    // Plan: Abgelegtes fällt heraus; Vorrat 6 braucht zwei Läufe; Schleifen bekommen Luft für die Naht.
+    const p = plan(d);
+    assert.deepEqual(p.map((x) => x.id), ['summen', 'oh']);
+    assert.deepEqual(sfxParameter({ dauer_s: 2.0, loop: true }), { duration_seconds: 2.5, prompt_influence: 0.4, loop: true });
+    assert.deepEqual(sfxParameter({ dauer_s: 0.2, einzel: true }), { duration_seconds: 1, prompt_influence: 0.5, loop: false });
+    assert.equal(plan(d, { ids: ['klick'] }).length, 0);
+    assert.equal(p.find((x) => x.id === 'oh').wartet, 'Stimmwahl durch Regie');
+  } finally {
+    rmSync(d, { recursive: true, force: true });
+  }
+});
