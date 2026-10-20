@@ -53,3 +53,6 @@ jobs:
 
       - name: Erzeugte Dateien aktuell (Spezifikation, Vorlagen, Teilesätze mit Gelenkprüfung, Protokolle)
         run: npm run erzeugt:pruefen
+
+      - name: Webseite baut (Befehle beschrieben, Links vorhanden)
+        run: node tools/seite-bauen.js
