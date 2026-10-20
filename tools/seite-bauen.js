@@ -1,6 +1,6 @@
 // Baut die Webseite der Werkstatt nach out/seite/ (für GitHub Pages).
 // Setzt in site/index.html ein, was sonst veralten würde: die Palette der Filme, alle fertigen Befehle aus
-// package.json, Bilder, Schriften, den Prototyp der Vorlage, Posen-Editor und Teile-Werkstatt.
+// package.json, Bilder, Schriften, Material zum Herunterladen, den Prototyp der Vorlage, Posen-Editor und Teile-Werkstatt.
 // Hält an, wenn ein Befehl keine Beschreibung hat, ein Platzhalter offen bleibt oder ein Link ins Leere zeigt.
 // Aufruf: node tools/seite-bauen.js [--ziel out/seite]
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -106,7 +106,11 @@ kopiere('figuren/vorlagen.png', 'bilder/vorlagen.png');
 // 5. Schriften der Seite (SIL OFL, im Repository; nie aus dem Netz).
 for (const f of readdirSync(join(WURZEL, 'site/schriften'))) kopiere(`site/schriften/${f}`, `schriften/${f}`);
 
-// 6. Seite aus der Vorlage.
+// 6. Material zum Herunterladen: Zeichenvorlagen und der Platzhalter-Teilesatz als fertiges Beispiel.
+for (const f of readdirSync(join(WURZEL, 'figuren')).filter((f) => /^vorlage_.+\.svg$/.test(f))) kopiere(`figuren/${f}`, `material/${f}`);
+for (const f of readdirSync(join(WURZEL, 'figuren/teilesaetze/satz-00')).filter((f) => f.endsWith('.svg'))) kopiere(`figuren/teilesaetze/satz-00/${f}`, `material/satz-00/${f}`);
+
+// 7. Seite aus der Vorlage.
 const ersetzungen = { PALETTE: palette(), SKRIPTE: skripte() };
 const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (ganz, k) => {
   if (!(k in ersetzungen)) throw new Error(`Seite: Platzhalter {{${k}}} unbekannt`);
@@ -122,4 +126,4 @@ if (fehlend.length) throw new Error(`Seite: Links ins Leere: ${fehlend.join(', '
 writeFileSync(join(ZIEL, 'index.html'), html);
 // Ohne Jekyll liefert Pages die Dateien unverändert aus.
 writeFileSync(join(ZIEL, '.nojekyll'), '');
-console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Editor, Teile-Werkstatt, 4 Bilder, Schriften)`);
+console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Editor, Teile-Werkstatt, 4 Bilder, Schriften, Material)`);
