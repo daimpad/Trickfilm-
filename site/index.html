@@ -161,6 +161,29 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
 .ablauf li + li { margin-left: 10px; }
 .downloads { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
 
+/* Prompts für Claude Code: Kasten mit Textfeld, Felder je Anleitung, Prompt-Editor */
+.prompt { margin: 10px 0 6px; background: var(--st-dark); border-radius: var(--st-radius-klein); overflow: hidden; }
+.prompt-kopf { display: flex; align-items: center; gap: 8px; padding: 8px 10px 0 14px; font-family: var(--st-font-ui); font-size: 12px; font-weight: 600; color: #C9CCD2; }
+.prompt-kopf span { margin-right: auto; }
+.prompt-kopf button { display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 999px; padding: 5px 12px; font: 600 12px var(--st-font-ui); cursor: pointer; background: #FFFFFF; color: var(--st-ink); }
+.prompt-kopf .prompt-zurueck { background: transparent; color: #C9CCD2; }
+.prompt-kopf button[hidden] { display: none; }
+.prompt-kopf .icon { width: 14px; height: 14px; vertical-align: 0; }
+.prompt-text { display: block; width: 100%; field-sizing: content; min-height: 3.2em; resize: vertical; border: 0; padding: 8px 14px 12px; background: transparent; color: #F1F0EC; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+.prompt-text:focus-visible { outline: 2px solid var(--st-akzent); outline-offset: -2px; }
+.befehl { display: block; margin-top: 2px; font-size: 13px; color: var(--st-gray); }
+.befehl code { font-size: 0.92em; }
+.hand { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--st-mint); font-family: var(--st-font-ui); font-size: 12px; font-weight: 700; }
+.felder { display: none; gap: 10px 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin: 0 0 20px; padding: 16px 20px; max-width: 820px; background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); border-left: 4px solid var(--st-akzent); }
+.js .felder { display: grid; }
+.felder p { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--st-gray); max-width: none; }
+.felder label { display: grid; gap: 4px; font-family: var(--st-font-ui); font-size: 13px; font-weight: 600; }
+.felder label:has(textarea) { grid-column: 1 / -1; }
+.felder small { font-weight: 400; color: var(--st-gray); }
+.felder input, .felder textarea, .felder select, .editor-wahl select { font: 15px var(--st-font-body); padding: 7px 10px; border: 1px solid var(--st-rule); border-radius: 10px; background: var(--st-bg); color: var(--st-ink); width: 100%; }
+.editor-wahl { display: grid; gap: 4px; max-width: 820px; margin: 0 0 12px; font-family: var(--st-font-ui); font-size: 13px; font-weight: 600; }
+.prompt-editor { max-width: 820px; }
+
 /* Technik-Blöcke: mit JavaScript nur bei „Technik“ sichtbar. */
 .technik { background: var(--st-surface); border-radius: var(--st-radius-klein); box-shadow: var(--st-schatten-weich); padding: 6px 20px 12px; margin: 20px 0; border-left: 4px solid var(--st-akzent); }
 .technik::before { content: "Technik"; display: block; font-family: var(--st-font-ui); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--st-gray); padding-top: 10px; }
@@ -240,6 +263,7 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
   <symbol id="i-ordner" viewBox="0 0 24 24"><path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z"/></symbol>
   <symbol id="i-start" viewBox="0 0 24 24"><path d="M6 21V4"/><path d="M6 4.5h11l-2.5 4 2.5 4H6"/></symbol>
   <symbol id="i-ziel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-kopieren" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></symbol>
   <symbol id="i-extern" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
 </svg>
 
@@ -304,8 +328,16 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
 <!-- ===================================================================== Werkzeuge -->
 <section class="ansicht bereich" id="werkzeuge" data-titel="Werkzeuge">
   <h2 tabindex="-1">Werkzeuge</h2>
-  <p class="einleitung">Drei Werkzeuge laufen hier im Browser, ohne Installation. Die Hörprobe braucht das Repository auf dem eigenen Rechner; wie man es einrichtet, steht unter <a href="#anleitungen/einrichten">Einrichten</a>.</p>
+  <p class="einleitung">Vier Werkzeuge laufen hier im Browser, ohne Installation. Die Hörprobe braucht das Repository auf dem eigenen Rechner; wie man es einrichtet, steht unter <a href="#anleitungen/einrichten">Einrichten</a>.</p>
   <ul class="kacheln">
+    <li class="kachel">
+      <span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-kopieren"/></svg></span>
+      <h3>Prompt-Editor</h3>
+      <span class="ort-tag"><svg class="icon" aria-hidden="true"><use href="#i-browser"/></svg>Im Browser</span>
+      <p>Alle Prompts für Claude Code an einem Ort: wählen, anpassen, kopieren.</p>
+      <p class="wann"><strong>Wann:</strong> bei jedem Schritt mit Claude.</p>
+      <div class="aktionen"><a class="knopf" href="#werkzeuge/prompt-editor">Öffnen</a></div>
+    </li>
     <li class="kachel">
       <span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></span>
       <h3>Prototyp</h3>
@@ -350,6 +382,16 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
   <p class="querverweis"><a href="#nachschlagen/befehle"><svg class="icon" aria-hidden="true"><use href="#i-terminal"/></svg>Alle Befehle</a></p>
 </section>
 
+<section class="ansicht" id="werkzeuge/prompt-editor" data-bereich="werkzeuge" data-titel="Prompt-Editor">
+  <h2 tabindex="-1">Prompt-Editor</h2>
+  <p class="querverweis"><a href="#anleitungen/einrichten"><svg class="icon" aria-hidden="true"><use href="#i-start"/></svg>So arbeitet man mit den Prompts</a></p>
+  <p class="einleitung">Alle Prompts der Anleitungen an einem Ort. Vorlage wählen, Felder ausfüllen, im Textfeld frei anpassen und kopieren. Die Felder gelten auch in den Anleitungen.</p>
+  <div class="prompt-editor" id="prompt-editor">
+    <p>Der Prompt-Editor braucht JavaScript; ohne stehen die Prompts in den Anleitungen.</p>
+  </div>
+  <script type="application/json" id="prompt-daten">{{PROMPT_DATEN}}</script>
+</section>
+
 <section class="ansicht" id="werkzeuge/prototyp" data-bereich="werkzeuge" data-titel="Prototyp">
   <h2 tabindex="-1">Prototyp</h2>
   <p class="querverweis"><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen</a><a href="prototyp/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Eigenes Fenster</a></p>
@@ -370,6 +412,15 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
     <li><strong>Genau:</strong> Pfeiltasten verschieben den Griff um 1 px, mit Umschalt um 8 px.</li>
     <li><strong>Schlüsselposen:</strong> auf der Zeitleiste setzen und abspielen; der Editor schreibt daraus den Code für die Szene.</li>
   </ul>
+  <h3>Mit Claude</h3>
+  {{FELDER:ID,FIGUR}}
+  <ol class="schritte">
+    <li><strong>Mit der eigenen Szene öffnen:</strong> Das Standbild der Szene liegt dann unter der Figur.
+      {{PROMPT:werkzeug/posen}}</li>
+    <li><span class="hand">Von Hand</span> Posen stellen und den Code kopieren.</li>
+    <li><strong>Übernehmen:</strong> den Code in die Szene tragen lassen.
+      {{PROMPT:werkzeug/posen-code}}</li>
+  </ol>
   <div class="technik">
     <p><code>npm run editor -- --szene &lt;ID&gt; --figur A</code> legt das Standbild der Szene unter die Figur.</p>
 <pre><code>// geometry.js
@@ -402,7 +453,8 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
   <p class="querverweis"><a href="#anleitungen/geraeusche"><svg class="icon" aria-hidden="true"><use href="#i-lautsprecher"/></svg>Geräusche pflegen</a></p>
   <p class="einleitung">Alle Varianten jedes Geräuschs nebeneinander, mit Länge, Lautheit und einer Gütezahl. Sie läuft im Repository, weil sie alle Rohaufnahmen braucht.</p>
   <ol class="schritte">
-    <li><code>npm run sfx:hoerprobe</code> erzeugt <code>out/sfx/hoerprobe.html</code>.</li>
+    <li><code>npm run sfx:hoerprobe</code> erzeugt <code>out/sfx/hoerprobe.html</code>.
+      {{PROMPT:geraeusche/waehlen}}</li>
     <li>Je Geräusch eine Variante wählen, bei einem Vorrat mehrere, „bestätigt“ setzen und die CSV-Datei herunterladen.</li>
     <li><code>npm run sfx:hoerprobe -- --uebernehmen auswahl.csv</code>, dann <code>npm run sfx:normalisieren</code>.</li>
   </ol>
@@ -437,23 +489,38 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
 
 <section class="ansicht" id="anleitungen/einrichten" data-bereich="anleitungen" data-titel="Einrichten">
   <h2 tabindex="-1">Einrichten</h2>
-  <p class="einleitung">Figuren zeichnen und Posen stellen geht hier im Browser. Für Szenen, Geräusche und Prüfungen braucht man das Repository auf dem eigenen Rechner.</p>
+  <p class="einleitung">Figuren zeichnen und Posen stellen geht hier im Browser. Für Szenen, Geräusche und Prüfungen braucht man das Repository und Claude Code.</p>
   <dl class="steckbrief">
-    <dt>Ziel</dt><dd>Die Werkstatt läuft auf dem eigenen Rechner.</dd>
-    <dt>Voraussetzung</dt><dd>Node.js 22 oder neuer, Git, ffmpeg mit ffprobe, die Schrift Arial oder Liberation Sans.</dd>
+    <dt>Ziel</dt><dd>Die Werkstatt läuft, und Claude Code arbeitet in ihr.</dd>
+    <dt>Voraussetzung</dt><dd>Claude Code; auf dem eigenen Rechner zusätzlich Node.js 22 oder neuer, Git, ffmpeg mit ffprobe und die Schrift Arial oder Liberation Sans.</dd>
     <dt>Ergebnis</dt><dd><code>npm run pruefen</code> läuft ohne Befunde durch.</dd>
   </dl>
+  <h3>So arbeitet man mit den Prompts</h3>
+  <p>Jeder Schritt der Anleitungen hat einen Prompt für Claude Code. Man passt ihn an (oben in der Anleitung über die Felder oder direkt im Textfeld), kopiert ihn und gibt ihn Claude. Claude führt die Befehle aus, hält sich an die Regeln in <code>CLAUDE.md</code> und meldet, was herausgekommen ist. Der Befehl unter jedem Prompt zeigt, was dabei geschieht.</p>
+  <p>Claude Code läuft im Browser unter claude.ai/code mit diesem Repository, dann ist alles schon eingerichtet und Schritt 1 bis 3 entfallen; oder im Terminal mit <code>claude</code> im Ordner des Repositorys.</p>
   <ol class="schritte">
-    <li><strong>Holen:</strong> <code>git clone https://github.com/daimpad/trickfilm.git</code>, dann <code>cd trickfilm</code>.<span class="ergebnis"><strong>Ergebnis:</strong> ein Ordner mit dem Repository; alle weiteren Befehle laufen dort.</span></li>
-    <li><strong>Pakete:</strong> <code>npm ci</code> installiert die Abhängigkeiten in genau den festgelegten Fassungen.<span class="ergebnis"><strong>Ergebnis:</strong> ein Ordner <code>node_modules</code>.</span></li>
-    <li><strong>Browser für Prüfungen:</strong> <code>npx playwright install chromium</code>.<span class="ergebnis"><strong>Ergebnis:</strong> Chromium für Standbilder und Tests.</span></li>
-    <li><strong>Prüfen:</strong> <code>npm run pruefen</code>.<span class="ergebnis"><strong>Ergebnis:</strong> alle Tests bestanden, „0 Befunde“, die Vorlage-Szene ist gebaut.</span></li>
+    <li><strong>Holen:</strong> das Repository auf den Rechner.
+      {{PROMPT:einrichten/holen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> ein Ordner mit dem Repository; alle weiteren Schritte laufen dort.</span>
+      <span class="befehl">Befehl: <code>git clone https://github.com/daimpad/trickfilm.git</code></span></li>
+    <li><strong>Pakete:</strong> die Abhängigkeiten in genau den festgelegten Fassungen.
+      {{PROMPT:einrichten/pakete}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> ein Ordner <code>node_modules</code> und eine Liste, was vorhanden ist.</span>
+      <span class="befehl">Befehl: <code>npm ci</code></span></li>
+    <li><strong>Browser für Prüfungen:</strong> Chromium für Standbilder und Tests.
+      {{PROMPT:einrichten/chromium}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Chromium ist bereit.</span>
+      <span class="befehl">Befehl: <code>npx playwright install chromium</code></span></li>
+    <li><strong>Prüfen:</strong> alles einmal durchlaufen lassen.
+      {{PROMPT:einrichten/pruefen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> alle Tests bestanden, „0 Befunde“, die Vorlage-Szene ist gebaut.</span>
+      <span class="befehl">Befehl: <code>npm run pruefen</code></span></li>
   </ol>
-  <h3>Ohne Terminal</h3>
+  <h3>Ohne Claude und ohne Terminal</h3>
   <p>Im Ordner <code>scripts/</code> liegen Starter zum Doppelklick: <code>szene-bauen</code>, <code>editor</code>, <code>hoerprobe</code> und <code>studio</code>, unter Windows jeweils mit der Endung <code>.cmd</code>. Sie setzen Schritt 2 voraus.</p>
-  <p class="querverweis"><a href="#anleitungen/uebung"><svg class="icon" aria-hidden="true"><use href="#i-ziel"/></svg>Weiter mit der ersten Übung</a></p>
+  <p class="querverweis"><a href="#anleitungen/uebung"><svg class="icon" aria-hidden="true"><use href="#i-ziel"/></svg>Weiter mit der ersten Übung</a><a href="#werkzeuge/prompt-editor"><svg class="icon" aria-hidden="true"><use href="#i-kopieren"/></svg>Alle Prompts</a></p>
   <div class="technik">
-    <p>In Cloud-Sitzungen von Claude Code führt der Start-Hook <code>scripts/sitzung-start.sh</code> <code>npm ci</code> aus und prüft ffmpeg, Chromium und Schrift; Chromium liegt dort schon bereit, Schritt 3 entfällt. Alle Fassungen stehen mit Prüfdatum in <code>docs/LIZENZEN.md</code>.</p>
+    <p>In Cloud-Sitzungen führt der Start-Hook <code>scripts/sitzung-start.sh</code> <code>npm ci</code> aus und prüft ffmpeg, Chromium und Schrift; Chromium liegt unter <code>/opt/pw-browsers</code>. Alle Fassungen stehen mit Prüfdatum in <code>docs/LIZENZEN.md</code>.</p>
   </div>
 </section>
 
@@ -461,19 +528,39 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
   <h2 tabindex="-1">Erste Übung: die Vorlage verändern</h2>
   <p class="einleitung">Bevor man eine ganze Szene baut, lohnt eine kleine Änderung an einer Kopie der Vorlage. Man sieht, wie Geometrie, Build und Bild zusammenhängen und wie der Build einen Fehler meldet.</p>
   <dl class="steckbrief">
-    <dt>Ziel</dt><dd>Eine Änderung vom Code bis ins Bild verfolgen.</dd>
+    <dt>Ziel</dt><dd>Eine Änderung vom Prompt bis ins Bild verfolgen.</dd>
     <dt>Voraussetzung</dt><dd><a href="#anleitungen/einrichten">Einrichten</a> ist erledigt.</dd>
     <dt>Ergebnis</dt><dd>Die Figur trägt eine andere Farbe, und eine Meldung des Builds ist verstanden.</dd>
   </dl>
   <ol class="schritte">
-    <li><strong>Kopie anlegen:</strong> <code>npm run szene:neu -- UEBUNG-01-test</code><span class="ergebnis"><strong>Ergebnis:</strong> der Ordner <code>szenen/UEBUNG-01-test/</code> mit Brief und drei Code-Dateien.</span></li>
-    <li><strong>Geräusche zuordnen:</strong> <code>npm run sfx:cues -- UEBUNG-01-test</code><span class="ergebnis"><strong>Ergebnis:</strong> „26 Ereignisse, 11 Cues, 3 Arten“.</span></li>
-    <li><strong>Bauen:</strong> <code>npm run szene:bauen -- UEBUNG-01-test</code><span class="ergebnis"><strong>Ergebnis:</strong> „181 Bilder geprüft, 0 Befunde“.</span></li>
-    <li><strong>Ändern:</strong> In <code>geometry.js</code> bei Figur A <code>kleidung1: FARBEN.petrol</code> durch <code>FARBEN.violett</code> ersetzen und neu bauen.<span class="ergebnis"><strong>Ergebnis:</strong> wieder 0 Befunde; Farben kommen immer aus den Tokens.</span></li>
-    <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- UEBUNG-01-test</code><span class="ergebnis"><strong>Ergebnis:</strong> neun Standbilder in <code>dist/kontaktbogen.png</code>; die Jacke ist violett.</span></li>
-    <li><strong>Einen Fehler auslösen:</strong> bei Figur A <code>x: 730</code> auf <code>x: 560</code> setzen und neu bauen.<span class="ergebnis"><strong>Ergebnis:</strong> „A.armF verfehlt das Handziel um 57.39 px (außer Reichweite)“: Die Figur sitzt zu weit vom Tisch, ihre Hände erreichen die Tastatur nicht.</span></li>
-    <li><strong>Beheben:</strong> <code>x</code> wieder auf 730 setzen und neu bauen.<span class="ergebnis"><strong>Ergebnis:</strong> 0 Befunde.</span></li>
-    <li><strong>Aufräumen:</strong> den Ordner <code>szenen/UEBUNG-01-test/</code> löschen; Übungen gehören nicht ins Repository.</li>
+    <li><strong>Kopie anlegen</strong>
+      {{PROMPT:uebung/anlegen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> der Ordner <code>szenen/UEBUNG-01-test/</code> mit Brief und drei Code-Dateien.</span>
+      <span class="befehl">Befehl: <code>npm run szene:neu -- UEBUNG-01-test</code></span></li>
+    <li><strong>Geräusche zuordnen</strong>
+      {{PROMPT:uebung/geraeusche}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> „26 Ereignisse, 11 Cues, 3 Arten“.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:cues -- UEBUNG-01-test</code></span></li>
+    <li><strong>Bauen</strong>
+      {{PROMPT:uebung/bauen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> „181 Bilder geprüft, 0 Befunde“.</span>
+      <span class="befehl">Befehl: <code>npm run szene:bauen -- UEBUNG-01-test</code></span></li>
+    <li><strong>Farbe ändern</strong>
+      {{PROMPT:uebung/aendern}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> wieder 0 Befunde; Farben kommen immer aus den Tokens.</span></li>
+    <li><strong>Ansehen</strong>
+      {{PROMPT:uebung/ansehen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> neun Standbilder in <code>dist/kontaktbogen.png</code>; die Jacke ist violett.</span>
+      <span class="befehl">Befehl: <code>npm run szene:kontaktbogen -- UEBUNG-01-test</code></span></li>
+    <li><strong>Einen Fehler auslösen</strong>
+      {{PROMPT:uebung/fehler}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> „A.armF verfehlt das Handziel um 57.39 px (außer Reichweite)“: Die Figur sitzt zu weit vom Tisch, ihre Hände erreichen die Tastatur nicht.</span></li>
+    <li><strong>Beheben</strong>
+      {{PROMPT:uebung/beheben}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> 0 Befunde.</span></li>
+    <li><strong>Aufräumen</strong>
+      {{PROMPT:uebung/aufraeumen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Das Repository ist wieder wie vorher.</span></li>
   </ol>
   <p class="querverweis"><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Weiter mit der eigenen Szene</a><a href="#werkzeuge/prototyp"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg>Prototyp der Vorlage</a></p>
 </section>
@@ -485,29 +572,59 @@ const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
   <dl class="steckbrief">
     <dt>Ziel</dt><dd>Eine neue Szene, die geprüft abspielt.</dd>
     <dt>Voraussetzung</dt><dd><a href="#anleitungen/einrichten">Einrichten</a>, am besten auch die <a href="#anleitungen/uebung">erste Übung</a>; ein Sprechtext. Eine eigene Figur ist nicht nötig, der Platzhalter <code>satz-00</code> genügt.</dd>
-    <dt>Ergebnis</dt><dd>Prototyp, Kontaktbogen und Protokoll unter <code>szenen/&lt;ID&gt;/</code>.</dd>
+    <dt>Ergebnis</dt><dd>Prototyp, Kontaktbogen und Protokoll unter <code>szenen/&lt;ID&gt;/</code>, als Pull Request.</dd>
   </dl>
+  {{FELDER:ID,IDEE,SPRECHTEXT,GERAEUSCHE}}
   <h3>Planen</h3>
   <ol class="schritte">
-    <li><strong>Anlegen:</strong> <code>npm run szene:neu -- FILM-01-name</code> kopiert die Vorlage.<span class="ergebnis"><strong>Ergebnis:</strong> der Ordner <code>szenen/FILM-01-name/</code>; die ID besteht aus Film, Nummer und Kurzname.</span></li>
-    <li><strong>Brief</strong> (<code>brief.yaml</code>): Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, Beats mit Zeiten und eine Bildbeschreibung für Menschen, die es nicht sehen.<span class="ergebnis"><strong>Ergebnis:</strong> Der Brief beschreibt die Szene vollständig, bevor eine Zeile Code entsteht.</span></li>
+    <li><strong>Anlegen:</strong> die Szene aus der Vorlage, auf eigenem Zweig.
+      {{PROMPT:szene/anlegen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> der Ordner <code>szenen/&lt;ID&gt;/</code>; die ID besteht aus Film, Nummer und Kurzname.</span>
+      <span class="befehl">Befehl: <code>npm run szene:neu -- &lt;ID&gt;</code></span></li>
+    <li><strong>Brief</strong> (<code>brief.yaml</code>): Sprechtext wörtlich, These und Pointe in je einem Satz, Figuren mit Charakter, Beats mit Zeiten und eine Bildbeschreibung für Menschen, die es nicht sehen.
+      {{PROMPT:szene/brief}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Der Brief beschreibt die Szene vollständig, bevor eine Zeile Code entsteht. Durchsehen und freigeben.</span></li>
   </ol>
   <h3>Bauen</h3>
   <ol class="schritte" style="counter-reset: schritt 2">
-    <li><strong>Geometrie</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.<span class="ergebnis"><strong>Ergebnis:</strong> alle Positionen an einem Ort, keine Zahl im Markup.</span></li>
-    <li><strong>Aufbau</strong> (<code>scene.js</code>): Figuren und Requisiten von hinten nach vorn.<span class="ergebnis"><strong>Ergebnis:</strong> das stehende Bild der Szene.</span></li>
-    <li><strong>Bewegung</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht; Posen im <a href="#werkzeuge/posen-editor">Posen-Editor</a>.<span class="ergebnis"><strong>Ergebnis:</strong> <code>computeState(t)</code> liefert zu jedem Zeitpunkt den Zustand der Szene.</span></li>
-    <li><strong>Geräusche</strong> im Brief unter <code>sfx</code>: welche Ereignisse klingen, etwa jeder dritte Tastenanschlag; dann <code>npm run sfx:cues -- FILM-01-name --stichprobe</code>. Siehe <a href="#anleitungen/geraeusche">Geräusche pflegen</a>.<span class="ergebnis"><strong>Ergebnis:</strong> <code>sfx-cues.json</code>; ohne diese Datei meldet der Build einen Fehler.</span></li>
+    <li><strong>Geometrie</strong> (<code>geometry.js</code>): wo Figuren und Dinge stehen, wohin Hände greifen.
+      {{PROMPT:szene/geometrie}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> alle Positionen an einem Ort, keine Zahl im Markup.</span></li>
+    <li><strong>Aufbau</strong> (<code>scene.js</code>): Figuren und Requisiten von hinten nach vorn.
+      {{PROMPT:szene/aufbau}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> das stehende Bild der Szene.</span></li>
+    <li><strong>Bewegung</strong> (<code>animation.js</code>): was zu jedem Zeitpunkt geschieht. Posen lassen sich auch im <a href="#werkzeuge/posen-editor">Posen-Editor</a> stellen.
+      {{PROMPT:szene/bewegung}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> <code>computeState(t)</code> liefert zu jedem Zeitpunkt den Zustand; Standbilder je Beat zur Durchsicht.</span></li>
+    <li><strong>Geräusche:</strong> welche Ereignisse klingen. Siehe <a href="#anleitungen/geraeusche">Geräusche pflegen</a>.
+      {{PROMPT:szene/geraeusche}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> <code>sfx-cues.json</code> und eine Stichprobe; ohne diese Datei meldet der Build einen Fehler.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:cues -- &lt;ID&gt; --stichprobe</code></span></li>
   </ol>
   <h3>Prüfen</h3>
   <ol class="schritte" style="counter-reset: schritt 6">
-    <li><strong>Bauen:</strong> <code>npm run szene:bauen -- FILM-01-name</code> prüft die Szene und erzeugt den Prototyp.<span class="ergebnis"><strong>Ergebnis:</strong> „0 Befunde“; sonst nennt jeder Befund Bild und Ursache (siehe unten).</span></li>
-    <li><strong>Ansehen:</strong> <code>npm run szene:kontaktbogen -- FILM-01-name</code> erzeugt neun Standbilder. Liegt etwas falsch vor dem Körper, greift ein Arm durch den Tisch, ist die Pointe auch klein lesbar?<span class="ergebnis"><strong>Ergebnis:</strong> <code>dist/kontaktbogen.png</code>. Geändert wird in Geometrie oder Bewegung, nie im Standbild.</span></li>
-    <li><strong>Abspielen:</strong> <code>szenen/FILM-01-name/dist/index.html</code> im Browser öffnen.<span class="ergebnis"><strong>Ergebnis:</strong> Bild und Geräusche laufen zusammen; Sprungmarken führen zu jedem Beat.</span></li>
-    <li><strong>Protokoll:</strong> <code>npm run szene:protokoll -- FILM-01-name</code><span class="ergebnis"><strong>Ergebnis:</strong> <code>protokoll.tsv</code> mit Prüfwerten der Szene.</span></li>
-    <li><strong>Anhalten</strong> und kurz melden, was fertig ist.</li>
+    <li><strong>Bauen:</strong> die Szene prüfen und den Prototyp erzeugen.
+      {{PROMPT:szene/bauen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> „0 Befunde“; sonst nennt jeder Befund Bild und Ursache (siehe unten).</span>
+      <span class="befehl">Befehl: <code>npm run szene:bauen -- &lt;ID&gt;</code></span></li>
+    <li><strong>Ansehen:</strong> neun Standbilder auf einem Kontaktbogen.
+      {{PROMPT:szene/ansehen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> <code>dist/kontaktbogen.png</code>. Geändert wird in Geometrie oder Bewegung, nie im Standbild.</span>
+      <span class="befehl">Befehl: <code>npm run szene:kontaktbogen -- &lt;ID&gt;</code></span></li>
+    <li><strong>Abspielen:</strong> der Prototyp im Browser.
+      {{PROMPT:szene/abspielen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Bild und Geräusche laufen zusammen; Sprungmarken führen zu jedem Beat.</span>
+      <span class="befehl">Datei: <code>szenen/&lt;ID&gt;/dist/index.html</code></span></li>
+    <li><strong>Protokoll:</strong> die Prüfwerte der Szene festhalten.
+      {{PROMPT:szene/protokoll}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> <code>protokoll.tsv</code> im Ordner der Szene.</span>
+      <span class="befehl">Befehl: <code>npm run szene:protokoll -- &lt;ID&gt;</code></span></li>
+    <li><strong>Anhalten</strong> und melden, was fertig ist.
+      {{PROMPT:szene/anhalten}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> ein Pull Request; gemergt wird bei grüner Prüfung, wenn die Regie es will.</span></li>
   </ol>
   <h3>Wenn der Build etwas meldet</h3>
+  <p>Meist genügt es, Claude die Meldung zu geben: „Behebe diesen Befund in Geometrie oder Bewegung.“ Zum Verstehen:</p>
   <div class="tabelle"><table>
     <thead><tr><th>Meldung</th><th>Was zu tun ist</th></tr></thead>
     <tbody>
@@ -549,17 +666,24 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
 <section class="ansicht" id="anleitungen/figur" data-bereich="anleitungen" data-titel="Figur zeichnen">
   <h2 tabindex="-1">Figur zeichnen</h2>
   <p class="querverweis"><a href="#werkzeuge/teile-werkstatt"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg>Teile-Werkstatt</a><a href="#bausteine/figuren"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Archetypen</a></p>
-  <p class="einleitung">Eine Figur ist eine Gliederpuppe mit festem Skelett; gezeichnet wird nur ihr Aussehen, der Teilesatz. Zeichnen und Einpassen geht im Browser, das Einlesen braucht das Repository.</p>
+  <p class="einleitung">Eine Figur ist eine Gliederpuppe mit festem Skelett; gezeichnet wird nur ihr Aussehen, der Teilesatz. Zeichnen und Einpassen geschieht von Hand im Browser, das Einlesen übernimmt Claude im Repository.</p>
   <dl class="steckbrief">
     <dt>Ziel</dt><dd>Ein eigener Teilesatz, den Szenen verwenden können.</dd>
     <dt>Voraussetzung</dt><dd>Ein Zeichenprogramm, das SVG schreibt, etwa Illustrator, Inkscape oder Affinity; zum Einlesen <a href="#anleitungen/einrichten">das eingerichtete Repository</a>.</dd>
-    <dt>Ergebnis</dt><dd><code>figuren/teilesaetze/satz-01/</code> mit Testposen und ohne Befunde in <code>figuren/import.tsv</code>.</dd>
+    <dt>Ergebnis</dt><dd><code>figuren/teilesaetze/&lt;satz&gt;/</code> mit Testposen und ohne Befunde in <code>figuren/import.tsv</code>.</dd>
   </dl>
+  {{FELDER:SATZ,ARCHETYP}}
   <h3>Aus Einzelteilen (einfacher)</h3>
   <ol class="schritte">
-    <li>Jedes Körperteil als eigene SVG-Datei zeichnen, Name nach dem Teil.</li>
-    <li>In der <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> laden, einpassen, prüfen.</li>
-    <li>ZIP entpacken unter <code>figuren/teilesaetze/</code>, einlesen: <code>npm run figuren:import -- satz-01</code><span class="ergebnis"><strong>Ergebnis:</strong> „4 importiert, 0 Befunde“ und <code>testposen.png</code> im Ordner des Satzes.</span></li>
+    <li><strong>Teile klären:</strong> welche Teile, wie sie heißen.
+      {{PROMPT:figur/teile}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> eine Liste der Teile mit Dateinamen, etwa <code>kopf.svg</code>, <code>oberarm.svg</code>.</span></li>
+    <li><span class="hand">Von Hand</span> Jedes Körperteil als eigene SVG-Datei zeichnen, in beliebigem Programm und Maßstab.</li>
+    <li><span class="hand">Von Hand</span> In der <a href="#werkzeuge/teile-werkstatt">Teile-Werkstatt</a> laden, einpassen, prüfen und das ZIP herunterladen.</li>
+    <li><strong>Einlesen:</strong> das ZIP unter <code>figuren/teilesaetze/</code> entpacken lassen und einlesen.
+      {{PROMPT:figur/einlesen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> „4 importiert, 0 Befunde“ und <code>testposen.png</code> im Ordner des Satzes.</span>
+      <span class="befehl">Befehl: <code>npm run figuren:import -- &lt;satz&gt;</code></span></li>
   </ol>
   <h3>Mit der Zeichenvorlage</h3>
   <p>Je Archetyp eine Vorlage mit allen Ebenen, Drehpunkten und einer Legende:</p>
@@ -570,10 +694,14 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
     <a class="knopf hell" href="material/vorlage_oberkoerper-nah.svg" download><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>oberkoerper-nah</a>
   </div>
   <ol class="schritte">
-    <li>Die Vorlage herunterladen (oder aus <code>figuren/</code> nehmen) und als <code>figuren/teilesaetze/satz-01/&lt;archetyp&gt;.svg</code> ablegen.</li>
-    <li>Jedes Teil in die Ebene mit seinem Namen zeichnen (<code>torso</code>, <code>head</code>, <code>armF-upper</code> …) und dabei die blauen Kreise an den Gelenken abdecken, sonst entstehen beim Drehen Lücken.</li>
-    <li>Kleidung in Schlüsselfarben zeichnen: Magenta, Gelb, Grün. Diese Flächen färbt jede Szene um; alles andere bleibt, wie gezeichnet.</li>
-    <li>Als SVG exportieren und einlesen: <code>npm run figuren:import -- satz-01</code><span class="ergebnis"><strong>Ergebnis:</strong> wie oben; Lücken an Gelenken stehen mit Ort in <code>figuren/import.tsv</code>.</span></li>
+    <li><strong>Vorlage anlegen:</strong> herunterladen oder von Claude anlegen lassen.
+      {{PROMPT:figur/vorlage}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> <code>figuren/teilesaetze/&lt;satz&gt;/&lt;archetyp&gt;.svg</code>.</span></li>
+    <li><span class="hand">Von Hand</span> Jedes Teil in die Ebene mit seinem Namen zeichnen (<code>torso</code>, <code>head</code>, <code>armF-upper</code> …) und dabei die blauen Kreise an den Gelenken abdecken, sonst entstehen beim Drehen Lücken.</li>
+    <li><span class="hand">Von Hand</span> Kleidung in Schlüsselfarben zeichnen: Magenta, Gelb, Grün. Diese Flächen färbt jede Szene um; alles andere bleibt, wie gezeichnet.</li>
+    <li><strong>Einlesen:</strong> als SVG exportieren und einlesen lassen.
+      {{PROMPT:figur/einlesen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> wie oben; Lücken an Gelenken stehen mit Ort in <code>figuren/import.tsv</code>.</span></li>
   </ol>
   <figure>
     <img src="bilder/vorlagen.png" alt="Vier Zeichenvorlagen mit blassen Grundformen, blauen Drehpunkten und einer Legende mit Farbschlüssel und Regeln." loading="lazy">
@@ -602,18 +730,36 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
     <dt>Voraussetzung</dt><dd>Eine Szene mit fertiger Bewegung.</dd>
     <dt>Ergebnis</dt><dd><code>sfx-cues.json</code>; der Prototyp spielt die Geräusche mit.</dd>
   </dl>
+  {{FELDER:ID,GERAEUSCHE}}
   <h3>In einer Szene</h3>
   <ol class="schritte">
-    <li>Im Brief unter <code>sfx</code> sagen, welche Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.</li>
-    <li><code>npm run sfx:cues -- FILM-01-name --stichprobe</code> schreibt die Geräuschliste und zeigt je Ereignis das Bild davor, darauf und danach.<span class="ergebnis"><strong>Ergebnis:</strong> Bewegt sich das Ding im Ereignisbild zuerst, ist die Szene synchron.</span></li>
-    <li>Neu bauen; der Prototyp spielt mit.</li>
+    <li><strong>Eintragen:</strong> welche Ereignisse klingen und welches Geräusch aus dem Katalog dazugehört.
+      {{PROMPT:geraeusche/eintragen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> der Abschnitt <code>sfx</code> im Brief und eine Liste der gewählten Cues.</span></li>
+    <li><strong>Zeitpunkte finden:</strong> die Geräuschliste schreiben, je Ereignis das Bild davor, darauf und danach zeigen.
+      {{PROMPT:geraeusche/stichprobe}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Bewegt sich das Ding im Ereignisbild zuerst, ist die Szene synchron.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:cues -- &lt;ID&gt; --stichprobe</code></span></li>
+    <li><strong>Neu bauen</strong>
+      {{PROMPT:geraeusche/bauen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Der Prototyp spielt die Geräusche mit.</span>
+      <span class="befehl">Befehl: <code>npm run szene:bauen -- &lt;ID&gt;</code></span></li>
   </ol>
   <h3>Bibliothek erweitern (Regie)</h3>
-  <p>Neue Geräusche kosten Credits; generiert wird nur nach Freigabe der Regie.</p>
+  <p>Neue Geräusche kosten Credits. Generiert wird erst, wenn die Regie die Kosten gesehen und mit „ja, generieren“ freigegeben hat.</p>
   <ol class="schritte">
-    <li><code>npm run sfx:kosten</code> listet, was fehlt, und schätzt die Credits; generiert wird erst nach Freigabe der Regie.</li>
-    <li>Generieren über den ElevenLabs-Connector; <code>npm run sfx:ablegen -- liste.tsv</code> prüft jede Datei und schreibt ihre Herkunft.</li>
-    <li>In der <a href="#werkzeuge/hoerprobe">Hörprobe</a> wählen; <code>npm run sfx:normalisieren</code> schneidet Stille ab, kürzt auf einen Anschlag und bringt alles auf denselben Pegel.</li>
+    <li><strong>Kosten schätzen</strong>
+      {{PROMPT:geraeusche/kosten}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Cue-Liste, Varianten und geschätzte Credits zur Entscheidung.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:kosten</code></span></li>
+    <li><strong>Generieren und ablegen</strong>
+      {{PROMPT:geraeusche/generieren}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> neue Rohaufnahmen in <code>lib/sfx/roh/</code>, jede mit ihrer Herkunft.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:ablegen -- liste.tsv</code></span></li>
+    <li><strong>Wählen und bearbeiten:</strong> in der <a href="#werkzeuge/hoerprobe">Hörprobe</a> anhören und wählen.
+      {{PROMPT:geraeusche/waehlen}}
+      <span class="ergebnis"><strong>Ergebnis:</strong> Stille abgeschnitten, auf einen Anschlag gekürzt, alles auf demselben Pegel.</span>
+      <span class="befehl">Befehl: <code>npm run sfx:hoerprobe</code>, dann <code>npm run sfx:normalisieren</code></span></li>
   </ol>
   <div class="technik">
 <pre><code>sfx:
@@ -952,10 +1098,10 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
   const liste = document.getElementById('treffer');
   const eintraege = [];
   const BLOCK = /^(H\d|P|TD|TH|LI|DIV|UL|OL|PRE|FIGCAPTION)$/;
-  const mitLuecken = (el) => [...el.childNodes].map((n) => (n.nodeType === 1 ? (BLOCK.test(n.tagName) ? ` ${mitLuecken(n)} ` : mitLuecken(n)) : n.textContent)).join('');
+  const mitLuecken = (el) => [...el.childNodes].map((n) => (n.nodeType === 1 ? (n.matches('.prompt, .felder, script') ? ' ' : BLOCK.test(n.tagName) ? ` ${mitLuecken(n)} ` : mitLuecken(n)) : n.textContent)).join('');
   for (const a of ansichten) {
     for (const el of a.querySelectorAll('h2, h3, p, li, tr, figcaption, pre')) {
-      if (el.closest('.blaettern, .krume, .querverweis, .kachel')) continue;
+      if (el.closest('.blaettern, .krume, .querverweis, .kachel, .prompt, .felder, .prompt-editor')) continue;
       const text = mitLuecken(el).replace(/\s+/g, ' ').trim();
       if (text) eintraege.push({ ansicht: a, el, text, klein: text.toLowerCase(), technik: Boolean(el.closest('.technik')) });
     }
@@ -1017,6 +1163,64 @@ sichtung: { lesbarkeit_960: offen, synchron: offen }</code></pre>
   document.addEventListener('keydown', (ev) => {
     if (ev.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { ev.preventDefault(); feld.focus(); }
   });
+
+  // Prompts: Felder werden in alle unveränderten Prompts eingesetzt; bearbeitete bleiben, bis man sie zurücksetzt.
+  const daten = JSON.parse(document.getElementById('prompt-daten').textContent);
+  let werte = {};
+  try { werte = JSON.parse(localStorage.getItem('werkstatt-felder') ?? '{}'); } catch {}
+  const feldWert = (k) => (werte[k] ?? '').trim() || daten.felder[k].vorgabe;
+  const fuelle = (text) => text.replace(/\{([A-Z_]+)\}/g, (_, k) => feldWert(k));
+  const kaesten = [...document.querySelectorAll('.prompt[data-prompt]')];
+  function setzePrompt(kasten, neu = false) {
+    const feld = kasten.querySelector('.prompt-text');
+    if (neu) delete kasten.dataset.bearbeitet;
+    if (!kasten.dataset.bearbeitet) feld.value = fuelle(daten.prompts[kasten.dataset.prompt].text);
+    kasten.querySelector('.prompt-zurueck').hidden = !kasten.dataset.bearbeitet;
+  }
+  async function kopiere(feld, knopf) {
+    try { await navigator.clipboard.writeText(feld.value); } catch { feld.select(); document.execCommand('copy'); }
+    const vorher = knopf.lastChild.textContent;
+    knopf.lastChild.textContent = 'Kopiert';
+    setTimeout(() => (knopf.lastChild.textContent = vorher), 1500);
+  }
+  function verdrahte(kasten) {
+    const feld = kasten.querySelector('.prompt-text');
+    const knopf = kasten.querySelector('.prompt-kopieren');
+    knopf.hidden = false;
+    knopf.addEventListener('click', () => kopiere(feld, knopf));
+    feld.addEventListener('input', () => { kasten.dataset.bearbeitet = '1'; kasten.querySelector('.prompt-zurueck').hidden = false; });
+    kasten.querySelector('.prompt-zurueck').addEventListener('click', () => setzePrompt(kasten, true));
+  }
+  function alleFelder() {
+    for (const e of document.querySelectorAll('[data-feld]')) if (e !== document.activeElement) e.value = werte[e.dataset.feld] ?? (e.tagName === 'SELECT' ? daten.felder[e.dataset.feld].vorgabe : '');
+    for (const k of document.querySelectorAll('.prompt[data-prompt]')) setzePrompt(k);
+  }
+  document.addEventListener('input', (ev) => {
+    const f = ev.target.closest('[data-feld]');
+    if (!f) return;
+    werte[f.dataset.feld] = f.value;
+    try { localStorage.setItem('werkstatt-felder', JSON.stringify(werte)); } catch {}
+    alleFelder();
+  });
+  // Prompt-Editor: eine Vorlage wählen, ihre Felder ausfüllen, frei anpassen, kopieren.
+  const editor = document.getElementById('prompt-editor');
+  const maske = (t) => t.replace(/[&<>"]/g, (z) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[z]);
+  const gruppen = Object.entries(daten.prompts).reduce((m, [k, p]) => ((m[p.gruppe] ??= []).push([k, p]), m), {});
+  editor.innerHTML = `<label class="editor-wahl">Vorlage<select id="editor-vorlage">${Object.entries(gruppen).map(([g, ps]) => `<optgroup label="${maske(g)}">${ps.map(([k, p]) => `<option value="${maske(k)}">${maske(p.titel)}</option>`).join('')}</optgroup>`).join('')}</select></label><div class="felder" id="editor-felder"></div><div class="prompt" id="editor-kasten"><div class="prompt-kopf"><span>Prompt für Claude Code</span><button type="button" class="prompt-zurueck" hidden>Zurücksetzen</button><button type="button" class="prompt-kopieren" hidden>${icon('kopieren')}Kopieren</button></div><textarea class="prompt-text" rows="6" spellcheck="false" aria-label="Prompt"></textarea></div>`;
+  const wahl = document.getElementById('editor-vorlage');
+  const editorKasten = document.getElementById('editor-kasten');
+  const editorFelder = document.getElementById('editor-felder');
+  function zeigeVorlage() {
+    editorKasten.dataset.prompt = wahl.value;
+    const namen = [...new Set([...daten.prompts[wahl.value].text.matchAll(/\{([A-Z_]+)\}/g)].map((m) => m[1]))];
+    editorFelder.innerHTML = namen.length ? `<p>Felder dieser Vorlage; sie gelten auch in den Anleitungen.</p>${namen.map((n) => { const f = daten.felder[n]; const a = `data-feld="${n}" aria-label="${maske(f.label)}"`; const ph = `placeholder="${maske(f.vorgabe)}"`; const e = f.auswahl ? `<select ${a}>${f.auswahl.map((w) => `<option>${maske(w)}</option>`).join('')}</select>` : f.mehrzeilig ? `<textarea ${a} ${ph} rows="2"></textarea>` : `<input type="text" ${a} ${ph}>`; return `<label><span>${maske(f.label)}</span>${e}</label>`; }).join('')}` : '<p>Diese Vorlage hat keine Felder.</p>';
+    alleFelder();
+    setzePrompt(editorKasten, true);
+  }
+  verdrahte(editorKasten);
+  wahl.addEventListener('change', zeigeVorlage);
+  for (const k of kaesten) verdrahte(k);
+  zeigeVorlage();
 
   // Stil-Editor: Regler setzen die Stilwerte als CSS-Variablen; die Wahl bleibt im Browser.
   // „Übernehmen“ gibt den Block aus, der in dieser Datei unter „Stilwerte“ eingesetzt wird.

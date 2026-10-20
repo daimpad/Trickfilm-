@@ -112,3 +112,12 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Text | nur das zum Arbeiten Nötige; kein Stand, Datum oder Änderungsverlauf | entschieden von Regie |
 | Umfang | nur die Webseite; Posen-Editor und Teile-Werkstatt bleiben | entschieden von Claude |
 | Bewegung | keine Übergänge, auch nicht auf der Seite | entschieden von Claude |
+
+## 2026-10-20 · Prompts auf der Webseite
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Hauptweg der Anleitungen | Prompt für Claude Code zuerst, Befehl klein darunter | entschieden von Regie |
+| Anpassen | Felder je Anleitung und ein Prompt-Editor unter Werkzeuge; jeder Prompt frei bearbeitbar | entschieden von Regie |
+| Umfang | alle Anleitungen, dazu Posen-Editor und Hörprobe | entschieden von Regie |
+| Quelle | `site/prompts.js`, eingesetzt vom Seitenbau | entschieden von Claude |

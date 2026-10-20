@@ -1,6 +1,6 @@
 // Baut die Webseite der Werkstatt nach out/seite/ (für GitHub Pages).
 // Setzt in site/index.html ein, was sonst veralten würde: die Palette der Filme, alle fertigen Befehle aus
-// package.json, Bilder, Schriften, Material zum Herunterladen, den Prototyp der Vorlage, Posen-Editor und Teile-Werkstatt.
+// package.json, die Prompts aus site/prompts.js, Bilder, Schriften, Material zum Herunterladen, den Prototyp der Vorlage, Posen-Editor und Teile-Werkstatt.
 // Hält an, wenn ein Befehl keine Beschreibung hat, ein Platzhalter offen bleibt oder ein Link ins Leere zeigt.
 // Aufruf: node tools/seite-bauen.js [--ziel out/seite]
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -10,11 +10,11 @@ import { fileURLToPath } from 'node:url';
 import { FARBEN, kontrast } from '../tokens/tokens.js';
 import { baueSzene } from '../lib/build.js';
 import { kontaktbogen } from '../lib/kontaktbogen.js';
+import { maske, setzePlatzhalter } from './seite-platzhalter.js';
 
 const WURZEL = join(dirname(fileURLToPath(import.meta.url)), '..');
 const i = process.argv.indexOf('--ziel');
 const ZIEL = join(WURZEL, i >= 0 ? process.argv[i + 1] : 'out/seite');
-const maske = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /** Was jeder Befehl tut; ein neuer Befehl ohne Eintrag hält den Bau an. */
 const BESCHREIBUNG = {
@@ -112,12 +112,9 @@ for (const f of readdirSync(join(WURZEL, 'figuren/teilesaetze/satz-00')).filter(
 
 // 7. Seite aus der Vorlage.
 const ersetzungen = { PALETTE: palette(), SKRIPTE: skripte() };
-const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (ganz, k) => {
-  if (!(k in ersetzungen)) throw new Error(`Seite: Platzhalter {{${k}}} unbekannt`);
-  return ersetzungen[k];
-});
+const html = setzePlatzhalter(readFileSync(join(WURZEL, 'site/index.html'), 'utf8'), ersetzungen);
 
-// 7. Jeder relative Link, jedes Bild und jede Schrift muss existieren.
+// 8. Jeder relative Link, jedes Bild und jede Schrift muss existieren.
 const fehlend = [...html.matchAll(/\s(?:href|src)="([^"#:]+?)"/g), ...html.matchAll(/url\(([^)#:]+?)\)/g)]
   .map((m) => m[1])
   .filter((p) => !existsSync(join(ZIEL, p.endsWith('/') ? `${p}index.html` : p)));
