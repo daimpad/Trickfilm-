@@ -1,9 +1,11 @@
 // Testposen aller Rigs auf einem Bogen: je Archetyp eine Zeile mit sechs Posen.
-// Aufruf: node tools/rig-testposen.js [--satz satz-00] [--ziel figuren/testposen.png]
+// Aufruf: node tools/rig-testposen.js [--satz satz-00] [--ziel figuren/teilesaetze/<satz>/testposen.png]
+// Archetypen, für die der Satz keine Zeichnung hat, werden genannt und übersprungen.
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FARBEN, SCHRIFT } from '../tokens/tokens.js';
 import { RIGS } from '../lib/rigs/index.js';
+import { TEILESAETZE } from '../lib/teilesaetze/index.js';
 import { testposen } from '../lib/rigs/testposen.js';
 import { wendeAn } from '../lib/snapshot.js';
 import { bildVonHtml } from '../lib/browser.js';
@@ -15,7 +17,13 @@ const arg = (name, standard) => {
   return i >= 0 ? process.argv[i + 1] : standard;
 };
 const satz = arg('--satz', 'satz-00');
-const ziel = join(WURZEL, arg('--ziel', 'figuren/testposen.png'));
+const ziel = join(WURZEL, arg('--ziel', `figuren/teilesaetze/${satz}/testposen.png`));
+if (!TEILESAETZE[satz]) {
+  console.error(`FEHLER: Teilesatz ${satz} ist nicht importiert (npm run figuren:import -- ${satz})`);
+  process.exit(1);
+}
+const vorhanden = Object.keys(RIGS).filter((name) => TEILESAETZE[satz][name]);
+for (const name of Object.keys(RIGS)) if (!vorhanden.includes(name)) console.log(`übersprungen: ${name} (keine Zeichnung in ${satz})`);
 
 const ZELLE = { breite: 300, hoehe: 340 };
 
@@ -38,7 +46,7 @@ function zelle(name, pose, nummer) {
 }
 
 let nummer = 0;
-const zeilen = Object.keys(RIGS)
+const zeilen = vorhanden
   .map((name) => {
     const zellen = testposen(name).map((p) => zelle(name, p, nummer++)).join('');
     return `<section><h2>${maske(name)}</h2><div class="reihe">${zellen}</div></section>`;
@@ -54,4 +62,4 @@ figcaption{font-size:24px;text-align:center;padding:4px 0 8px}svg{display:block}
 
 const breite = 64 + 6 * ZELLE.breite + 5 * 16 + 6 * 8;
 await bildVonHtml(html, { breite, hoehe: 800, pfad: ziel, ganzeSeite: true });
-console.log(`geschrieben: ${ziel.replace(WURZEL + '/', '')} (${Object.keys(RIGS).length} Archetypen × 6 Posen)`);
+console.log(`geschrieben: ${ziel.replace(WURZEL + '/', '')} (${vorhanden.length} Archetypen × 6 Posen)`);

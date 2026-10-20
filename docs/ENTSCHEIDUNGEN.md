@@ -41,3 +41,13 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Bedienung | Ziehen auf der Bühne und Regler, Pfeiltasten für 1 px oder 8 px | entschieden von Regie |
 | Ausgabe | Code zum Kopieren für `geometry.js`, gelesen von `posenZustand()` | entschieden von Regie |
 | Ort | im Repository, `npm run editor` erzeugt eine Seite unter `out/editor/` (nicht im Repository) | entschieden von Regie |
+
+## 2026-10-20 · Phase 3: Figurenbaukasten
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Aufbau der Zeichenvorlage | im Profil jedes Glied in einer eigenen Säule, Handvarianten daneben; frontal an der Hauptfigur; Drehpunkte fest aus der Spezifikation | entschieden von Claude |
+| Teile als Ebenen | nur oberste Ebenen zählen; Name aus `inkscape:label`, sonst `data-name` (Illustrator), sonst `id` | entschieden von Claude |
+| Freie Farben | erlaubt und im Protokoll als Hinweis genannt; nur die drei Farbschlüssel werden umgefärbt | entschieden von Claude |
+| Gelenklücke | hält den Import an; `--trotzdem` schreibt dennoch, Strukturfehler halten immer an | entschieden von Claude |
+| Zubehör-Teile | vorgesehen, noch nicht eingebaut; der Importer meldet sie als fremd | entschieden von Claude |
