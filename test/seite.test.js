@@ -1,4 +1,4 @@
-// Webseite: Ansichten mit Adressen, Reiter, Blättern, Ebenen, Suche, Stil-Editor, alte Sprungmarken, ohne Skript eine lange Seite.
+// Webseite: Ansichten mit Adressen, Reiter, Blättern, Ebenen, Suche, Stil-Editor, Prompts, alte Sprungmarken, ohne Skript eine lange Seite.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -6,19 +6,20 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { starteBrowser } from '../lib/browser.js';
+import { setzePlatzhalter } from '../tools/seite-platzhalter.js';
 
 const WURZEL = join(import.meta.dirname, '..');
 
 /** Vorlage mit einfachen Platzhaltern statt des vollen Seitenbaus (der braucht Szenen und Bilder). */
 function seiteOhneBau(dir) {
   const ersetzung = { PALETTE: '<div class="farbe">Palette</div>', SKRIPTE: '<tr><td>szene:bauen</td><td>Szene bauen</td></tr>' };
-  const html = readFileSync(join(WURZEL, 'site/index.html'), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (_, k) => ersetzung[k]);
+  const html = setzePlatzhalter(readFileSync(join(WURZEL, 'site/index.html'), 'utf8'), ersetzung);
   const ziel = join(dir, 'index.html');
   writeFileSync(ziel, html);
   return pathToFileURL(ziel).href;
 }
 
-test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, Stil-Editor, alte Sprungmarken', async () => {
+test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, Stil-Editor, Prompts, alte Sprungmarken', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'seite-'));
   const browser = await starteBrowser();
   try {
@@ -93,6 +94,26 @@ test('Seite: Ansichten, Reiter, Blättern, Ebenen, Suche, Stil-Editor, alte Spru
     assert.equal(await variable('--st-unschaerfe'), '18px');
     await seite.keyboard.press('Escape');
     assert.equal(await seite.isHidden('#stil'), true);
+
+    // Prompts: Felder setzen sich in alle Prompts ein, bearbeitete bleiben bis Zurücksetzen, der Editor teilt die Felder.
+    await seite.goto(`${url}#anleitungen/szene`);
+    await zeigt('anleitungen/szene');
+    const prompt = (k) => seite.inputValue(`.ansicht:not([hidden]) .prompt[data-prompt="${k}"] textarea`);
+    assert.match(await prompt('szene/bauen'), /^Baue FILM-01-name /);
+    await seite.fill('.ansicht:not([hidden]) [data-feld="ID"]', 'DEMO-01-buero');
+    assert.match(await prompt('szene/bauen'), /^Baue DEMO-01-buero /);
+    assert.match(await prompt('szene/anlegen'), /npm run szene:neu -- DEMO-01-buero/);
+    await seite.fill('.ansicht:not([hidden]) .prompt[data-prompt="szene/bauen"] textarea', 'Baue nur.');
+    await seite.fill('.ansicht:not([hidden]) [data-feld="ID"]', 'DEMO-02-schalter');
+    assert.equal(await prompt('szene/bauen'), 'Baue nur.', 'bearbeiteter Prompt bleibt');
+    await seite.click('.ansicht:not([hidden]) .prompt[data-prompt="szene/bauen"] .prompt-zurueck');
+    assert.match(await prompt('szene/bauen'), /^Baue DEMO-02-schalter /);
+    await seite.goto(`${url}#werkzeuge/prompt-editor`);
+    await zeigt('werkzeuge/prompt-editor');
+    await seite.selectOption('#editor-vorlage', 'szene/protokoll');
+    assert.match(await seite.inputValue('#editor-kasten textarea'), /DEMO-02-schalter/, 'Editor nutzt dieselben Felder');
+    assert.equal(await seite.isVisible('#editor-kasten .prompt-kopieren'), true);
+    await seite.evaluate(() => localStorage.removeItem('werkstatt-felder'));
 
     // Alte Sprungmarken der früheren Seite.
     await seite.goto(`${url}#editor`);
