@@ -88,5 +88,5 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Generierung des Startbestands | ja, alles | entschieden von Regie |
 | Umfang darüber hinaus | „je größer desto besser“: Katalog auf 219 Cues erweitert (211 Geräusche, 8 Laute), je Cue mindestens vier Varianten | entschieden von Regie, Auswahl der Cues vom Leitstand |
 | Weg der Generierung | ElevenLabs-Connector, Ablage über `npm run sfx:ablegen` | entschieden vom Leitstand |
-| Stimme der Laute | offen: Auswahl aus vier Proben | Regie |
+| Stimme der Laute | alle vier Stimmen aus den Proben (Linda, Julia, Jordan, Lo), je Take 2 („jeweils Take 2“); jeder Laut in allen vier Stimmen, Wahl in der Hörprobe | entschieden von Regie |
 
