@@ -39,7 +39,7 @@
     "studio": "node tools/remotion.js vorbereiten && remotion studio",
     "render": "node tools/remotion.js render",
     "remotion:paritaet": "node tools/remotion.js paritaet",
-    "galerie": "node tools/noch-nicht.js 7 galerie",
+    "galerie": "tsx tools/galerie.ts",
     "drehbuch": "node tools/noch-nicht.js 7 drehbuch"
   },
   "dependencies": {
