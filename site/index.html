@@ -342,7 +342,7 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
       <span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg></span>
       <h3>Prototyp</h3>
       <span class="ort-tag"><svg class="icon" aria-hidden="true"><use href="#i-browser"/></svg>Im Browser</span>
-      <p>Die Vorlage-Szene so abspielen, wie sie im Film läuft, mit Geräuschen.</p>
+      <p>Vorlage-Szene und Demoszene so abspielen, wie sie im Film laufen, mit Geräuschen.</p>
       <p class="wann"><strong>Wann:</strong> nach jedem Bauen einer Szene.</p>
       <div class="aktionen"><a class="knopf" href="#werkzeuge/prototyp">Abspielen</a><a class="knopf hell" href="prototyp/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Fenster</a></div>
     </li>
@@ -397,6 +397,14 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
   <p class="querverweis"><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen</a><a href="prototyp/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Eigenes Fenster</a></p>
   <p class="einleitung">Die Szene läuft so wie im fertigen Film. Leertaste spielt ab, die Pfeiltasten gehen ein Bild vor oder zurück, Sprungmarken führen zu jedem Beat. Erlaubt der Browser keinen Ton ohne Klick, wartet die Szene auf „Abspielen“.</p>
   <iframe src="prototyp/index.html" title="Prototyp der Vorlage-Szene" loading="lazy"></iframe>
+  <h3>Demoszene</h3>
+  <p>Der ganze Weg in 15 Sekunden: tippen, senden, ein Blatt fliegt zum Drucker, eine zweite Person nimmt es, staunt und legt es ab.</p>
+  <p class="querverweis"><a href="demo/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Demoszene im eigenen Fenster</a></p>
+  <iframe src="demo/index.html" title="Prototyp der Demoszene" loading="lazy"></iframe>
+  <figure>
+    <img src="bilder/kontaktbogen-demo.png" alt="Neun Standbilder der Demoszene: Eine Person tippt und sendet, ein Blatt fliegt zum Drucker, eine zweite Person nimmt den Ausdruck, staunt und legt ihn in einen Ablagekasten im Regal." loading="lazy">
+    <figcaption>Kontaktbogen der Demoszene.</figcaption>
+  </figure>
   <div class="technik">
     <p>Eine Datei, die nichts nachlädt; die Bibliothek steckt als Import-Map darin. Zeitgeber ist <code>performance.now()</code>. Ein Geräusch klingt, wenn die Wiedergabe über seinen Zeitpunkt läuft; Springen löst nichts aus. Ohne Erlaubnis für Ton wartet die Szene auf „Abspielen“.</p>
   </div>

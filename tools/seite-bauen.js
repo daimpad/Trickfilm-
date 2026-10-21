@@ -85,6 +85,13 @@ await kontaktbogen('_vorlage');
 kopiere('szenen/_vorlage/dist/index.html', 'prototyp/index.html');
 kopiere('szenen/_vorlage/dist/kontaktbogen.png', 'bilder/kontaktbogen-vorlage.png');
 
+// 1b. Prototyp und Kontaktbogen der Demoszene, die den ganzen Weg einmal geht.
+const demo = await baueSzene('DEMO-01-buero');
+if (demo.befunde.length) throw new Error(`Seite: Demoszene hat Befunde: ${demo.befunde.map((b) => b.text).join('; ')}`);
+await kontaktbogen('DEMO-01-buero');
+kopiere('szenen/DEMO-01-buero/dist/index.html', 'demo/index.html');
+kopiere('szenen/DEMO-01-buero/dist/kontaktbogen.png', 'bilder/kontaktbogen-demo.png');
+
 // 2. Posen-Editor mit der Vorlage als Hintergrund, ohne gespeicherten Zwischenstand.
 mkdirSync(join(ZIEL, 'editor'), { recursive: true });
 execFileSync('node', [join(WURZEL, 'tools/posen-editor.js'), '--szene', '_vorlage', '--figur', 'A', '--ziel', join(ZIEL, 'editor/index.html').replace(WURZEL + '/', '')], {
@@ -123,4 +130,4 @@ if (fehlend.length) throw new Error(`Seite: Links ins Leere: ${fehlend.join(', '
 writeFileSync(join(ZIEL, 'index.html'), html);
 // Ohne Jekyll liefert Pages die Dateien unverändert aus.
 writeFileSync(join(ZIEL, '.nojekyll'), '');
-console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Editor, Teile-Werkstatt, 4 Bilder, Schriften, Material)`);
+console.log(`Seite → ${ZIEL.replace(WURZEL + '/', '')}/index.html (Prototyp, Demoszene, Editor, Teile-Werkstatt, 5 Bilder, Schriften, Material)`);
