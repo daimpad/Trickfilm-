@@ -1,191 +1,221 @@
 # ERZEUGT von tools/sfx-normalisieren.js aus katalog.yaml, auswahl.yaml und roh/herkunft.tsv. Nicht von Hand ändern.
 id	art	modell	prompt	varianten	wahl	vorlaeufig	dateien	lufs_momentan_max	true_peak_dbtp	datum	lizenz
-tastenanschlag	sfx	eleven_text_to_sound_v2	single soft office keyboard keystroke, close, dry room	4	v4,v3,v1,v2	true	8	-24.3	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schritt	sfx	eleven_text_to_sound_v2	single soft footstep on office carpet, close, dry room	7	v2,v3,v5,v1,v6,v7,v4	true	6	-21.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+tastenanschlag	sfx	eleven_text_to_sound_v2	single soft office keyboard keystroke, close, dry room	8	v4,v3,v5,v7,v1,v8,v2,v6	true	8	-24.3	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt	sfx	eleven_text_to_sound_v2	single soft footstep on office carpet, close, dry room	8	v8,v2,v3,v5,v1,v6,v7,v4	true	6	-21.0	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 maus-klick	sfx	eleven_text_to_sound_v2	single crisp computer mouse click, slightly satisfying, close, dry room	4	v4,v3,v1,v2	true	3	-29.2	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 whoosh-kurz	sfx	eleven_text_to_sound_v2	short soft airy whoosh of a sheet of paper moving through the air, gentle	4	v1	true	1	-23.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 drucker-start	sfx	eleven_text_to_sound_v2	small office laser printer waking up, brief hesitant whir as if thinking, then starts feeding, dry room	4	v2	true	1	-20.0	-8.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 papier-raus	sfx	eleven_text_to_sound_v2	single sheet of paper sliding out of a printer tray, soft swish	4	v1	true	1	-20.0	-3.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-papier-ablegen	sfx	eleven_text_to_sound_v2	single sheet of paper landing softly on a desk, gentle pat	1	v1	true	1	-22.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-laut-erstaunt	laut	eleven_v3	[surprised] Oh?	4	v2	true	1	-20.0	-7.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+papier-ablegen	sfx	eleven_text_to_sound_v2	single sheet of paper landing softly on a desk, gentle pat	4	v1	true	1	-22.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-erstaunt	laut	eleven_v3	[surprised] Oh?	8	v2	true	1	-20.0	-7.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 laut-fragend	laut	eleven_v3	[curious] Hm...?	8	v7	true	1	-20.0	-7.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-aufsetzen-weich	sfx	eleven_text_to_sound_v2	soft muted thud of a small object set down on a wooden desk	3	v1,v3,v2	true	3	-25.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-erleichtert	laut	eleven_v3	[relieved] Ah.	8	v1	true	1	-20.0	-7.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+aufsetzen-weich	sfx	eleven_text_to_sound_v2	soft muted thud of a small object set down on a wooden desk	4	v1,v4,v3,v2	true	3	-24.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 aufspringen	sfx	eleven_text_to_sound_v2	tiny soft pop, like a small card flipping up, light and friendly	4	v1	true	1	-33.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stapel-ablegen	sfx	eleven_text_to_sound_v2	small stack of paper sheets placed on a desk, soft papery thump	3	v2	true	1	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stapel-ablegen	sfx	eleven_text_to_sound_v2	small stack of paper sheets placed on a desk, soft papery thump	4	v2	true	1	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stift-schreiben	sfx	eleven_text_to_sound_v2	ballpoint pen writing quickly on paper, close, dry room	4	v1	true	1	-20.0	-4.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 haken-setzen	sfx	eleven_text_to_sound_v2	single quick pen tick mark stroke on paper, crisp	4	v2	true	1	-23.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schalter	sfx	eleven_text_to_sound_v2	single small light switch click, plastic, close	1	v1	true	1	-27.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-tuer-auf	sfx	eleven_text_to_sound_v2	office door handle pressed and door opening gently, short, dry room	3	v1	true	1	-24.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schalter	sfx	eleven_text_to_sound_v2	single small light switch click, plastic, close	4	v2	true	1	-30.8	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+tuer-auf	sfx	eleven_text_to_sound_v2	office door handle pressed and door opening gently, short, dry room	4	v1	true	1	-24.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tuer-zu	sfx	eleven_text_to_sound_v2	office door closing softly with a gentle latch click	4	v3	true	1	-22.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-uhr-ticken	sfx	eleven_text_to_sound_v2	quiet wall clock ticking steadily, close, dry room	3	v3	true	1	-21.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+uhr-ticken	sfx	eleven_text_to_sound_v2	quiet wall clock ticking steadily, close, dry room	4	v3	true	1	-21.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stempel	sfx	eleven_text_to_sound_v2	single rubber stamp pressed firmly on paper on a desk, satisfying thump	4	v1,v4,v3,v2	true	2	-23.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stecker	sfx	eleven_text_to_sound_v2	single plug pushed into a wall socket, short plastic click	4	v3	true	1	-30.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-zahnrad	sfx	eleven_text_to_sound_v2	small mechanical gears turning softly, light clockwork whir	1	v1	true	1	-20.0	-4.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-telefon-klingeln	sfx	eleven_text_to_sound_v2	single short ring of a modern desk phone, soft electronic tone	3	v1	true	1	-20.0	-13.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+zahnrad	sfx	eleven_text_to_sound_v2	small mechanical gears turning softly, light clockwork whir	4	v1	true	1	-20.0	-4.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+telefon-klingeln	sfx	eleven_text_to_sound_v2	single short ring of a modern desk phone, soft electronic tone	4	v1	true	1	-20.0	-13.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 umblaettern	sfx	eleven_text_to_sound_v2	single page of a paper document turned over, soft rustle	4	v4,v1,v3,v2	true	2	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-rollen	sfx	eleven_text_to_sound_v2	office chair casters rolling briefly on a hard floor	3	v1	true	1	-20.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+rollen	sfx	eleven_text_to_sound_v2	office chair casters rolling briefly on a hard floor	4	v1	true	1	-20.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 muenze	sfx	eleven_text_to_sound_v2	single coin dropped on a wooden table, short ring	4	v2	true	1	-21.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 klappe	sfx	eleven_text_to_sound_v2	small plastic flap or lid closing with a light clack	4	v3	true	1	-33.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-scanner	sfx	eleven_text_to_sound_v2	flatbed scanner light bar sliding across with a soft motor hum	1	v1	true	1	-20.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-hefter	sfx	eleven_text_to_sound_v2	single office stapler press, firm metallic clack	3	v1	true	1	-31.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+scanner	sfx	eleven_text_to_sound_v2	flatbed scanner light bar sliding across with a soft motor hum	4	v3	true	1	-20.0	-8.7	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+hefter	sfx	eleven_text_to_sound_v2	single office stapler press, firm metallic clack	4	v4	true	1	-28.5	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 wecker	sfx	eleven_text_to_sound_v2	short soft digital alarm beep, two gentle tones	4	v2	true	1	-20.0	-5.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-rollladen	sfx	eleven_text_to_sound_v2	window roller shutter rolling up briefly, soft rattle	3	v1	true	1	-20.0	-5.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+rollladen	sfx	eleven_text_to_sound_v2	window roller shutter rolling up briefly, soft rattle	4	v1	true	1	-20.0	-5.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 summen	sfx	eleven_text_to_sound_v2	very quiet electrical hum of an office device, steady, close	4	v1	true	1	-25.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schluesselbund	sfx	eleven_text_to_sound_v2	small bunch of keys jingling briefly in a hand	4	v1	true	1	-20.0	-4.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-fahrzeug	sfx	eleven_text_to_sound_v2	small car passing by at moderate distance, calm street	1	v1	true	1	-20.0	-9.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-seil-ruck	sfx	eleven_text_to_sound_v2	single short rope tug, taut fiber snap, soft	3	v3	true	1	-29.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+fahrzeug	sfx	eleven_text_to_sound_v2	small car passing by at moderate distance, calm street	4	v2	true	1	-20.0	-7.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+seil-ruck	sfx	eleven_text_to_sound_v2	single short rope tug, taut fiber snap, soft	4	v3	true	1	-29.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 waage-kippen	sfx	eleven_text_to_sound_v2	balance scale tipping to one side with a soft metal clink	4	v4	true	1	-21.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-scherbe	sfx	eleven_text_to_sound_v2	small porcelain cup cracking softly, single crack, no shattering	2	v2	true	1	-32.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+scherbe	sfx	eleven_text_to_sound_v2	small porcelain cup cracking softly, single crack, no shattering	4	v2	true	1	-32.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 bestaetigung	sfx	eleven_text_to_sound_v2	soft friendly user interface confirmation chime, single gentle tone, short	4	v1	true	1	-20.0	-7.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tastatur-leise	sfx	eleven_text_to_sound_v2	single quiet laptop keyboard keystroke, close, dry room	8	v2,v8,v4,v7,v5,v6,v3,v1	true	8	-25.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-leertaste	sfx	eleven_text_to_sound_v2	single keyboard space bar press, slightly hollow, close	1	v1	true	1	-27.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-enter-taste	sfx	eleven_text_to_sound_v2	single firm keyboard enter key press, close, dry room	3	v2,v3,v1	true	2	-25.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+leertaste	sfx	eleven_text_to_sound_v2	single keyboard space bar press, slightly hollow, close	4	v2,v3,v4,v1	true	2	-23.1	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+enter-taste	sfx	eleven_text_to_sound_v2	single firm keyboard enter key press, close, dry room	4	v2,v3,v1,v4	true	2	-25.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tippen-folge	sfx	eleven_text_to_sound_v2	continuous relaxed typing on an office keyboard, close, dry room	4	v1	true	1	-25.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-maus-scrollen	sfx	eleven_text_to_sound_v2	computer mouse scroll wheel ticking briefly, close	2	v2	true	1	-22.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+maus-scrollen	sfx	eleven_text_to_sound_v2	computer mouse scroll wheel ticking briefly, close	4	v2	true	1	-22.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 doppelklick	sfx	eleven_text_to_sound_v2	quick double click of a computer mouse, close	4	v1	true	1	-27.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 handy-tippen	sfx	eleven_text_to_sound_v2	fingertip tapping a smartphone glass screen once, tiny soft tap	4	v3,v4,v2,v1	true	3	-31.2	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-handy-vibration	sfx	eleven_text_to_sound_v2	smartphone vibrating briefly on a wooden desk	1	v1	true	1	-20.0	-16.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-benachrichtigung	sfx	eleven_text_to_sound_v2	soft short smartphone notification tone, single gentle blip	3	v1	true	1	-20.0	-6.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+handy-vibration	sfx	eleven_text_to_sound_v2	smartphone vibrating briefly on a wooden desk	4	v1	true	1	-20.0	-16.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+benachrichtigung	sfx	eleven_text_to_sound_v2	soft short smartphone notification tone, single gentle blip	4	v1	true	1	-20.0	-6.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 nachricht-gesendet	sfx	eleven_text_to_sound_v2	soft subtle swoosh of a message being sent on a phone, short	4	v1	true	1	-20.0	-5.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-fehler-ton	sfx	eleven_text_to_sound_v2	soft low user interface error tone, short, not harsh	2	v1	true	1	-20.0	-8.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+fehler-ton	sfx	eleven_text_to_sound_v2	soft low user interface error tone, short, not harsh	4	v1	true	1	-20.0	-8.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 ui-klick	sfx	eleven_text_to_sound_v2	soft user interface click, subtle digital tick	4	v2,v3,v1,v4	true	3	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 ui-pop	sfx	eleven_text_to_sound_v2	soft user interface pop as a small panel appears, light	4	v2	true	1	-22.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-ui-schliessen	sfx	eleven_text_to_sound_v2	soft short user interface swipe as a panel closes	1	v1	true	1	-20.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-ui-umschalten	sfx	eleven_text_to_sound_v2	soft toggle switch click in a user interface, digital	3	v2	true	1	-22.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+ui-schliessen	sfx	eleven_text_to_sound_v2	soft short user interface swipe as a panel closes	4	v2	true	1	-20.0	-6.3	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+ui-umschalten	sfx	eleven_text_to_sound_v2	soft toggle switch click in a user interface, digital	4	v2	true	1	-22.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 laptop-aufklappen	sfx	eleven_text_to_sound_v2	laptop lid opened, soft hinge creak	4	v3	true	1	-26.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-laptop-zuklappen	sfx	eleven_text_to_sound_v2	laptop lid closed gently, soft plastic thud	2	v2	true	1	-25.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laptop-zuklappen	sfx	eleven_text_to_sound_v2	laptop lid closed gently, soft plastic thud	4	v3	true	1	-25.6	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 rechner-luefter	sfx	eleven_text_to_sound_v2	quiet computer fan hum, steady, close	4	v1	true	1	-20.0	-6.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 usb-stecker	sfx	eleven_text_to_sound_v2	usb stick plugged into a laptop, small plastic click	4	v4	true	1	-29.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kabel-ziehen	sfx	eleven_text_to_sound_v2	cable unplugged from a socket, short pull	1	v1	true	1	-27.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-monitor-an	sfx	eleven_text_to_sound_v2	computer monitor switching on, faint electrical click and soft hum	3	v3	true	1	-25.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kabel-ziehen	sfx	eleven_text_to_sound_v2	cable unplugged from a socket, short pull	4	v3	true	1	-22.8	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+monitor-an	sfx	eleven_text_to_sound_v2	computer monitor switching on, faint electrical click and soft hum	4	v3	true	1	-25.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 kamera-ausloeser	sfx	eleven_text_to_sound_v2	camera shutter click, soft	4	v3	true	1	-21.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stoppuhr	sfx	eleven_text_to_sound_v2	single stopwatch button click	4	v2	true	1	-29.8	-2.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 zaehler-tick	sfx	eleven_text_to_sound_v2	single soft mechanical counter tick	4	v2,v1,v3,v4	true	4	-26.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 piepen-geraet	sfx	eleven_text_to_sound_v2	single short soft electronic beep	4	v1	true	1	-20.0	-6.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-relais-klick	sfx	eleven_text_to_sound_v2	small electrical relay clicking once	1	v1	true	1	-31.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stift-klick	sfx	eleven_text_to_sound_v2	single ballpoint pen click, close	3	v3,v1,v2	true	3	-31.2	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+relais-klick	sfx	eleven_text_to_sound_v2	small electrical relay clicking once	4	v4	true	1	-25.8	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stift-klick	sfx	eleven_text_to_sound_v2	single ballpoint pen click, close	4	v3,v1,v4,v2	true	3	-31.2	-2.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stift-aufsetzen	sfx	eleven_text_to_sound_v2	pen tip tapped once on paper on a desk	4	v1,v4,v3,v2	true	3	-28.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 unterschrift	sfx	eleven_text_to_sound_v2	quick signature written with a pen on paper, close	4	v3	true	1	-20.0	-5.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 radiergummi	sfx	eleven_text_to_sound_v2	eraser rubbing on paper briefly, close	4	v2	true	1	-20.0	-4.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 textmarker	sfx	eleven_text_to_sound_v2	highlighter marker stroke across paper, soft squeak	4	v2	true	1	-20.0	-9.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-papier-knuellen	sfx	eleven_text_to_sound_v2	sheet of paper crumpled into a ball by hand	1	v1	true	1	-20.0	-4.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+papier-knuellen	sfx	eleven_text_to_sound_v2	sheet of paper crumpled into a ball by hand	4	v3	true	1	-21.7	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 papier-reissen	sfx	eleven_text_to_sound_v2	sheet of paper torn in half, single tear	4	v3	true	1	-20.0	-10.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 papier-falten	sfx	eleven_text_to_sound_v2	sheet of paper folded in half, crisp crease	4	v3	true	1	-20.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-blatt-flattern	sfx	eleven_text_to_sound_v2	single paper sheet fluttering in the air briefly	2	v1	true	1	-25.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+blatt-flattern	sfx	eleven_text_to_sound_v2	single paper sheet fluttering in the air briefly	4	v4	true	1	-25.5	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 blatt-wischen	sfx	eleven_text_to_sound_v2	soft swipe of a paper sheet across a desk	4	v3	true	1	-20.0	-6.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 umschlag-oeffnen	sfx	eleven_text_to_sound_v2	paper envelope torn open by hand	4	v1	true	1	-20.0	-7.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-umschlag-schliessen	sfx	eleven_text_to_sound_v2	envelope flap pressed shut, soft paper	1	v1	true	1	-26.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-ordner-auf	sfx	eleven_text_to_sound_v2	ring binder rings snapping open, metallic	3	v1	true	1	-28.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+umschlag-schliessen	sfx	eleven_text_to_sound_v2	envelope flap pressed shut, soft paper	4	v3	true	1	-20.0	-5.3	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+ordner-auf	sfx	eleven_text_to_sound_v2	ring binder rings snapping open, metallic	4	v1	true	1	-28.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 ordner-zu	sfx	eleven_text_to_sound_v2	ring binder rings snapping shut, metallic	4	v2	true	1	-25.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-locher	sfx	eleven_text_to_sound_v2	office hole punch pressed through paper, firm clunk	2	v2	true	1	-24.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+locher	sfx	eleven_text_to_sound_v2	office hole punch pressed through paper, firm clunk	4	v4	true	1	-28.2	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 klebeband-abreissen	sfx	eleven_text_to_sound_v2	adhesive tape pulled from a desk dispenser and torn off	4	v4	true	1	-20.0	-5.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schere	sfx	eleven_text_to_sound_v2	scissors cutting through a sheet of paper, two snips	4	v3	true	1	-24.8	-3.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-bueroklammer	sfx	eleven_text_to_sound_v2	small paper clip dropped on a desk, light metallic tick	1	v1	true	1	-27.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stapel-schieben	sfx	eleven_text_to_sound_v2	stack of papers slid across a desk	3	v3	true	1	-20.0	-8.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+bueroklammer	sfx	eleven_text_to_sound_v2	small paper clip dropped on a desk, light metallic tick	4	v3	true	1	-25.9	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stapel-schieben	sfx	eleven_text_to_sound_v2	stack of papers slid across a desk	4	v3	true	1	-20.0	-8.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 buch-zuklappen	sfx	eleven_text_to_sound_v2	hardcover book closed firmly, soft thump	4	v4	true	1	-26.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 buch-aufschlagen	sfx	eleven_text_to_sound_v2	book opened, pages flutter softly	4	v2	true	1	-23.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 seiten-blaettern	sfx	eleven_text_to_sound_v2	pages of a thick document flipped through quickly	4	v3	true	1	-21.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 klemmbrett	sfx	eleven_text_to_sound_v2	single pen tap on a plastic clipboard	4	v4	true	1	-31.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stempelkissen	sfx	eleven_text_to_sound_v2	rubber stamp pressed onto an ink pad, soft	1	v1	true	1	-25.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kalenderblatt	sfx	eleven_text_to_sound_v2	single calendar page torn off	3	v3	true	1	-21.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stempelkissen	sfx	eleven_text_to_sound_v2	rubber stamp pressed onto an ink pad, soft	4	v4	true	1	-25.6	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kalenderblatt	sfx	eleven_text_to_sound_v2	single calendar page torn off	4	v3	true	1	-21.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 pinnwand	sfx	eleven_text_to_sound_v2	push pin pressed into a cork board	4	v1	true	1	-25.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-whiteboard-stift	sfx	eleven_text_to_sound_v2	marker writing on a whiteboard, soft squeak	3	v2	true	1	-21.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+whiteboard-stift	sfx	eleven_text_to_sound_v2	marker writing on a whiteboard, soft squeak	4	v4	true	1	-21.5	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 whiteboard-wischen	sfx	eleven_text_to_sound_v2	whiteboard eraser wiping a board	4	v2	true	1	-20.0	-6.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 flipchart	sfx	eleven_text_to_sound_v2	large flipchart paper sheet flipped over	4	v2	true	1	-20.0	-5.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kreide-tafel	sfx	eleven_text_to_sound_v2	chalk writing on a blackboard, close	1	v1	true	1	-22.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schublade-metall-auf	sfx	eleven_text_to_sound_v2	metal filing cabinet drawer sliding open on rails	3	v3	true	1	-20.0	-3.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kreide-tafel	sfx	eleven_text_to_sound_v2	chalk writing on a blackboard, close	4	v2	true	1	-27.9	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schublade-metall-auf	sfx	eleven_text_to_sound_v2	metal filing cabinet drawer sliding open on rails	4	v3	true	1	-20.0	-3.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schublade-metall-zu	sfx	eleven_text_to_sound_v2	metal filing cabinet drawer sliding shut with a soft clunk	4	v2	true	1	-20.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schublade-holz-auf	sfx	eleven_text_to_sound_v2	wooden desk drawer sliding open	4	v1	true	1	-23.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schublade-holz-zu	sfx	eleven_text_to_sound_v2	wooden desk drawer closing with a soft knock	4	v4	true	1	-25.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 etikettendrucker	sfx	eleven_text_to_sound_v2	small label printer printing and cutting a label	4	v3	true	1	-23.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-aktenvernichter	sfx	eleven_text_to_sound_v2	paper shredder briefly shredding a sheet	1	v1	true	1	-20.0	-11.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kopierer	sfx	eleven_text_to_sound_v2	office photocopier making a copy, light scanning sweep and paper out	3	v1	true	1	-21.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+aktenvernichter	sfx	eleven_text_to_sound_v2	paper shredder briefly shredding a sheet	4	v3	true	1	-20.0	-12.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kopierer	sfx	eleven_text_to_sound_v2	office photocopier making a copy, light scanning sweep and paper out	4	v1	true	1	-21.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 drucker-laeuft	sfx	eleven_text_to_sound_v2	laser printer printing pages steadily, dry room	4	v1	true	1	-20.0	-3.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 drucker-hakt	sfx	eleven_text_to_sound_v2	office printer grinding briefly, then stopping with a small clunk	4	v2	true	1	-22.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 telefon-abheben	sfx	eleven_text_to_sound_v2	desk phone handset lifted off the cradle	4	v3	true	1	-23.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 telefon-auflegen	sfx	eleven_text_to_sound_v2	desk phone handset placed back on the cradle with a click	4	v4	true	1	-25.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-telefon-waehlen	sfx	eleven_text_to_sound_v2	short series of soft phone keypad tones	1	v1	true	1	-20.0	-13.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kaffeemaschine	sfx	eleven_text_to_sound_v2	office coffee machine grinding and brewing briefly	3	v3	true	1	-20.0	-8.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+telefon-waehlen	sfx	eleven_text_to_sound_v2	short series of soft phone keypad tones	4	v1	true	1	-20.0	-13.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kaffeemaschine	sfx	eleven_text_to_sound_v2	office coffee machine grinding and brewing briefly	4	v4	true	1	-20.0	-8.1	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 kaffee-einschenken	sfx	eleven_text_to_sound_v2	coffee poured into a ceramic mug	4	v3	true	1	-21.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tasse-abstellen	sfx	eleven_text_to_sound_v2	ceramic mug set down on a desk, soft clink	4	v1,v3,v4,v2	true	2	-20.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 loeffel-ruehren	sfx	eleven_text_to_sound_v2	teaspoon stirring in a ceramic mug, light clinks	4	v3	true	1	-22.7	-3.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 wasserspender	sfx	eleven_text_to_sound_v2	office water dispenser filling a paper cup, gurgle	4	v2	true	1	-20.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stuhl-drehen	sfx	eleven_text_to_sound_v2	office chair swivelling, soft creak	1	v1	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-stuhl-setzen	sfx	eleven_text_to_sound_v2	person sitting down on an office chair, cushion and slight creak	3	v3	true	1	-20.0	-5.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stuhl-drehen	sfx	eleven_text_to_sound_v2	office chair swivelling, soft creak	4	v1	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+stuhl-setzen	sfx	eleven_text_to_sound_v2	person sitting down on an office chair, cushion and slight creak	4	v4	true	1	-20.6	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stuhl-aufstehen	sfx	eleven_text_to_sound_v2	person getting up from an office chair, soft creak	4	v3	true	1	-23.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 stuhl-ruecken	sfx	eleven_text_to_sound_v2	wooden chair scraped back briefly on a floor	4	v1	true	1	-20.0	-8.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tisch-klopfen	sfx	eleven_text_to_sound_v2	single knuckle knock on a wooden desk	4	v2,v1,v3,v4	true	3	-25.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 tuer-klopfen	sfx	eleven_text_to_sound_v2	single polite knock on a wooden office door	4	v3,v2,v4,v1	true	4	-27.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-tuerklinke	sfx	eleven_text_to_sound_v2	door handle pressed down, metallic click	1	v1	true	1	-25.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-tuer-knarren	sfx	eleven_text_to_sound_v2	door opening slowly with a gentle creak	3	v3	true	1	-23.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+tuerklinke	sfx	eleven_text_to_sound_v2	door handle pressed down, metallic click	4	v2	true	1	-24.2	-2.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+tuer-knarren	sfx	eleven_text_to_sound_v2	door opening slowly with a gentle creak	4	v3	true	1	-23.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schluessel-schloss	sfx	eleven_text_to_sound_v2	key turned in a door lock, two clicks	4	v3	true	1	-27.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+aufzug-ankunft	sfx	eleven_text_to_sound_v2	elevator arriving, single soft ding	4	v1	true	1	-20.0	-10.4	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 aufzug-tueren	sfx	eleven_text_to_sound_v2	elevator doors sliding open smoothly	4	v3	true	1	-20.0	-7.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 neonlicht	sfx	eleven_text_to_sound_v2	fluorescent ceiling light flickering on with a soft buzz	4	v3	true	1	-20.0	-8.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-klimaanlage	sfx	eleven_text_to_sound_v2	quiet office air conditioning hum, steady	1	v1	true	1	-20.0	-7.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-raumton-buero	sfx	eleven_text_to_sound_v2	quiet office room tone, distant soft murmur without words	3	v1	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+klimaanlage	sfx	eleven_text_to_sound_v2	quiet office air conditioning hum, steady	4	v1	true	1	-20.0	-7.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+raumton-buero	sfx	eleven_text_to_sound_v2	quiet office room tone, distant soft murmur without words	4	v1	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 beamer	sfx	eleven_text_to_sound_v2	projector fan whirring quietly, steady	4	v1	true	1	-20.0	-9.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+lichtschalter-zug	sfx	eleven_text_to_sound_v2	pull cord light switch clicked once	4	v4	true	1	-26.4	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 magnet	sfx	eleven_text_to_sound_v2	small magnet snapping onto a metal board, small click	4	v3	true	1	-27.7	-3.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 kasse	sfx	eleven_text_to_sound_v2	cash register drawer opening with a short ring	4	v2	true	1	-20.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-kassenbon	sfx	eleven_text_to_sound_v2	receipt printer printing a short receipt	1	v1	true	1	-20.0	-6.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-karte-bezahlen	sfx	eleven_text_to_sound_v2	contactless card payment terminal confirmation beep, soft	3	v1	true	1	-20.0	-13.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+kassenbon	sfx	eleven_text_to_sound_v2	receipt printer printing a short receipt	4	v4	true	1	-20.0	-6.2	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+karte-bezahlen	sfx	eleven_text_to_sound_v2	contactless card payment terminal confirmation beep, soft	4	v1	true	1	-20.0	-13.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 scanner-piep	sfx	eleven_text_to_sound_v2	barcode scanner beep at a checkout, soft	4	v4	true	1	-20.0	-7.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+muenzen-zaehlen	sfx	eleven_text_to_sound_v2	a few coins counted onto a counter	4	v1	true	1	-20.0	-4.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 geldscheine	sfx	eleven_text_to_sound_v2	banknotes counted by hand, crisp paper	4	v4	true	1	-24.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 wartemarke	sfx	eleven_text_to_sound_v2	queue ticket dispenser printing a paper ticket	4	v4	true	1	-20.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-aufruf-ton	sfx	eleven_text_to_sound_v2	soft two tone waiting room call chime	2	v1	true	1	-20.0	-11.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schalterglocke	sfx	eleven_text_to_sound_v2	small service desk bell tapped once	3	v1	true	1	-20.0	-6.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+aufruf-ton	sfx	eleven_text_to_sound_v2	soft two tone waiting room call chime	4	v1	true	1	-20.0	-11.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schalterglocke	sfx	eleven_text_to_sound_v2	small service desk bell tapped once	4	v1	true	1	-20.0	-6.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 papiertuete	sfx	eleven_text_to_sound_v2	paper shopping bag rustling	4	v3	true	1	-20.0	-5.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+plastiktuete	sfx	eleven_text_to_sound_v2	plastic bag rustling briefly	4	v4	true	1	-21.9	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 karton-oeffnen	sfx	eleven_text_to_sound_v2	cardboard box flaps opened	4	v1	true	1	-24.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 karton-abstellen	sfx	eleven_text_to_sound_v2	cardboard box set down on a floor, hollow thud	4	v2	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-paketband	sfx	eleven_text_to_sound_v2	packing tape pulled across a cardboard box	2	v2	true	1	-20.0	-6.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-briefkasten	sfx	eleven_text_to_sound_v2	letter dropped into a metal mailbox, flap clank	3	v3	true	1	-20.0	-3.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schritt-holz	sfx	eleven_text_to_sound_v2	single footstep on a wooden floor, indoor, close	4	v4,v1,v2,v3	true	4	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schritt-strasse	sfx	eleven_text_to_sound_v2	single footstep on a city sidewalk, outdoor	4	v2,v4,v3,v1	true	5	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+paketband	sfx	eleven_text_to_sound_v2	packing tape pulled across a cardboard box	4	v2	true	1	-20.0	-6.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+briefkasten	sfx	eleven_text_to_sound_v2	letter dropped into a metal mailbox, flap clank	4	v4	true	1	-20.0	-3.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt-holz	sfx	eleven_text_to_sound_v2	single footstep on a wooden floor, indoor, close	8	v4,v1,v5,v6,v7,v2,v3,v8	true	6	-20.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt-fliesen	sfx	eleven_text_to_sound_v2	single footstep on a tiled floor, light echo	8	v8,v2,v5,v7,v1,v3,v6,v4	true	6	-20.0	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt-strasse	sfx	eleven_text_to_sound_v2	single footstep on a city sidewalk, outdoor	8	v6,v5,v2,v4,v7,v3,v1,v8	true	6	-27.7	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schritt-kies	sfx	eleven_text_to_sound_v2	single footstep on gravel	8	v8,v3,v1,v5,v7,v6,v2,v4	true	6	-21.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schritt-absatz	sfx	eleven_text_to_sound_v2	single footstep of a heeled shoe on a hard floor	5	v1,v3,v2,v5,v4	true	6	-26.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schritt-gras	sfx	eleven_text_to_sound_v2	single soft footstep on grass	7	v7,v2,v3,v6,v4,v1,v5	true	6	-20.0	-3.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt-absatz	sfx	eleven_text_to_sound_v2	single footstep of a heeled shoe on a hard floor	8	v1,v7,v3,v8,v6,v2,v5,v4	true	6	-26.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schritt-gras	sfx	eleven_text_to_sound_v2	single soft footstep on grass	8	v7,v2,v8,v3,v6,v4,v1,v5	true	6	-20.0	-3.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 kleidung-rascheln	sfx	eleven_text_to_sound_v2	clothing rustle as a person moves, soft fabric	4	v3	true	1	-20.0	-6.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+jacke-anziehen	sfx	eleven_text_to_sound_v2	jacket put on, fabric rustle	4	v4	true	1	-20.4	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 reissverschluss	sfx	eleven_text_to_sound_v2	zipper pulled quickly	4	v1	true	1	-20.0	-6.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 klettverschluss	sfx	eleven_text_to_sound_v2	velcro strap ripped open	4	v3	true	1	-20.0	-5.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-haende-reiben	sfx	eleven_text_to_sound_v2	hands rubbed together briefly	2	v2	true	1	-20.0	-5.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-fingerschnippen	sfx	eleven_text_to_sound_v2	single finger snap, close	3	v2	true	1	-25.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+haende-reiben	sfx	eleven_text_to_sound_v2	hands rubbed together briefly	4	v3	true	1	-20.0	-8.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+fingerschnippen	sfx	eleven_text_to_sound_v2	single finger snap, close	4	v4	true	1	-29.9	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 klatschen-einmal	sfx	eleven_text_to_sound_v2	single soft hand clap	4	v1	true	1	-21.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+sofa-setzen	sfx	eleven_text_to_sound_v2	person sitting down on a sofa, soft cushion	4	v3	true	1	-22.6	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schulranzen	sfx	eleven_text_to_sound_v2	backpack zipper opened and bag set down	4	v1	true	1	-20.0	-7.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 fahrradklingel	sfx	eleven_text_to_sound_v2	single bicycle bell ring	4	v1	true	1	-20.0	-10.3	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 fahrrad-rollen	sfx	eleven_text_to_sound_v2	bicycle rolling past, chain ticking softly	4	v1	true	1	-21.6	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-autotuer-zu	sfx	eleven_text_to_sound_v2	car door closing, solid thud	3	v3	true	1	-20.0	-3.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+autotuer-zu	sfx	eleven_text_to_sound_v2	car door closing, solid thud	4	v4	true	1	-21.9	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 autotuer-auf	sfx	eleven_text_to_sound_v2	car door opening, handle click	4	v2	true	1	-26.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-motor-leerlauf	sfx	eleven_text_to_sound_v2	small car engine idling steadily	1	v1	true	1	-20.0	-7.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+motor-start	sfx	eleven_text_to_sound_v2	small car engine starting and idling briefly	4	v1	true	1	-20.0	-6.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+motor-leerlauf	sfx	eleven_text_to_sound_v2	small car engine idling steadily	4	v1	true	1	-20.0	-7.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 bus-tueren	sfx	eleven_text_to_sound_v2	city bus doors opening with a pneumatic hiss	4	v2	true	1	-20.0	-10.5	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 bus-haelt	sfx	eleven_text_to_sound_v2	city bus braking to a stop, soft air brake	4	v4	true	1	-20.0	-11.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-strassenbahn	sfx	eleven_text_to_sound_v2	tram passing at moderate distance, rails humming	3	v3	true	1	-20.0	-8.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+strassenbahn	sfx	eleven_text_to_sound_v2	tram passing at moderate distance, rails humming	4	v4	true	1	-20.0	-8.1	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 ampel-ticken	sfx	eleven_text_to_sound_v2	pedestrian crossing signal ticking steadily	4	v2	true	1	-26.3	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+verkehr-stadt	sfx	eleven_text_to_sound_v2	distant city traffic ambience, calm	4	v1	true	1	-20.0	-5.3	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+park	sfx	eleven_text_to_sound_v2	calm park ambience with birds chirping softly	4	v1	true	1	-21.0	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 regen	sfx	eleven_text_to_sound_v2	light rain on a window, steady	4	v1	true	1	-26.9	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 wind	sfx	eleven_text_to_sound_v2	gentle wind outdoors, steady	4	v1	true	1	-20.0	-5.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-donner-fern	sfx	eleven_text_to_sound_v2	distant soft thunder rumble	3	v1	true	1	-20.0	-5.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+donner-fern	sfx	eleven_text_to_sound_v2	distant soft thunder rumble	4	v4	true	1	-20.0	-6.6	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 vogel	sfx	eleven_text_to_sound_v2	single small bird chirping briefly	4	v4	true	1	-20.0	-10.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+hund-fern	sfx	eleven_text_to_sound_v2	small dog barking twice in the distance	4	v4	true	1	-20.0	-7.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+katze	sfx	eleven_text_to_sound_v2	soft short cat meow	4	v2	true	1	-20.0	-14.1	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 regenschirm	sfx	eleven_text_to_sound_v2	umbrella opening with a soft swish and click	4	v4	true	1	-23.0	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 baustelle-fern	sfx	eleven_text_to_sound_v2	distant construction site ambience, faint hammering	4	v2	true	1	-20.0	-3.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-gartentor	sfx	eleven_text_to_sound_v2	small metal garden gate opening with a creak	2	v1	true	1	-20.4	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+gartentor	sfx	eleven_text_to_sound_v2	small metal garden gate opening with a creak	4	v3	true	1	-20.0	-7.4	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 schulglocke-fern	sfx	eleven_text_to_sound_v2	distant school bell ringing briefly	4	v1	true	1	-20.0	-11.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+wasserhahn	sfx	eleven_text_to_sound_v2	kitchen tap running briefly	4	v3	true	1	-20.0	-4.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+wasserkocher	sfx	eleven_text_to_sound_v2	electric kettle heating and clicking off	4	v3	true	1	-23.7	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 toaster	sfx	eleven_text_to_sound_v2	toaster popping up	4	v3	true	1	-20.7	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 kuehlschrank	sfx	eleven_text_to_sound_v2	fridge door opening with a soft seal pop	4	v2	true	1	-23.1	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-mikrowelle	sfx	eleven_text_to_sound_v2	microwave finished, three soft beeps	1	v1	true	1	-20.0	-9.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+mikrowelle	sfx	eleven_text_to_sound_v2	microwave finished, three soft beeps	4	v1	true	1	-20.0	-9.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 teller-abstellen	sfx	eleven_text_to_sound_v2	ceramic plate set down on a table, soft clink	4	v2	true	1	-20.0	-3.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+besteck	sfx	eleven_text_to_sound_v2	cutlery placed on a plate, light clink	4	v2	true	1	-20.3	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+glas-abstellen	sfx	eleven_text_to_sound_v2	drinking glass set down on a wooden table	4	v2	true	1	-24.1	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 glaeser-anstossen	sfx	eleven_text_to_sound_v2	two glasses touching lightly, soft clink	4	v2	true	1	-20.0	-4.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-flasche-oeffnen	sfx	eleven_text_to_sound_v2	plastic bottle cap twisted open with a soft hiss	2	v2	true	1	-25.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-wasser-einschenken	sfx	eleven_text_to_sound_v2	water poured into a glass	2	v1	true	1	-20.0	-4.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+flasche-oeffnen	sfx	eleven_text_to_sound_v2	plastic bottle cap twisted open with a soft hiss	4	v3	true	1	-26.3	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+wasser-einschenken	sfx	eleven_text_to_sound_v2	water poured into a glass	4	v4	true	1	-20.0	-4.8	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 staubsauger	sfx	eleven_text_to_sound_v2	vacuum cleaner running in the next room, muffled	4	v1	true	1	-20.0	-11.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+waschmaschine	sfx	eleven_text_to_sound_v2	washing machine running quietly	4	v1	true	1	-20.0	-5.7	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+vorhang	sfx	eleven_text_to_sound_v2	curtain pulled open on a rail	4	v3	true	1	-20.0	-8.7	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 fenster-oeffnen	sfx	eleven_text_to_sound_v2	window opened, latch click and soft rush of outside air	4	v1	true	1	-23.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-schluessel-ablegen	sfx	eleven_text_to_sound_v2	keys dropped into a small ceramic bowl	2	v1	true	1	-20.0	-4.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-bettdecke	sfx	eleven_text_to_sound_v2	duvet rustling	2	v1	true	1	-20.0	-4.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schluessel-ablegen	sfx	eleven_text_to_sound_v2	keys dropped into a small ceramic bowl	4	v3	true	1	-20.1	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+bettdecke	sfx	eleven_text_to_sound_v2	duvet rustling	4	v4	true	1	-20.0	-9.1	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 hammer	sfx	eleven_text_to_sound_v2	single hammer hit on a nail into wood	4	v2,v3,v4,v1	true	3	-22.2	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+bohrer	sfx	eleven_text_to_sound_v2	cordless drill running briefly	4	v1	true	1	-20.0	-10.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+schraubenzieher	sfx	eleven_text_to_sound_v2	screwdriver turning a screw, small ratchet clicks	4	v4	true	1	-24.3	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 saege	sfx	eleven_text_to_sound_v2	hand saw cutting wood briefly	4	v1	true	1	-20.0	-6.2	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-werkzeug-ablegen	sfx	eleven_text_to_sound_v2	metal tool set down on a workbench	2	v1	true	1	-20.0	-5.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+werkzeug-ablegen	sfx	eleven_text_to_sound_v2	metal tool set down on a workbench	4	v1	true	1	-20.0	-5.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 zollstock	sfx	eleven_text_to_sound_v2	folding wooden ruler unfolded, small clicks	4	v4	true	1	-21.5	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 massband	sfx	eleven_text_to_sound_v2	tape measure retracting with a snap	4	v4	true	1	-23.8	-3.0	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+servo	sfx	eleven_text_to_sound_v2	small robotic arm servo whirring briefly	4	v2	true	1	-20.0	-10.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+motor-surren	sfx	eleven_text_to_sound_v2	small electric motor whirring up	4	v1	true	1	-20.0	-11.2	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 dampf	sfx	eleven_text_to_sound_v2	short soft hiss of steam release	4	v1	true	1	-20.0	-10.9	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-druckluft	sfx	eleven_text_to_sound_v2	short pneumatic hiss	2	v1	true	1	-20.0	-11.4	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-herzschlag	sfx	eleven_text_to_sound_v2	calm heartbeat, soft and low	2	v2	true	1	-20.0	-4.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+druckluft	sfx	eleven_text_to_sound_v2	short pneumatic hiss	4	v4	true	1	-20.0	-9.4	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+herzschlag	sfx	eleven_text_to_sound_v2	calm heartbeat, soft and low	4	v2	true	1	-20.0	-4.1	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 atmen-ruhig	sfx	eleven_text_to_sound_v2	calm slow breath in and out, soft	4	v3	true	1	-20.0	-7.6	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+whoosh-weich	sfx	eleven_text_to_sound_v2	soft gentle whoosh, slow, airy	4	v3	true	1	-20.0	-5.2	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+whoosh-schnell	sfx	eleven_text_to_sound_v2	quick short whoosh, light	4	v1	true	1	-25.7	-3.0	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
 whoosh-tief	sfx	eleven_text_to_sound_v2	deeper soft whoosh, smooth	4	v4	true	1	-20.0	-6.7	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
-pling-leise	sfx	eleven_text_to_sound_v2	very soft tiny bell tick, single	2	v1	true	1	-20.0	-13.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+pling-leise	sfx	eleven_text_to_sound_v2	very soft tiny bell tick, single	4	v1	true	1	-20.0	-13.8	2026-10-20	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-zustimmend	laut	eleven_v3	[agreeing] Mm-hm.	8	v3	true	1	-20.0	-9.1	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-nachdenklich	laut	eleven_v3	[thoughtful] Hmm...	8	v1	true	1	-20.0	-8.9	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-zoegernd	laut	eleven_v3	[hesitant] Uh...	8	v1	true	1	-20.0	-11.5	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-beeindruckt	laut	eleven_v3	[impressed] Ooh.	8	v4	true	1	-20.0	-11.7	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
+laut-erschoepft	laut	eleven_v3	[exhausted] Phew.	8	v1	true	1	-20.0	-6.6	2026-10-21	ElevenLabs, Nutzung nach Tarif; vor Kundenlieferung prüfen
