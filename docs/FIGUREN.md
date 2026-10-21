@@ -1,6 +1,10 @@
 # Figuren: Rig und Teilesatz
 
-Kurzfassung für den ersten Teilesatz; die ausführliche Fassung folgt in Phase 8.
+**Ziel:** eigene Personen auf die Skelette der Werkstatt bringen und in Szenen bewegen.
+**Voraussetzung:** ein Zeichenprogramm mit Ebenen (Illustrator, Inkscape) oder Einzelzeichnungen je Teil.
+**Ergebnis:** ein Teilesatz unter `lib/teilesaetze/<satz>/`, der in jedem Brief über `teilesatz:` gewählt wird, und ein Testbogen ohne Gelenklücken.
+
+Skelett und Aussehen sind getrennt: Das Rig (`lib/rigs/`) legt Maße, Gelenke und Bewegung fest, der Teilesatz nur, wie die Teile aussehen. Die Rig-Spezifikation ist normativ; sie ändert sich nur mit Rückfrage.
 
 ## Begriffe
 
@@ -34,6 +38,24 @@ Der Importer prüft Ebenen, Formen, Farben und Konturen, verschiebt jedes Teil u
 ## Einzelteile statt Vorlage: Teile-Werkstatt
 
 `npm run teile` erzeugt `out/teile/teile-werkstatt.html` (auch auf der Webseite). Jedes Teil wird als eigene SVG-Datei geladen, in beliebigem Maßstab und Programm; der Dateiname (`kopf.svg`, `oberarm.svg`, `armF-hand-zeigend.svg` …) bestimmt den Platz. Die Werkstatt legt die Längsachse auf die Zielstrecke des Skeletts, leitet hintere oder rechte Glieder und Handformen aus vorhandenen ab, ergänzt Fehlendes auf Wunsch aus `satz-00`, prüft die Gelenke live und schreibt ein ZIP mit allen Archetypen der Ansicht im Exportformat oben. Danach gilt der Abschnitt „Einlesen“ unverändert. Verläufe werden zur ersten Farbe, Text und Rasterbilder übergangen, Konturen auf 4 oder 6 px gerundet; die Werkstatt meldet das.
+
+## Bewegen
+
+Der Zustand eines Rigs steht im Figurenrahmen: Blick nach rechts, Winkel vorwärts positiv, Arme absolut, Kopf relativ zum Rumpf. Ein Rig bietet:
+
+| Funktion | Zweck |
+|---|---|
+| `greife(state, arm, ziel)` | Arm zu einem Weltziel über IK; der Ellbogen beugt nach der natürlichen Seite |
+| `fuss(state, bein, ziel)` | Bein zu einem Knöchelziel, Knie nach vorn; Grundlage des Gehens |
+| `pruefeReichweite(state)` | Handziele außer Reichweite mit Abstand; der Build meldet sie mit Bild |
+| `posen` (frontal) | Haltungen, die IK nicht liefert, etwa vor dem Körper halten |
+| `gelenke(state)` | Weltpunkte der Gelenke, etwa für Gehaltenes oder Geräuschquellen (`A.armF.hand.y`) |
+
+- **Greifen:** Hände als Schlüsselposen in der Zeitfunktion, dann `greife()`. Ruhelage hängender Arme über Winkel, IK nur zum Greifen. Gehaltenes steht relativ zur Hand.
+- **Gehen:** feste Fußpunkte am Boden, der Schwungfuß geht in flachem Bogen von Punkt zu Punkt, die Beine folgen über `fuss()`; die Hüfte fährt an und ab und senkt sich nur so weit, wie die Beinlänge verlangt. Winkelkurven allein lassen den Standfuß rutschen (siehe `docs/SERIE.md`).
+- **Spiegelung:** `dir: -1` in `geometry.js` (im Brief `blick: links`) geht als `dir` in den Zustand des Rigs, das spiegelt; ein Umdrehen ist ein Wechsel von `dir` zu einem Zeitpunkt. Jeder Winkel bleibt im Figurenrahmen, nie mit `-dir` multipliziert.
+- **Eigene Maße:** `massstab` im Zustand verkleinert oder vergrößert die ganze Figur; Reichweite und Fußpunkte rechnen mit demselben Maßstab.
+- **Posen-Editor** (`npm run editor -- --szene <ID> --figur A`): Gelenke ziehen, Schlüsselposen als Code nach `geometry.js`, gelesen mit `posenZustand()` aus `lib/posen.js`.
 
 ## Variation ohne neue Zeichnung
 

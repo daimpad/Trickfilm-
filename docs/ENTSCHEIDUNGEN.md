@@ -121,3 +121,42 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Anpassen | Felder je Anleitung und ein Prompt-Editor unter Werkzeuge; jeder Prompt frei bearbeitbar | entschieden von Regie |
 | Umfang | alle Anleitungen, dazu Posen-Editor und Hörprobe | entschieden von Regie |
 | Quelle | `site/prompts.js`, eingesetzt vom Seitenbau | entschieden von Claude |
+
+## 2026-10-21 · Phase 5: Demoszene
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Sprechtext der Demo | Fassung A („Ein Antrag ist schnell ausgefüllt …“) | entschieden von Regie |
+| Ansehen ohne Pages | Vorschau-Video `npm run szene:vorschau` statt gelockerter Lesesperre | entschieden von Regie |
+| Auftritt von B | Gang mit festen Fußpunkten statt Winkelkurve | Anlass von Regie, Lösung vom Leitstand |
+
+## 2026-10-21 · Phase 6: Stimme und Untertitel
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Reihenfolge | erst die ganze Kette mit Platzhalter, dann eine echte Aufnahme | entschieden vom Leitstand |
+| Stimme | Damian (deutsch, Standardakzent), `eleven_multilingual_v2`, Tempo 1,0 | entschieden von Regie |
+| Kosten | zwei Takes von absatz-01, rund 350 Credits | freigegeben von Regie („ja, generieren“) |
+| Take | Take 2 | entschieden von Regie |
+| Wörter vor den Beats | Einsatz 1,0 s (`sprechtext.einsatz_s`) statt gestauchter Bewegung | entschieden vom Leitstand |
+| Lautheit spitzer Aufnahmen | Begrenzer mit 5 ms Vorlauf, Befund ab 6 dB | entschieden vom Leitstand |
+| Mischung | abgenommen („passt alles, hört sich gut an“) | entschieden von Regie |
+
+## 2026-10-21 · Phase 7: Render und Lieferung
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Zwischenformat der Bilder | PNG statt JPEG Qualität 92 (JPEG verschob die Farbe um 3 Stufen) | entschieden vom Leitstand |
+| Ton im Remotion-Port | die fertige Mischung des Films, keine zweite Mischung | entschieden vom Leitstand |
+| Markup im Port | zur Laufzeit zu JSX gelesen, keine zweite Fassung | entschieden vom Leitstand |
+| Wortliste für Seiten an Dritte | nur örtlich (`nichtoeffentlich.local.txt`) | entschieden vom Leitstand |
+| zod | auf 4.5.4, die Fassung, die Remotion verlangt | entschieden von Regie |
+| Merge | bei grüner Prüfung | entschieden von Regie |
+
+## 2026-10-21 · Phase 8: Dokumentation
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Vorgehen | erst Gliederung je Dokument, dann schreiben | entschieden von Regie |
+| Umfang | knapp, je ein bis drei Seiten | entschieden von Regie |
+| Zeichnungen mit KI | nur beschreiben; Stilrahmen und Einleseprüfung mit dem ersten Auftrag | entschieden von Regie |

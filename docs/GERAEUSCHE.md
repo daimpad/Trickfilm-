@@ -1,5 +1,9 @@
 # Geräusche
 
+**Ziel:** Geräusche, die aus der Bewegung einer Szene entstehen und deutlich unter der Stimme liegen.
+**Voraussetzung:** eine Szene, die ohne Befund baut; für neue Cues eine Kostenfreigabe der Regie.
+**Ergebnis:** `szenen/<ID>/sfx-cues.json` (erzeugt) und eine synchrone Stichprobe; die Geräusche selbst liegen in `lib/sfx/final/`.
+
 Dezent, lustig, nicht absurd: leicht überzeichnete echte Geräusche, deutlich unter der Stimme. Ausgeschlossen sind Boing, Rutschpfeife, Hupe, Fanfare, Tröte, Lachen, Applaus, Explosion, Crash, Comic-Schlag, Musik und Jingle; `lib/sfx/katalog.js` hält jeden Prompt dagegen. Je Szene drei bis sechs Geräuscharten, höchstens sechs Geräusche in einer Sekunde, höchstens ein Laut (kürzer als 1 s, ohne Wort, in einer Sprechpause). Nur Physisches klingt.
 
 ## Ablauf
@@ -44,4 +48,14 @@ Die Variante aus einem Vorrat wählt ein Hash über Szene, Typ, Cue und laufende
 
 ## Mischung
 
-Die Geräuschspur einer Szene ist ungeduckt: der lauteste Cue bei 0 dB, die übrigen nach `gain_db` relativ dazu; so spielt sie auch der Prototyp. Geduckt wird erst in der Endmischung mit der Stimme (Phase 6).
+Im Prototyp ist die Geräuschspur ungeduckt: der lauteste Cue bei 0 dB, die übrigen nach `gain_db` relativ dazu. In der Endmischung (`npm run mischen -- <film>`, siehe `docs/STIMME.md`) liegt der Geräuschbus so, dass seine größte Momentanlautheit 12 dB unter der Sprache steht, und wird unter Sprache um weitere 6 dB geduckt (30 ms Ansprechen, 150 ms Rückstellen). Ein Laut steht in einer Sprechpause; der Build weist darauf hin, bis eine Aufnahme gemessen ist.
+
+## Typische Fehler
+
+| Befund | Ursache | Abhilfe |
+|---|---|---|
+| ein Geräusch auf dem falschen Ereignis | zwei Bewegungen teilen einen Pfad | eigenen Zustandswert (etwa `einlegen.y`) in `computeState` führen und im Brief darauf zeigen |
+| zu viele Geräuscharten | jede Bewegung klingt | Unwichtiges unter `stumm` legen; drei bis sechs Arten je Szene |
+| Häufung von Anschlägen | Tippen erzeugt ein Ereignis je Tiefpunkt | `ausduennen: n` am Ereignis |
+| abgeschnittener Nachklang | Klang als Einzelereignis geführt | im Katalog `nachklang` setzen, nie kürzen |
+| Cue-Liste veraltet | Bewegung geändert | `npm run sfx:cues -- <ID>`, nie von Hand |

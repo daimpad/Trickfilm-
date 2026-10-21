@@ -4,7 +4,7 @@ Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen. Bewegung 
 
 Eine leicht lesbare Übersicht aller Funktionen mit Prototyp, Posen-Editor und Teile-Werkstatt zum Ausprobieren: **https://daimpad.github.io/trickfilm/** (bei jedem Merge neu gebaut).
 
-Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md), der Weg einer Szene in [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md), das Zeichnen von Figuren in [`docs/FIGUREN.md`](docs/FIGUREN.md).
+Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md). Wer beginnt, liest [`docs/SERIE.md`](docs/SERIE.md) und dann [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md). Fachdokumente: [`FIGUREN.md`](docs/FIGUREN.md), [`GERAEUSCHE.md`](docs/GERAEUSCHE.md), [`STIMME.md`](docs/STIMME.md), [`ZEICHNUNGEN-KI.md`](docs/ZEICHNUNGEN-KI.md), [`LIZENZEN.md`](docs/LIZENZEN.md).
 
 ## Schnellstart
 
@@ -35,7 +35,7 @@ Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet
 | 5 | Demoszene `DEMO-01-buero` | gebaut, Sichtung durch Regie offen |
 | 6 | Stimme und Untertitel | fertig für `demo`: Stimme Damian, Take 2, Mischung abgenommen |
 | 7 | Render und Lieferung | fertig: `npm run video`, Remotion-Port mit Parität (`npm run render`), Lieferprotokoll, Galerie |
-| 8 | Dokumentation | offen |
+| 8 | Dokumentation | fertig; Zeichnungen mit KI beschrieben, Werkzeug mit dem ersten Auftrag |
 
 ## Lizenzen
 
