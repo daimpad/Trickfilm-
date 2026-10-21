@@ -1,6 +1,6 @@
 # Der Weg einer Szene
 
-Zehn Schritte, in dieser Reihenfolge. Die ausführliche Fassung folgt in Phase 8.
+Zwölf Schritte, in dieser Reihenfolge. Die ausführliche Fassung folgt in Phase 8.
 
 1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage`.
 2. **Brief** (`brief.yaml`): Passage wörtlich, Dauer (geschätzt 15 Zeichen/s plus 10–15 % Luft, bis eine Aufnahme gemessen ist), These, Pointe, Figuren mit Charakterkarte, Beats, Beschriftungen (je ≤ 40 Zeichen), Textäquivalent. Fachliches nur aus dem Sprechtext.
@@ -12,4 +12,5 @@ Zehn Schritte, in dieser Reihenfolge. Die ausführliche Fassung folgt in Phase 8
 8. **Ansehen:** `npm run szene:kontaktbogen -- <ID>` und jedes der neun Bilder ansehen: Liegt ein Ding falsch vor dem Rumpf? Greift ein Arm durch einen Tisch? Ist die Pointe bei 960 px lesbar? Geändert wird in Geometrie oder Zeitfunktion, nie im Standbild. Danach `sichtung` im Brief setzen.
 9. **Prototyp:** `szenen/<ID>/dist/index.html` im Browser: Abspielen (Leertaste), Regler, ←/→, Sprungmarken.
 10. **Protokoll:** `npm run szene:protokoll -- <ID>` schreibt `protokoll.tsv`; im selben Commit wie die Änderung.
-11. **Anhalten:** Status in höchstens fünf Zeilen: ID, Dauer, Pointe, offene Punkte, Pfad des Kontaktbogens.
+11. **Video:** Stimme, Untertitel und Mischung nach `docs/STIMME.md`, dann `npm run video -- <ID>`. Es rendert jedes Bild, nimmt den Ton aus der Mischung des Films und die Untertitel als Spur, und prüft H.264 BT.709, −16 LUFS ± 1, True Peak ≤ −1 dBTP und Farbe ± 3 gegen ein Standbild. Ergebnis `out/videos/<ID>.mp4` mit `.vtt`, Messwerte in `out/lieferung.tsv`; ein Befund steht als FEHLER im Log.
+12. **Anhalten:** Status in höchstens fünf Zeilen: ID, Dauer, Pointe, offene Punkte, Pfad des Kontaktbogens.

@@ -35,7 +35,7 @@
     "wortzeit": "tsx tools/wortzeit.ts",
     "untertitel": "tsx tools/untertitel.ts",
     "mischen": "tsx tools/mischen.ts",
-    "video": "node tools/noch-nicht.js 7 video",
+    "video": "node tools/video.js",
     "studio": "remotion studio",
     "render": "remotion render",
     "galerie": "node tools/noch-nicht.js 7 galerie",

@@ -30,7 +30,7 @@ export function tonArgumente(cues, dauer, ordner = SFX) {
 }
 
 /** Beginn der Szene in ihrem Film: Summe der Dauern aller früheren Szenen desselben Films. */
-async function beginnImFilm(sz) {
+export async function beginnImFilm(sz) {
   const film = String(sz.brief.film ?? '');
   let t = 0;
   for (const andere of alleSzenen()) {
@@ -42,7 +42,7 @@ async function beginnImFilm(sz) {
 }
 
 /** Untertitel des Films auf die Szene verschoben: nur Einheiten, die in die Szene fallen. */
-function untertitelFuerSzene(vtt, beginn, dauer) {
+export function untertitelFuerSzene(vtt, beginn, dauer) {
   const sek = (z) => z.split(':').reduce((s, v) => s * 60 + Number(v), 0);
   const zeit = (s) => new Date(Math.max(0, s) * 1000).toISOString().slice(11, 23);
   const bloecke = vtt.split(/\n\n+/).filter((b) => b.includes('-->'));
