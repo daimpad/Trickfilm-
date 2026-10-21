@@ -1,0 +1,5 @@
+# ERZEUGT von tools/mischen.ts aus ton/messung.json, den Cue-Listen und den Geräuschen; nicht von Hand ändern
+art	id	lufs_vorher	db	lufs_nachher	abweichung_db
+absatz	absatz-01	-22.7	6.7	-16.0	0.0
+geraeusche	14 Cues	-20.0	-8.0	-28.0	
+film	demo			-16.8	True Peak -1.3 dBTP · Sprache -16.7 LUFS · Begrenzer bis 6.8 dB

@@ -7,13 +7,13 @@ import { GEO } from './geometry.js';
 
 export const SPEC = { fps: 30, width: 1920, height: 1080, duration: 15.0 };
 export const BEATS = {
-  tippen: [0.5, 3.0] /* „Ein Antrag ist schnell ausgefüllt.“ */,
+  tippen: [0.5, 3.0] /* „ausgefüllt“ (68) */,
   kommen: [0.6, 3.0],
-  senden: [3.0, 3.8] /* „Ein Klick auf Senden,“ */,
-  fliegen: [3.8, 5.4] /* „und er ist unterwegs.“ */,
-  drucken: [5.4, 6.6] /* „Drüben am Drucker“ */,
-  nehmen: [6.6, 8.0] /* „wartet schon jemand, nimmt das Blatt“ */,
-  staunen: [8.0, 10.0] /* „und staunt: So schnell ging das noch nie.“ */,
+  senden: [3.0, 3.8] /* „Senden“ (107), Eingabetaste kurz davor */,
+  fliegen: [3.8, 5.4] /* „unterwegs“ (136) */,
+  drucken: [5.4, 6.6] /* „Drucker“ (168) */,
+  nehmen: [6.6, 8.0] /* „Blatt“ (227), Griff zwischen „nimmt“ und „Blatt“ */,
+  staunen: [8.0, 10.0] /* „staunt“ (242) */,
   ablegen: [10.0, 12.2],
 };
 export const CHARAKTER = { A: { tempo: 1.0, reaktion: 0.7 }, B: { tempo: 1.1, reaktion: 1.0 } };

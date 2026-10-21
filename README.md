@@ -33,7 +33,7 @@ Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet
 | 3 | Figurenbaukasten | fertig, Freigabe der Rig-Spezifikation offen |
 | 4 | Geräusche | fertig: 219 Cues bearbeitet, Auswahl vorläufig bis zur Hörprobe |
 | 5 | Demoszene `DEMO-01-buero` | gebaut, Sichtung durch Regie offen |
-| 6 | Stimme und Untertitel | offen |
+| 6 | Stimme und Untertitel | fertig für `demo`: Stimme Damian, Take 2, Mischung abgenommen |
 | 7 | Render und Lieferung | offen |
 | 8 | Dokumentation | offen |
 

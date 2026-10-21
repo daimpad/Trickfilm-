@@ -1,10 +1,11 @@
 id: DEMO-01-buero                     # <FILM>-<NN>-<slug>
 film: DEMO
 sprechtext:
-  datei: null                         # ton/<FILM>/absatz-NN.wav, sobald eine Aufnahme gemessen ist
+  datei: ton/demo/absatz-01.wav
   passage: "Ein Antrag ist schnell ausgefüllt. Ein Klick auf Senden, und er ist unterwegs. Drüben am Drucker wartet schon jemand, nimmt das Blatt und staunt: So schnell ging das noch nie."
-  dauer_s: 11.7
-  dauer_geschaetzt: true              # 15 Zeichen/s, solange keine Aufnahme gemessen ist
+  dauer_s: 9.05
+  dauer_geschaetzt: false             # gemessen an Take 2 (Damian), npm run stimme -- demo messen
+  einsatz_s: 1.0                      # Beginn der Erzählung in der Szene; so fallen die Wörter auf ihre Beats
   luft_prozent: 12
   dauer_szene_s: 15.0
 these: "Was am Schreibtisch abgeschickt wird, kommt ohne Umweg am Drucker an."
