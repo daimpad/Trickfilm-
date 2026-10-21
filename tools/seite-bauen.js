@@ -47,7 +47,8 @@ const BESCHREIBUNG = {
   mischen: 'Stimme, Geräusche und Grundrauschen mischen',
   video: 'Prototyp Bild für Bild als MP4 mit Ton',
   studio: 'Remotion Studio im Browser öffnen',
-  render: 'Video mit Remotion rendern',
+  render: 'Szene oder Film mit Remotion rendern und prüfen',
+  'remotion:paritaet': 'Remotion-Standbilder gegen den Prototyp vergleichen',
   galerie: 'alle Szenen auf einer Seite',
   drehbuch: 'Drehbuch je Film mit Bildern und Marken',
 };

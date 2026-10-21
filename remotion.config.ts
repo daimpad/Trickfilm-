@@ -4,6 +4,8 @@ import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 Config.setEntryPoint('remotion/src/index.ts');
+// Ton und andere Dateien legt node tools/remotion.js vorbereiten hierher; out/ steht nie im Repository.
+Config.setPublicDir('out/remotion/public');
 Config.setVideoImageFormat('jpeg');
 Config.setJpegQuality(92);
 Config.setCodec('h264');
