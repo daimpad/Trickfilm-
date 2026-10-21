@@ -19,7 +19,7 @@ export const GEO = {
       rig: 'stehend-profil',
       teilesatz: 'satz-00',
       // B kommt von rechts herein und bleibt neben dem Drucker stehen; Hüfte 210 px über dem Boden.
-      start: { x: 2024, y: 550 },
+      start: { x: 1992, y: 550 }, // vier Schritte zu je 124 px vor dem Halt
       halt: { x: 1496, y: 550 },
       dir: -1,
       palette: { kleidung1: FARBEN.violett, kleidung2: FARBEN.primaerDunkel, zubehoer: null },

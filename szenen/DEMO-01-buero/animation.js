@@ -1,6 +1,6 @@
 // Zeitfunktion der Demoszene: nur Zahlen, nur aus GEO, BEATS und CHARAKTER.
 import { easeIn, easeOut, inOut, movingHold, settle } from '../../lib/easing.js';
-import { bezier2, envelope, gangPhase, interp, schluessel, summe, walkCycle } from '../../lib/motion.js';
+import { bezier2, envelope, interp, schluessel, summe } from '../../lib/motion.js';
 import { atmen, erleichtert, fussWippen, konzentriert, stolz, tippen, ueberrascht } from '../../lib/spielweise.js';
 import { rig } from '../../lib/rigs/index.js';
 import { GEO } from './geometry.js';
@@ -76,15 +76,61 @@ function handAB(t) {
   return { x: p.x + movingHold(t, 1, 0.5), y: p.y + anschlag };
 }
 
-/** B: geht von rechts heran, wartet mit wippendem Fuß; Ort und Gang als Funktion der Zeit. */
+// Gang von B: ruhig, mit festen Fußpunkten. Der Standfuß steht still, der Schwungfuß geht in flachem Bogen
+// zum nächsten Punkt; die Beine folgen über rig.fuss(). Fußpunkte im Abstand SCHRITT_PX, vier Schritte bis zum
+// Halt und ein Schlussschritt, damit B mit beiden Füßen nebeneinander ankommt.
+const SCHRITT_PX = 124;
+const GANG = [0.4, 3.4];
+const RAMPE = 0.5;
+const KNOECHEL_Y = 750; // Sohle auf dem Boden (y 760), Knöchel 10 px darüber
+const BEIN = 200; // Oberschenkel plus Unterschenkel
+const HUB = 16; // Höhe des Schwungfußes in der Mitte des Schritts
+// Fußbewegungen: Bein, von, nach (Weg ab Start in px), Dauer in Anteilen der Gangzeit.
+const SCHRITTE = [
+  ['legF', 0, 1, 0.75],
+  ['legB', 0, 2, 1],
+  ['legF', 1, 3, 1],
+  ['legB', 2, 4, 1],
+  ['legF', 3, 4, 0.75],
+];
+
+/** Anteil des Wegs mit trapezförmiger Geschwindigkeit: anfahren, gleichmäßig gehen, abbremsen. */
+function weg(t, [t0, t1], rampe) {
+  const T = t1 - t0;
+  const vmax = 1 / (T - rampe);
+  const u = Math.min(Math.max(t - t0, 0), T);
+  if (u < rampe) return (vmax * u * u) / (2 * rampe);
+  if (u <= T - rampe) return vmax * (rampe / 2 + (u - rampe));
+  const d = T - u;
+  return 1 - (vmax * d * d) / (2 * rampe);
+}
+
+/** Ort beider Füße (Weg ab Start in px und Hub) zur Zeit t. */
+function fuesse(t) {
+  const summe = SCHRITTE.reduce((n, [, , , d]) => n + d, 0);
+  const pos = { legF: { weg: 0, hub: 0 }, legB: { weg: 0, hub: 0 } };
+  let t0 = GANG[0];
+  for (const [bein, von, nach, d] of SCHRITTE) {
+    const t1 = t0 + ((GANG[1] - GANG[0]) * d) / summe;
+    const u = interp(t, [t0, t1], [0, 1], inOut);
+    if (t >= t0) pos[bein] = { weg: SCHRITT_PX * (von + (nach - von) * u), hub: t < t1 ? HUB * Math.sin(Math.PI * u) : 0 };
+    t0 = t1;
+  }
+  return pos;
+}
+
+/** B: geht von rechts heran, wartet mit wippendem Fuß; Ort der Hüfte und Fußziele als Funktion der Zeit. */
 function gangB(t) {
-  const [k0, k1] = [0.6, 2.9];
-  const s = interp(t, [k0, k1], [0, 1], inOut);
-  const x = FB.start.x + (FB.halt.x - FB.start.x) * s;
-  const g = walkCycle(gangPhase(Math.abs(x - FB.start.x)), envelope(t, [k0, k0 + 0.3, k1 - 0.3, k1]));
+  const richtung = Math.sign(FB.halt.x - FB.start.x);
+  const x = FB.start.x + (FB.halt.x - FB.start.x) * weg(t, GANG, RAMPE);
+  const f = fuesse(t);
+  const ziel = (bein) => ({ x: FB.start.x + richtung * f[bein].weg, y: KNOECHEL_Y - f[bein].hub });
+  // Die Hüfte senkt sich so weit, dass der fernere Fuß erreichbar bleibt.
+  const dx = Math.max(Math.abs(ziel('legF').x - x), Math.abs(ziel('legB').x - x));
+  const bob = BEIN - Math.sqrt(Math.max(BEIN * BEIN - dx * dx, 0)) + 0.5;
   // Warten: der Fuß wippt, bis das Blatt da ist.
-  const wippen = fussWippen(t, 1.8 * CHARAKTER.B.tempo, 8).foot * envelope(t, [3.3, 3.6, 6.0, 6.3]);
-  return { x, g, wippen };
+  const wippen = fussWippen(t, 1.8 * CHARAKTER.B.tempo, 8).foot * envelope(t, [3.8, 4.1, 6.0, 6.3]);
+  return { x, bob, zielF: ziel('legF'), zielB: ziel('legB'), wippen };
 }
 
 /** B: Haltung beim Warten, Staunen über den Ausdruck, Zufriedenheit nach dem Ablegen. */
@@ -123,8 +169,8 @@ function ausdruckMitte(t) {
 }
 
 /** B, vordere Hand: hängt beim Gehen, greift den Ausdruck, hält ihn, legt ihn ab, kehrt zurück. */
-function armBF(B, t, gang, mitte) {
-  const frei = { ...rigB.defaults.armF, upper: rigB.defaults.armF.upper + gang.g.armF.upper, lower: rigB.defaults.armF.lower + gang.g.armF.lower };
+function armBF(B, t, schwingen, mitte) {
+  const frei = { ...rigB.defaults.armF, upper: rigB.defaults.armF.upper + schwingen.armF, lower: rigB.defaults.armF.lower + schwingen.armF };
   if (t < 6.6 || t > 12.2) return frei;
   const ruhe = rigB.gelenke({ ...B, armF: frei }).armF.hand;
   const greifen = interp(t, [6.6, T_GRIFF], [0, 1], inOut);
@@ -168,20 +214,23 @@ export function computeState(t) {
     x: gang.x,
     y: FB.halt.y,
     dir,
-    bob: gang.g.bob,
+    bob: gang.bob,
     torso: hb.koerper.torso ?? 0,
     head: hb.koerper.head ?? 0,
     schulter: hb.koerper.schulter ?? 0,
-    legF: { ...gang.g.legF, foot: gang.g.legF.foot + gang.wippen },
-    legB: gang.g.legB,
-    armB: {
-      ...rigB.defaults.armB,
-      upper: rigB.defaults.armB.upper + gang.g.armB.upper + hb.armB.upper,
-      lower: rigB.defaults.armB.lower + gang.g.armB.lower + hb.armB.lower,
-    },
+  };
+  const legF = rigB.fuss(B, 'legF', gang.zielF);
+  B.legF = { ...legF, foot: legF.foot + gang.wippen };
+  B.legB = rigB.fuss(B, 'legB', gang.zielB);
+  // Arme schwingen gegen die Beine: vorderer Arm gegen das vordere Bein, halb so weit.
+  const schwingen = { armF: -0.5 * B.legF.upper, armB: -0.5 * B.legB.upper };
+  B.armB = {
+    ...rigB.defaults.armB,
+    upper: rigB.defaults.armB.upper + schwingen.armB + hb.armB.upper,
+    lower: rigB.defaults.armB.lower + schwingen.armB + hb.armB.lower,
   };
   const mitte = ausdruckMitte(t);
-  B.armF = armBF(B, t, gang, mitte);
+  B.armF = armBF(B, t, schwingen, mitte);
 
   // Ausdruck: sichtbar ab der Ausgabe; nach dem Loslassen übernimmt das Blatt im Kasten.
   const ausdruck = {
