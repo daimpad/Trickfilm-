@@ -1,0 +1,60 @@
+id: DEMO-01-buero                     # <FILM>-<NN>-<slug>
+film: DEMO
+sprechtext:
+  datei: null                         # ton/<FILM>/absatz-NN.wav, sobald eine Aufnahme gemessen ist
+  passage: "Ein Antrag ist schnell ausgefüllt. Ein Klick auf Senden, und er ist unterwegs. Drüben am Drucker wartet schon jemand, nimmt das Blatt und staunt: So schnell ging das noch nie."
+  dauer_s: 11.7
+  dauer_geschaetzt: true              # 15 Zeichen/s, solange keine Aufnahme gemessen ist
+  luft_prozent: 12
+  dauer_szene_s: 15.0
+these: "Was am Schreibtisch abgeschickt wird, kommt ohne Umweg am Drucker an."
+pointe: "Wer am Drucker wartet, hat mit dem Warten gerechnet, nicht mit dem Blatt."
+palette: { grund: "#F5F3EE", akzent1: "#1C6E78", akzent2: "#5E4691" }
+figuren:
+  - prefix: A
+    rig: sitzend-profil
+    teilesatz: satz-00
+    palette: { kleidung1: "#1C6E78", kleidung2: "#1F2A44", zubehoer: null }
+    blick: rechts
+    charakter: { tempo: 1.0, haltung: konzentriert, reaktion: 0.7, tick: null }
+    gefuehlsbogen: [konzentriert, erleichtert]
+  - prefix: B
+    rig: stehend-profil
+    teilesatz: satz-00
+    palette: { kleidung1: "#5E4691", kleidung2: "#1F2A44", zubehoer: null }
+    blick: links
+    charakter: { tempo: 1.1, haltung: aufrecht, reaktion: 1.0, tick: fussWippen }
+    gefuehlsbogen: [ungeduldig, ueberrascht, stolz]
+requisiten: [regal, ablagekasten, buerostuhl, schreibtisch, monitor, tastatur, drucker, blatt]
+beats:                                # gleiche Namen und Reihenfolge wie BEATS in animation.js
+  - { name: tippen, start: 0.5, ende: 3.0, figur: A, aktion: "tippt den Antrag", gefuehl: konzentriert, wort: "Antrag" }
+  - { name: kommen, start: 0.6, ende: 3.0, figur: B, aktion: "geht zum Drucker und wartet", gefuehl: ungeduldig }
+  - { name: senden, start: 3.0, ende: 3.8, figur: A, aktion: "holt aus und drückt die Eingabetaste", gefuehl: konzentriert, wort: "Senden" }
+  - { name: fliegen, start: 3.8, ende: 5.4, figur: A, aktion: "Blatt fliegt zum Drucker, A schaut nach", gefuehl: erleichtert, wort: "unterwegs" }
+  - { name: drucken, start: 5.4, ende: 6.6, figur: B, aktion: "Drucker läuft, Ausdruck gleitet heraus", gefuehl: ungeduldig, wort: "Drucker" }
+  - { name: nehmen, start: 6.6, ende: 8.0, figur: B, aktion: "nimmt den Ausdruck und hebt ihn vor die Augen", gefuehl: ungeduldig, wort: "Blatt" }
+  - { name: staunen, start: 8.0, ende: 10.0, figur: B, aktion: "staunt, die freie Hand fliegt hoch", gefuehl: ueberrascht, wort: "staunt" }
+  - { name: ablegen, start: 10.0, ende: 12.2, figur: B, aktion: "dreht sich um und legt den Ausdruck in den Kasten", gefuehl: stolz }
+sfx:                                  # welche Ereignisse klingen und wo die Größen im Zustand liegen; Zeiten nie
+  ereignisse:
+    anschlag: { cue: tastenanschlag, ausduennen: 3 }
+    klick: { cue: maus-klick }
+    abheben: { cue: whoosh-kurz }
+    geraet: { cue: drucker-start }
+    aufsetzen: { cue: papier-ablegen }
+  quellen:
+    anschlag: [ { pfade: [A.armF.hand.y, A.armB.hand.y], beat: tippen, figur: A, requisite: tastatur } ]
+    klick: [ { pfad: senden.taste, beat: senden, figur: A, requisite: tastatur } ]
+    abheben: [ { pfad: flug.pos, beat: fliegen, requisite: blatt, sichtbar: flug.deckkraft } ]
+    geraet: [ { pfad: drucker.laeuft, beat: drucken, requisite: drucker } ]
+    aufsetzen: [ { pfad: einlegen.y, beat: ablegen, figur: B, requisite: ablagekasten } ]
+  stumm: [schritt]                    # B kommt leise; das Tippen trägt den Anfang
+  laute: [ { beat: staunen, versatz_s: 0.3, cue: laut-erstaunt, figur: B } ]
+  stichprobe: [klick, abheben, aufsetzen]
+beschriftungen: { links: "Antrag", mitte: "", rechts: "Ausdruck" }
+textaequivalent: "Eine Person am Schreibtisch tippt einen Antrag und schickt ihn ab. Ein Blatt fliegt vom Bildschirm in hohem Bogen zum Drucker. Eine zweite Person, die dort schon wartet, nimmt den Ausdruck, staunt und legt ihn in einen Ablagekasten im Regal."
+annahmen:
+  - "Senden ist ein betonter Anschlag auf die Eingabetaste: eine Maus läge außerhalb der Reichweite von A."
+  - "Die Drehung von B zum Regal ist ein Schnitt in einem Bild, wie im Trickfilm üblich."
+abweichungen: []
+sichtung: { lesbarkeit_960: ok, synchron: ok }

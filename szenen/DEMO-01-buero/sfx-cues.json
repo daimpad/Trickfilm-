@@ -1,0 +1,22 @@
+{
+  "_erzeugt": "ERZEUGT von tools/sfx-cues.js aus brief.yaml und animation.js. Nicht von Hand ändern.",
+  "szene": "DEMO-01-buero",
+  "fps": 30,
+  "dauer": 15,
+  "cues": [
+    {"t":0.5333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armF.hand.y","variante":6,"datei":"tastenanschlag/06","bild":16},
+    {"t":0.8333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armB.hand.y","variante":3,"datei":"tastenanschlag/03","bild":25},
+    {"t":1.1333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armF.hand.y","variante":8,"datei":"tastenanschlag/08","bild":34},
+    {"t":1.4333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armB.hand.y","variante":5,"datei":"tastenanschlag/05","bild":43},
+    {"t":1.7333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armF.hand.y","variante":2,"datei":"tastenanschlag/02","bild":52},
+    {"t":2.0333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armB.hand.y","variante":7,"datei":"tastenanschlag/07","bild":61},
+    {"t":2.3333,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armF.hand.y","variante":4,"datei":"tastenanschlag/04","bild":70},
+    {"t":2.6667,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armB.hand.y","variante":1,"datei":"tastenanschlag/01","bild":80},
+    {"t":2.9667,"typ":"anschlag","cue":"tastenanschlag","art":"sfx","gain_db":-26,"beat":"tippen","figur":"A","requisite":"tastatur","ort":null,"pfad":"A.armF.hand.y","variante":6,"datei":"tastenanschlag/06","bild":89},
+    {"t":3.4667,"typ":"klick","cue":"maus-klick","art":"sfx","gain_db":-24,"beat":"senden","figur":"A","requisite":"tastatur","ort":null,"pfad":"senden.taste","variante":1,"datei":"maus-klick/01","bild":104},
+    {"t":3.9,"typ":"abheben","cue":"whoosh-kurz","art":"sfx","gain_db":-30,"beat":"fliegen","figur":null,"requisite":"blatt","ort":null,"pfad":"flug.pos","variante":1,"datei":"whoosh-kurz","bild":117},
+    {"t":5.4667,"typ":"geraet","cue":"drucker-start","art":"sfx","gain_db":-28,"beat":"drucken","figur":null,"requisite":"drucker","ort":null,"pfad":"drucker.laeuft","variante":1,"datei":"drucker-start","bild":164},
+    {"t":8.3,"typ":"laut","cue":"laut-erstaunt","art":"laut","gain_db":-20,"beat":"staunen","figur":"B","requisite":null,"ort":null,"pfad":null,"variante":1,"datei":"laut-erstaunt","bild":249},
+    {"t":11.4667,"typ":"aufsetzen","cue":"papier-ablegen","art":"sfx","gain_db":-30,"beat":"ablegen","figur":"B","requisite":"ablagekasten","ort":null,"pfad":"einlegen.y","variante":1,"datei":"papier-ablegen","bild":344}
+  ]
+}
