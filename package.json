@@ -16,6 +16,7 @@
     "szene:neu": "tsx tools/neue-szene.ts",
     "szene:bauen": "node lib/build.js",
     "szene:kontaktbogen": "node lib/kontaktbogen.js",
+    "szene:vorschau": "node tools/szene-vorschau.js",
     "szene:protokoll": "node lib/protokoll.js",
     "editor": "node tools/posen-editor.js",
     "teile": "node tools/teile-werkstatt.js",

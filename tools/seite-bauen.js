@@ -26,6 +26,7 @@ const BESCHREIBUNG = {
   'szene:neu': 'neue Szene aus der Vorlage anlegen: <code>-- FILM-01-name</code>',
   'szene:bauen': 'Szene prüfen und Prototyp erzeugen: <code>-- &lt;ID|alle&gt;</code>',
   'szene:kontaktbogen': 'neun Standbilder mit Schutzzone erzeugen',
+  'szene:vorschau': 'Vorschau-Video einer Szene mit Geräuschen, ohne Stimme, nach out/vorschau/',
   'szene:protokoll': 'Protokoll der Szene schreiben',
   editor: 'Posen-Editor erzeugen, optional mit Szene als Hintergrund',
   teile: 'Teile-Werkstatt erzeugen: Einzelzeichnungen laden, einpassen, als Teilesatz ausgeben',
