@@ -34,7 +34,7 @@ Die Werkstatt entsteht in Phasen. Ein Skript, dessen Werkzeug noch fehlt, meldet
 | 4 | Geräusche | fertig: 219 Cues bearbeitet, Auswahl vorläufig bis zur Hörprobe |
 | 5 | Demoszene `DEMO-01-buero` | gebaut, Sichtung durch Regie offen |
 | 6 | Stimme und Untertitel | fertig für `demo`: Stimme Damian, Take 2, Mischung abgenommen |
-| 7 | Render und Lieferung | `npm run video`, Remotion-Port mit Parität (`npm run render`), Lieferprotokoll; Galerie offen |
+| 7 | Render und Lieferung | fertig: `npm run video`, Remotion-Port mit Parität (`npm run render`), Lieferprotokoll, Galerie |
 | 8 | Dokumentation | offen |
 
 ## Lizenzen

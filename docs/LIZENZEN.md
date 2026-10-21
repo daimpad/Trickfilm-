@@ -36,7 +36,7 @@ Geprüft am 2026-10-19 gegen die npm-Paketquelle. Gewählt wurde je Paket eine F
 | remotion | 4.0.535 | 2026-10-12 | 4.0.537 (2026-10-19) | eine Woche alt; 4.0.537 erst am Prüftag erschienen |
 | @remotion/cli | 4.0.535 | 2026-10-12 | 4.0.537 | gleiche Fassung wie remotion, Pflicht |
 | react, react-dom | 19.3.1 | 2026-10-14 | 19.3.1 | Patch der Linie 19.3 (seit 2026-09-09) |
-| zod | 4.6.7 | 2026-10-12 | 4.6.7 | |
+| zod | 4.5.4 | 2026-08-29 | 4.6.7 | die Fassung, die Remotion 4.0.535 verlangt (entschieden von Regie, 2026-10-21) |
 | typescript | 5.9.3 | 2025-09-30 | 7.0.2 | bewährte Linie; 6 und 7 sind neue Hauptlinien |
 | tsx | 4.23.15 | 2026-09-20 | 4.23.15 | |
 | playwright | 1.56.1 | 2025-10-17 | 1.64.1 | erwartet die vorinstallierte Chromium-Revision 1194 |
