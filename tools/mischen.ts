@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { finalPfad, SFX } from '../lib/sfx/ablage.js';
 import { dekodiere, schreibeWav } from '../lib/sfx/ffmpeg.js';
 import { integriert, momentanMax, RATE, truePeak } from '../lib/sfx/lautheit.js';
-import { dbZuFaktor, ducking, grundrauschen, lege, MISCHUNG, pegelPlan } from '../lib/ton/mischung.js';
+import { begrenze, dbZuFaktor, ducking, grundrauschen, lege, MISCHUNG, pegelPlan } from '../lib/ton/mischung.js';
 import { absatzDatei } from '../lib/ton/stimme.js';
 import { ladeFilm, mitMessung } from './film.js';
 
@@ -28,21 +28,29 @@ async function main() {
   const n = Math.ceil(dauer * RATE);
 
   // Überlauf: ein Absatz, der länger ist als seine Szene, wird nicht gemischt.
-  const ueber = gemessen.filter((a) => a.messung.laenge_s > a.szeneImFilm.dauer);
-  for (const a of ueber) console.error(`FEHLER ${a.id} läuft ${(a.messung.laenge_s - a.szeneImFilm.dauer).toFixed(2)} s über ${a.szene} (${a.messung.laenge_s.toFixed(2)} s bei ${a.szeneImFilm.dauer} s Szene)`);
+  const ueber = gemessen.filter((a) => a.einsatz + a.messung.laenge_s > a.szeneImFilm.dauer);
+  for (const a of ueber) console.error(`FEHLER ${a.id} läuft ${(a.einsatz + a.messung.laenge_s - a.szeneImFilm.dauer).toFixed(2)} s über ${a.szene} (Einsatz ${a.einsatz} s, ${a.messung.laenge_s.toFixed(2)} s bei ${a.szeneImFilm.dauer} s Szene)`);
   if (ueber.length && !args.includes('--trotzdem')) process.exit(1);
   for (const a of gemessen) {
-    const rest = a.szeneImFilm.dauer - a.messung.laenge_s;
+    const rest = a.szeneImFilm.dauer - a.einsatz - a.messung.laenge_s;
     if (rest < NACH_LETZTEM_WORT_S && rest >= 0) console.log(`Hinweis ${a.id}: nach dem letzten Wort bleiben ${rest.toFixed(2)} s (etwa ${NACH_LETZTEM_WORT_S} s sind vorgesehen)`);
   }
 
-  // Sprache: hörbare Strecke jedes Absatzes am Anfang seiner Szene, gepegelt.
+  // Sprache: hörbare Strecke jedes Absatzes an seinem Einsatz in der Szene, gepegelt.
   const plan = pegelPlan(gemessen.map((a) => ({ id: a.id, lufs_i: a.messung.lufs_i, true_peak_dbtp: a.messung.true_peak_dbtp })));
-  const sprache = new Float32Array(n);
-  for (const a of gemessen) {
+  const teile = gemessen.map((a) => {
     const x = dekodiere(absatzDatei(WURZEL, film, a.id));
-    const teil = x.subarray(Math.round(a.messung.start_s * RATE), Math.round(a.messung.ende_s * RATE));
-    lege(sprache, teil, a.szeneImFilm.start, dbZuFaktor(plan.absaetze.find((p: { id: string }) => p.id === a.id)!.db));
+    return x.subarray(Math.round(a.messung.start_s * RATE), Math.round(a.messung.ende_s * RATE));
+  });
+  // Der Begrenzer nimmt etwas Lautheit; ein zweiter Durchgang gleicht sie aus.
+  let nachstellen = 0;
+  let sprache = new Float32Array(n);
+  let tiefe = 0;
+  for (let durchgang = 0; durchgang < 2; durchgang++) {
+    const roh = new Float32Array(n);
+    gemessen.forEach((a, k) => lege(roh, teile[k]!, a.beginn, dbZuFaktor(plan.absaetze[k]!.db + nachstellen)));
+    ({ aus: sprache, tiefe_db: tiefe } = begrenze(roh));
+    nachstellen += MISCHUNG.sprache_lufs - integriert(sprache);
   }
 
   // Geräusche: je Szene die Cue-Liste, lautester Cue bei 0 dB; der Bus 12 dB unter der Sprache, dann geduckt.
@@ -80,7 +88,7 @@ async function main() {
     '\n' +
     ['geraeusche', `${cues} Cues`, f(geraeuschMax), f(busDb), f(geraeuschMax + busDb), ''].join('\t') +
     '\n' +
-    ['film', film, '', '', f(ergebnis.i), `True Peak ${f(ergebnis.tp)} dBTP · Sprache ${f(ergebnis.spracheI)} LUFS`].join('\t') +
+    ['film', film, '', '', f(ergebnis.i), `True Peak ${f(ergebnis.tp)} dBTP · Sprache ${f(ergebnis.spracheI)} LUFS · Begrenzer bis ${f(tiefe)} dB`].join('\t') +
     '\n';
   const ziel = join(WURZEL, 'ton', film, 'lautheit.tsv');
   if (args.includes('--pruefen')) {
@@ -95,8 +103,9 @@ async function main() {
   schreibeWav(mix, join(WURZEL, 'out', 'ton', `${film}-mischung.wav`));
   writeFileSync(ziel, protokoll);
   for (const b of plan.befunde) console.error(`Befund ${b}`);
+  if (tiefe > MISCHUNG.begrenzer_tiefe_max_db) console.error(`Befund Begrenzer nimmt bis ${f(tiefe)} dB (über ${MISCHUNG.begrenzer_tiefe_max_db}): an der Mischung anhören`);
   for (const h of plan.hinweise) console.log(`Hinweis ${h}`);
-  console.log(`${film}: ${dauer.toFixed(1)} s gemischt, ${f(ergebnis.i)} LUFS, True Peak ${f(ergebnis.tp)} dBTP, Geräuschbus ${f(busDb)} dB → out/ton/${film}-mischung.wav; Protokoll ton/${film}/lautheit.tsv`);
+  console.log(`${film}: ${dauer.toFixed(1)} s gemischt, ${f(ergebnis.i)} LUFS, True Peak ${f(ergebnis.tp)} dBTP, Geräuschbus ${f(busDb)} dB, Begrenzer bis ${f(tiefe)} dB → out/ton/${film}-mischung.wav; Protokoll ton/${film}/lautheit.tsv`);
 }
 
 await main();

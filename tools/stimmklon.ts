@@ -13,7 +13,7 @@ export const TEMPO_GRENZEN = [0.8, 1.2] as const;
 
 export const STIMMEN: Record<string, Einstellungen> = {
   demo: {
-    stimme: null,
+    stimme: { name: 'Damian', voice_id: 'fCNfpvOaXD7yZQS7MduU' }, // entschieden von Regie, 2026-10-21
     modell: 'eleven_multilingual_v2', // bewährt für deutschen Sprechtext
     stabilitaet: 0.5,
     aehnlichkeit: 0.75,

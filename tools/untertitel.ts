@@ -16,7 +16,7 @@ async function main() {
   const { absaetze } = await ladeFilm(film);
   const gemessen = mitMessung(absaetze, film);
   const einheiten = untertitel(
-    gemessen.map((a) => ({ text: a.text, szeneStart: a.szeneImFilm.start, szeneEnde: a.szeneImFilm.start + a.szeneImFilm.dauer, messung: a.messung })),
+    gemessen.map((a) => ({ text: a.text, szeneStart: a.beginn, szeneEnde: a.szeneImFilm.start + a.szeneImFilm.dauer, messung: a.messung })),
   );
   const text = webvtt(einheiten, 'tools/untertitel.ts aus texte/ und ton/messung.json');
   const ziel = join(WURZEL, 'ton', film, 'untertitel.vtt');

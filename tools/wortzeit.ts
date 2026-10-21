@@ -20,7 +20,7 @@ async function main() {
   const { absaetze } = await ladeFilm(film);
   const gemessen = mitMessung(absaetze, film);
   const zeilen = gemessen.flatMap((a) =>
-    wortzeiten(a.text, a.messung, a.szeneImFilm.fps).map((w: { nr: number; wort: string; sauber: string; t: number; bild: number }) => ({ ...w, absatz: a.id, szene: a.szene, tFilm: Number((a.szeneImFilm.start + w.t).toFixed(3)) })),
+    wortzeiten(a.text, a.messung, a.szeneImFilm.fps, a.einsatz).map((w: { nr: number; wort: string; sauber: string; t: number; bild: number }) => ({ ...w, absatz: a.id, szene: a.szene, tFilm: Number((a.szeneImFilm.start + w.t).toFixed(3)) })),
   );
 
   if (a2 && a2 !== 'pruefen' && a2 !== '--pruefen') {

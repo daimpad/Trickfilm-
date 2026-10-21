@@ -10,7 +10,7 @@ import { integriert, RATE } from '../lib/sfx/lautheit.js';
 import { absaetzeAusDokument, geplanteDauer } from '../lib/ton/sprechtext.js';
 import { hoerbar, platzhalter } from '../lib/ton/stimme.js';
 import { einheiten, einsaetzeIn, umbrechen, untertitel, wortzeiten, ZEILE_MAX } from '../lib/ton/zeitleiste.js';
-import { ducking, grundrauschen, pegelPlan } from '../lib/ton/mischung.js';
+import { begrenze, ducking, grundrauschen, pegelPlan } from '../lib/ton/mischung.js';
 
 const WURZEL = join(import.meta.dirname, '..');
 
@@ -73,7 +73,23 @@ test('Mischung: Absätze auf den Median, höchstens ±6 dB, Median auf −16 LUF
   assert.match(p.befunde.join(), /c: nach dem Pegeln -20\.0 LUFS/);
   assert.match(p.hinweise.join(), /Streuung/);
   const laut = pegelPlan([{ id: 'x', lufs_i: -20, true_peak_dbtp: -2 }]);
-  assert.equal(laut.absaetze[0].db, 1, 'Spitze begrenzt die Anhebung');
+  assert.equal(laut.absaetze[0].db, 4, 'die Anhebung folgt der Lautheit');
+  assert.equal(laut.absaetze[0].begrenzung, 3, 'die Spitze nimmt der Begrenzer');
+  assert.match(pegelPlan([{ id: 'y', lufs_i: -30, true_peak_dbtp: -2 }]).befunde.join(), /y: Spitzen 13\.0 dB/);
+});
+
+test('Mischung: Begrenzer hält −1,5 dBFS, setzt vor der Spitze ein und lässt Leises unberührt', () => {
+  const x = new Float32Array(RATE);
+  for (let i = 0; i < RATE; i++) x[i] = 0.1 * Math.sin((2 * Math.PI * 300 * i) / RATE);
+  const spitze = Math.round(0.5 * RATE);
+  x[spitze] = 1;
+  const { aus, tiefe_db } = begrenze(x);
+  const decke = 10 ** (-1.5 / 20);
+  assert.ok(Math.max(...aus.map(Math.abs)) <= decke + 1e-6);
+  assert.ok(Math.abs(tiefe_db - 1.5) < 0.01, String(tiefe_db));
+  assert.ok(aus[spitze - 60] / x[spitze - 60] < 0.99, 'Absenkung beginnt im Vorlauf');
+  assert.equal(aus[Math.round(0.1 * RATE)], x[Math.round(0.1 * RATE)]);
+  assert.ok(aus[Math.round(0.9 * RATE)] / x[Math.round(0.9 * RATE)] > 0.998, 'nach 400 ms fast zurück');
 });
 
 test('Mischung: Ducking −6 dB unter Sprache mit 30 ms Ansprechen und 150 ms Rückstellen; Rauschen −60 dBFS mit festem Seed', () => {

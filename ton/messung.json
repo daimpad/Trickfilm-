@@ -4,12 +4,12 @@
     "demo": {
       "absatz-01": {
         "szene": "DEMO-01-buero",
-        "roh_s": 11.667,
+        "roh_s": 9.334,
         "start_s": 0,
-        "ende_s": 11.667,
-        "laenge_s": 11.667,
-        "lufs_i": -23.9,
-        "true_peak_dbtp": -20
+        "ende_s": 9.054,
+        "laenge_s": 9.054,
+        "lufs_i": -22.7,
+        "true_peak_dbtp": -2.9
       }
     }
   }
