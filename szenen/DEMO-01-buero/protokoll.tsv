@@ -1,0 +1,18 @@
+# ERZEUGT von lib/protokoll.js aus brief.yaml und der Prüfung des Builds. Nicht von Hand ändern.
+szene	beat	start_s	ende_s	figur	aktion	gefuehl	requisiten	pruefpunkt	status	anmerkung
+DEMO-01-buero	tippen	0.5	3	A	tippt den Antrag	konzentriert				„Antrag“
+DEMO-01-buero	kommen	0.6	3	B	geht zum Drucker und wartet	ungeduldig				
+DEMO-01-buero	senden	3	3.8	A	holt aus und drückt die Eingabetaste	konzentriert				„Senden“
+DEMO-01-buero	fliegen	3.8	5.4	A	Blatt fliegt zum Drucker, A schaut nach	erleichtert				„unterwegs“
+DEMO-01-buero	drucken	5.4	6.6	B	Drucker läuft, Ausdruck gleitet heraus	ungeduldig				„Drucker“
+DEMO-01-buero	nehmen	6.6	8	B	nimmt den Ausdruck und hebt ihn vor die Augen	ungeduldig				„Blatt“
+DEMO-01-buero	staunen	8	10	B	staunt, die freie Hand fliegt hoch	ueberrascht				„staunt“
+DEMO-01-buero	ablegen	10	12.2	B	dreht sich um und legt den Ausdruck in den Kasten	stolz				
+DEMO-01-buero	pruef							schutzzone	ok	Text über y 940
+DEMO-01-buero	pruef							reichweite	ok	451 Bilder
+DEMO-01-buero	pruef							lesetakt	ok	
+DEMO-01-buero	pruef							lesbarkeit_960	ok	Sichtung am Kontaktbogen
+DEMO-01-buero	pruef							synchron	ok	Stichprobe am Bild
+DEMO-01-buero	pruef							geraeusche	ok	14 Cues, 6 Arten, 0 ohne Ton
+DEMO-01-buero	pruef							dauer	geschaetzt	Sprechtext 11.7 s, Szene 15 s
+DEMO-01-buero	pruef							build	ok	0 Befunde
