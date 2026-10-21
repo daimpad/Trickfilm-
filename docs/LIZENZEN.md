@@ -1,6 +1,6 @@
 # Lizenzen und Fassungen
 
-Stand: **2026-10-19**. Die Fassungen sind an diesem Tag gegen die Paketquelle geprüft. Remotion ist an der Lizenzdatei des Pakets geprüft. Die Angaben zu ElevenLabs stammen aus dem Einrichtungsprompt und sind **noch nicht an der Quelle geprüft**; das geschieht vor der ersten Kundenlieferung.
+Stand: **2026-10-21**. Die Fassungen sind an diesem Tag gegen die Paketquelle geprüft. Remotion ist an der Lizenzdatei des Pakets geprüft. Die Angaben zu ElevenLabs stammen aus dem Einrichtungsprompt und sind **noch nicht an der Quelle geprüft**; das geschieht vor der ersten Kundenlieferung.
 
 ## Remotion
 
@@ -29,7 +29,7 @@ Noch keines. Jede Stock-Quelle bekommt einen Registereintrag mit Quelle, Urheber
 
 ## Gepinnte Fassungen
 
-Geprüft am 2026-10-19 gegen die npm-Paketquelle. Gewählt wurde je Paket eine Fassung, die mindestens rund eine Woche alt ist, außer bei Patch-Fassungen einer Linie, die schon länger besteht.
+Geprüft am 2026-10-21 gegen die npm-Paketquelle (erste Prüfung 2026-10-19, seither unverändert bis auf zod). Gewählt wurde je Paket eine Fassung, die mindestens rund eine Woche alt ist, außer bei Patch-Fassungen einer Linie, die schon länger besteht.
 
 | Paket | Fassung | erschienen | neueste am Prüftag | Grund der Wahl |
 |---|---|---|---|---|

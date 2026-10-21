@@ -1,5 +1,9 @@
 # Stimme und Untertitel
 
+**Ziel:** eine gemessene Erzählung je Absatz, Wortzeiten, Untertitel und eine Endmischung mit −16 LUFS.
+**Voraussetzung:** gebaute Szenen mit `film:` im Brief, Sprechtext von Regie; für eine Aufnahme Stimme und Kostenfreigabe.
+**Ergebnis:** `ton/<film>/` mit Aufnahmen, Wortzeiten, Untertiteln und Lautheitsprotokoll; `out/ton/<film>-mischung.wav` für Video und Remotion.
+
 Die Erzählung entsteht absatzweise; jeder Absatz gehört zu einer Szene und beginnt an ihrem Anfang oder an seinem Einsatz (`sprechtext.einsatz_s`). Bild und Untertitel folgen der gemessenen Aufnahme, nie umgekehrt.
 
 ## Ablauf
@@ -14,3 +18,17 @@ Die Erzählung entsteht absatzweise; jeder Absatz gehört zu einer Szene und beg
 8. **Mischen** (`npm run mischen -- <film>`): Absätze auf den Median des Films (höchstens ±6 dB), Sprache −16 LUFS, Spitze ≤ −1 dBFS über einen Begrenzer mit 5 ms Vorlauf (Befund ab 6 dB Absenkung); Geräusche 12 dB darunter und unter Sprache −6 dB (30 ms Ansprechen, 150 ms Rückstellen); Grundrauschen −60 dBFS mit festem Seed. Läuft ein Absatz über seine Szene, wird nicht gemischt (`--trotzdem` mischt dennoch). Ergebnis `out/ton/<film>-mischung.wav`, Protokoll `ton/<film>/lautheit.tsv`. `npm run szene:vorschau -- <ID>` nimmt die Mischung samt Untertitelspur.
 
 Messung, Wortzeiten, Untertitel und Lautheitsprotokoll sind erzeugt; `npm run erzeugt:pruefen` vergleicht sie.
+
+## Eigene Aufnahme statt Synthese
+
+Eine Aufnahme aus dem Studio liegt als WAV (48 kHz, mono) unmittelbar unter `ton/<film>/<absatz>.wav`, ohne Eintrag in `stimme.json`. `npm run stimme -- <film>` zeigt sie als „eigen“; Platzhalter und `--ablegen` lassen sie stehen. Danach messen wie oben. Sie braucht Ruhe an den Enden, keine Musik und keine Effekte; Atmer bleiben, Versprecher werden vorher geschnitten. Eine geklonte Stimme einer realen Person ist personenbezogen und gehört nicht in das öffentliche Repository.
+
+## Wenn ein Absatz nicht passt
+
+| Befund | Abhilfe |
+|---|---|
+| Absatz läuft über die Szene | Szene verlängern (`SPEC.duration`, `dauer_szene_s`) oder Einsatz kürzen; `--trotzdem` nur zum Anhören |
+| Wörter liegen gleichmäßig vor oder hinter den Beats | `sprechtext.einsatz_s` anpassen |
+| Wörter liegen ungleichmäßig daneben | Beats an die Wortzeiten legen (`npm run wortzeit -- <film> <szene> <Wort>` nennt das Bild) |
+| Tempo weicht stark von der Schätzung ab | Szene neu takten oder mit anderem Tempo (0,8–1,2) neu generieren, nach Kostenfreigabe |
+| Begrenzer über 6 dB | an der Mischung anhören; ist er hörbar, Aufnahme mit ruhigerer Betonung |
