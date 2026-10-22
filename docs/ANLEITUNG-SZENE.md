@@ -17,7 +17,7 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 ## Planen
 
 1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage` und setzt `id` und `film`. Danach liegen vier Dateien im Ordner, die schon bauen.
-2. **Brief** (`brief.yaml`): Passage wörtlich aus dem Sprechtext, These und Pointe in je einem Satz, Figuren mit Charakterkarte, Requisiten, Beats mit Figur, Aktion, Gefühl und dem Wort, auf das sie fallen. Beschriftungen höchstens 40 Zeichen. Fachliches nur aus dem Sprechtext.
+2. **Brief** (`brief.yaml`): Passage wörtlich aus dem Sprechtext, These und Pointe in je einem Satz, Figuren mit Charakterkarte (wahlweise `mimik: an`, siehe `docs/MIMIK.md`), Requisiten, Beats mit Figur, Aktion, Gefühl und dem Wort, auf das sie fallen. Beschriftungen höchstens 40 Zeichen. Fachliches nur aus dem Sprechtext.
 3. **Dauer:** Ohne Aufnahme 15 Zeichen je Sekunde plus 10–15 % Luft, `dauer_geschaetzt: true`. Mit Aufnahme die gemessene Länge (siehe Vertonen).
 
 ## Bauen

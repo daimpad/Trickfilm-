@@ -57,6 +57,10 @@ Der Zustand eines Rigs steht im Figurenrahmen: Blick nach rechts, Winkel vorwär
 - **Eigene Maße:** `massstab` im Zustand verkleinert oder vergrößert die ganze Figur; Reichweite und Fußpunkte rechnen mit demselben Maßstab.
 - **Posen-Editor** (`npm run editor -- --szene <ID> --figur A`): Gelenke ziehen, Schlüsselposen als Code nach `geometry.js`, gelesen mit `posenZustand()` aus `lib/posen.js`.
 
+## Gesicht
+
+Wahlweise trägt eine Figur ein gerechnetes Gesicht (`mimik: an` im Brief, `mimik: true` am Rig). Es gehört nicht zum Teilesatz und wird nicht gezeichnet; Einzelheiten in `docs/MIMIK.md`. Ein Teilesatz mit anderer Kopfform als `satz-00` braucht einen eigenen Sitz in `lib/mimik-spezifikation.js`.
+
 ## Variation ohne neue Zeichnung
 
 Palette je Szene über den Farbschlüssel, Blick durch Spiegelung, Haltung und Tempo über die Charakterkarte. Zubehör als eigenes Teil mit Drehpunkt (`zubehoer-…--hals`) ist vorgesehen, aber noch nicht eingebaut; der Importer meldet solche Ebenen derzeit als fremd.

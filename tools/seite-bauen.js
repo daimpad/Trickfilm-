@@ -29,6 +29,7 @@ const BESCHREIBUNG = {
   'szene:vorschau': 'Vorschau-Video einer Szene mit Geräuschen, ohne Stimme, nach out/vorschau/',
   'szene:protokoll': 'Protokoll der Szene schreiben',
   editor: 'Posen-Editor erzeugen, optional mit Szene als Hintergrund',
+  mimik: 'Mimik-Editor: Gesichter einstellen, Schlüssel als Code',
   teile: 'Teile-Werkstatt erzeugen: Einzelzeichnungen laden, einpassen, als Teilesatz ausgeben',
   requisiten: 'Katalog aller Requisiten als Bild',
   'figuren:erzeugen': 'Spezifikationsmodul, Zeichenvorlagen und satz-00 aus der Rig-Spezifikation',
@@ -97,6 +98,12 @@ kopiere('szenen/DEMO-01-buero/dist/kontaktbogen.png', 'bilder/kontaktbogen-demo.
 // 2. Posen-Editor mit der Vorlage als Hintergrund, ohne gespeicherten Zwischenstand.
 mkdirSync(join(ZIEL, 'editor'), { recursive: true });
 execFileSync('node', [join(WURZEL, 'tools/posen-editor.js'), '--szene', '_vorlage', '--figur', 'A', '--ziel', join(ZIEL, 'editor/index.html').replace(WURZEL + '/', '')], {
+  cwd: WURZEL,
+  stdio: 'inherit',
+});
+
+// 2b. Mimik-Editor.
+execFileSync('node', [join(WURZEL, 'tools/mimik-editor.js'), '--ziel', join(ZIEL, 'mimik/index.html').replace(WURZEL + '/', '')], {
   cwd: WURZEL,
   stdio: 'inherit',
 });

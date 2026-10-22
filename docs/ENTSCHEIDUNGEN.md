@@ -160,3 +160,14 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Vorgehen | erst Gliederung je Dokument, dann schreiben | entschieden von Regie |
 | Umfang | knapp, je ein bis drei Seiten | entschieden von Regie |
 | Zeichnungen mit KI | nur beschreiben; Stilrahmen und Einleseprüfung mit dem ersten Auftrag | entschieden von Regie |
+
+## 2026-10-22 · Mimik
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Verhältnis zur Regel „ohne Gesichter“ | wahlweise je Film oder Figur (`mimik: an`), ohne bleibt die Vorgabe | entschieden von Regie |
+| Umfang | Augen, Brauen, Mund | entschieden von Regie |
+| Technik | eigene, gerechnete Ebene; Sitz in `lib/mimik-spezifikation.js`, Rig-Spezifikation unberührt | entschieden von Regie |
+| Werkzeug | Mimik-Editor im Browser (`npm run mimik`) | entschieden von Regie |
+| Demo | zweite Fassung `MIMIK-01-buero` mit eigener Mischung; die abgenommene Demo bleibt | entschieden von Regie |
+| Spezifikation als JS-Modul statt JSON | damit Prototyp, Node und Remotion sie ohne Build lesen | entschieden vom Leitstand |

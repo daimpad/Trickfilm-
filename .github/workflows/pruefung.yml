@@ -1,8 +1,10 @@
-# Prüflauf bei jedem Push und Pull Request (Abschnitt 13.3 der Werkstatt).
+# Prüflauf bei jedem Pull Request und jedem Push auf main (Abschnitt 13.3 der Werkstatt).
 name: Prüfung
 
+# Push nur auf main; ein Pull Request prüft seinen Zweig selbst, so läuft ein Commit nicht zweimal.
 on:
   push:
+    branches: ["main"]
   pull_request:
 
 permissions:
@@ -22,6 +24,12 @@ jobs:
 
       - name: Abhängigkeiten
         run: npm ci --no-audit --no-fund
+
+      - name: Paketquelle mit Wiederholung statt des langsamen Azure-Spiegels
+        # Der Spiegel azure.archive.ubuntu.com hing am 2026-10-22 zweimal beim Laden der Pakete, bis die Zeitgrenze griff.
+        run: |
+          sudo sed -i 's|http://azure.archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list.d/*.sources /etc/apt/sources.list 2>/dev/null || true
+          printf 'Acquire::Retries "3";\nAcquire::http::Timeout "20";\nAcquire::https::Timeout "20";\n' | sudo tee /etc/apt/apt.conf.d/80-wiederholen > /dev/null
 
       - name: ffmpeg für Messung und Bearbeitung der Geräusche
         run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Mimik-Editor</title>
+<style>
+/* Mimik-Editor: Regler stellen, Ausdrücke vergleichen, Schlüssel setzen, Code kopieren. Keine Übergänge. */
+:root { {{TOKENS_CSS}} }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 16px; background: var(--grund); color: var(--text); font-family: var(--schrift); font-size: 16px; }
+h1 { font-size: 24px; margin: 0 16px 0 0; }
+header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 8px; }
+select, input, button, textarea { font: inherit; color: var(--text); }
+button { padding: 4px 12px; border: 2px solid var(--kontur); background: var(--weiss); cursor: pointer; }
+button[aria-pressed="true"] { background: var(--text); color: var(--weiss); }
+.raster { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+@media (max-width: 1100px) { .raster { grid-template-columns: 1fr; } }
+svg.vorschau { display: block; width: 100%; height: auto; background: var(--weiss); border: 4px solid var(--kontur); }
+.unter { font-size: 14px; margin: 4px 0 16px; }
+aside { background: var(--weiss); border: 2px solid var(--kontur); padding: 8px 12px; }
+aside h2 { font-size: 18px; margin: 12px 0 4px; }
+.regler { display: grid; grid-template-columns: 128px 1fr 56px; gap: 4px 8px; align-items: center; }
+.regler output { text-align: right; font-variant-numeric: tabular-nums; }
+.zeile { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+#schluessel button.aktiv { background: var(--text); color: var(--weiss); }
+#code { width: 100%; min-height: 200px; font-family: monospace; font-size: 14px; border: 2px solid var(--kontur); padding: 8px; }
+#meldung { min-height: 24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mimik-Editor</h1>
+  <label>Profil <select id="profil"></select></label>
+  <label>Teilesatz <select id="teilesatz"></select></label>
+  <label>Ausdruck <select id="ausdruck"></select></label>
+  <label>Figur <input id="figur" value="A" size="3" aria-label="Präfix der Figur"></label>
+  <button id="zuruecksetzen" type="button">Neutral</button>
+</header>
+<div class="raster">
+  <section>
+    <svg id="gross" class="vorschau" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-label="Kopf im Profil und frontal, groß"></svg>
+    <p class="unter">Groß: Profil links, frontal rechts. Beide zeigen dasselbe Gesicht.</p>
+    <svg id="klein" class="vorschau" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" role="img" aria-label="Figuren in Bühnengröße und bei 960 Pixel Breite"></svg>
+    <p class="unter">Klein: links in Bühnengröße (1920 px), rechts so, wie das Bild bei 960 px Breite erscheint. Was hier verschwindet, trägt im Film nicht.</p>
+  </section>
+  <aside>
+    <h2>Gesicht</h2>
+    <div class="regler" id="regler"></div>
+    <h2>Zeit</h2>
+    <div class="regler">
+      <label for="t">t</label><input id="t" type="range" min="0" max="15" step="0.1" value="0"><output id="t-wert">0.0</output>
+      <label for="dauer">Dauer</label><input id="dauer" type="range" min="2" max="60" step="1" value="15"><output id="dauer-wert">15</output>
+    </div>
+    <div class="zeile"><label><input id="blinzeln" type="checkbox" checked> Blinzeln (Seed = Figur)</label></div>
+    <div class="zeile">
+      <button id="setzen" type="button">Schlüssel bei t setzen</button>
+      <button id="entfernen" type="button">Schlüssel entfernen</button>
+    </div>
+    <div class="zeile" id="schluessel" aria-label="Schlüssel"></div>
+    <h2>Code für geometry.js</h2>
+    <textarea id="code" readonly aria-label="Code der Schlüssel"></textarea>
+    <div class="zeile"><button id="kopieren" type="button">Kopieren</button></div>
+    <div id="meldung" role="status"></div>
+  </aside>
+</div>
+{{IMPORTMAP}}
+<script type="application/json" id="start">{{START_JSON}}</script>
+<script type="module">
+import { RIGS } from 'tf:lib/rigs/index.js';
+import { TEILESAETZE } from 'tf:lib/teilesaetze/index.js';
+import { AUSDRUECKE, blinzeln, gesicht, mimikZustand, mitBlinzeln } from 'tf:lib/mimik.js';
+
+const $ = (id) => document.getElementById(id);
+const start = JSON.parse($('start').textContent);
+const REGLER = [
+  ['blick.x', 'Blick seitlich', -1, 1, 0.05],
+  ['blick.y', 'Blick unten', -1, 1, 0.05],
+  ['lid', 'Lid', 0, 1, 0.05],
+  ['braue.winkel', 'Braue Winkel', -30, 30, 1],
+  ['braue.hoehe', 'Braue Höhe', -1, 1, 0.05],
+  ['mund.kruemmung', 'Mund Krümmung', -1, 1, 0.05],
+  ['mund.breite', 'Mund Breite', 0.5, 1.3, 0.05],
+  ['mund.offen', 'Mund offen', 0, 1, 0.05],
+];
+let g = gesicht('neutral');
+let schluessel = [[0, 'neutral']];
+const lies = (o, pfad) => pfad.split('.').reduce((a, k) => a[k], o);
+const setze = (o, pfad, v) => { const [a, b] = pfad.split('.'); if (b) o[a][b] = v; else o[a] = v; };
+const rund = (v) => Number(v.toFixed(2));
+
+for (const [name, r] of Object.entries(RIGS)) if (r.ansicht === 'profil') $('profil').add(new Option(name, name));
+$('profil').value = start.profil ?? 'stehend-profil';
+for (const s of Object.keys(TEILESAETZE)) $('teilesatz').add(new Option(s, s));
+for (const n of Object.keys(AUSDRUECKE)) $('ausdruck').add(new Option(n, n));
+for (const [pfad, titel, min, max, schritt] of REGLER) {
+  const id = `r-${pfad}`;
+  $('regler').insertAdjacentHTML('beforeend', `<label for="${id}">${titel}</label><input id="${id}" type="range" min="${min}" max="${max}" step="${schritt}"><output id="${id}-w"></output>`);
+  $(id).addEventListener('input', (e) => { g = gesicht(g); setze(g, pfad, Number(e.target.value)); zeichne(); });
+}
+
+/** Kopf einer Figur als SVG-Gruppe: Rig mit Gesicht, Zustand mit g, Kopf in die Mitte (cx, cy) gesetzt. */
+function kopf(archetyp, P, cx, cy, faktor, gg) {
+  const r = RIGS[archetyp];
+  const m = faktor / (r.spez.massstab ?? 1);
+  const nacken = r.spez.gelenke.nacken;
+  const st = { ...r.defaults, x: cx - nacken[0] * faktor, y: cy - (nacken[1] - 38) * faktor, massstab: m, gesicht: gg };
+  return wende(r.markup(P, { mimik: true, teilesatz: $('teilesatz').value }), r.apply(P, st));
+}
+/** Ganze Figur in Bühnengröße mal faktor, Füße auf y. */
+function figur(archetyp, P, x, y, faktor, gg) {
+  const r = RIGS[archetyp];
+  const st = { ...r.defaults, x, y: y - (r.spez.huefte_ueber_boden ?? 140) * faktor * (r.spez.massstab ?? 1), massstab: faktor, gesicht: gg };
+  return wende(r.markup(P, { mimik: true, teilesatz: $('teilesatz').value }), r.apply(P, st));
+}
+function wende(svg, liste) {
+  const box = document.createElement('div');
+  box.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
+  for (const [id, attr, wert] of liste) box.querySelector(`[id="${id}"]`)?.setAttribute(attr, wert);
+  return box.firstElementChild.innerHTML;
+}
+
+function aktuell() {
+  const t = Number($('t').value);
+  const basis = schluessel.length > 1 ? mimikZustand(schluessel, t) : g;
+  return $('blinzeln').checked ? mitBlinzeln(basis, blinzeln(t, $('figur').value || 'A')) : basis;
+}
+
+function zeichne() {
+  for (const [pfad] of REGLER) { $(`r-${pfad}`).value = lies(g, pfad); $(`r-${pfad}-w`).value = rund(lies(g, pfad)); }
+  const gg = schluessel.length > 1 || $('blinzeln').checked ? aktuell() : g;
+  $('gross').innerHTML = kopf($('profil').value, 'P', 300, 260, 7, gg) + kopf('stehend-frontal', 'F', 900, 260, 7, gg);
+  // Klein: Bühnengröße (Faktor 1) und halbe Größe für 960 px.
+  $('klein').innerHTML = figur($('profil').value, 'p1', 140, 450, 1, gg) + figur('stehend-frontal', 'f1', 340, 450, 1, gg)
+    + figur($('profil').value, 'p2', 640, 450, 0.5, gg) + figur('stehend-frontal', 'f2', 760, 450, 0.5, gg);
+  $('t-wert').value = Number($('t').value).toFixed(1);
+  $('dauer-wert').value = $('dauer').value;
+  $('schluessel').innerHTML = schluessel.map(([t, a], i) => `<button type="button" data-i="${i}">${t.toFixed(1)} s · ${typeof a === 'string' ? a : 'eigen'}</button>`).join('');
+  $('code').value = code();
+}
+
+function alsObjekt(a) {
+  if (typeof a === 'string') return `'${a}'`;
+  const x = gesicht(a);
+  return `{ blick: { x: ${rund(x.blick.x)}, y: ${rund(x.blick.y)} }, lid: ${rund(x.lid)}, braue: { winkel: ${rund(x.braue.winkel)}, hoehe: ${rund(x.braue.hoehe)} }, mund: { kruemmung: ${rund(x.mund.kruemmung)}, breite: ${rund(x.mund.breite)}, offen: ${rund(x.mund.offen)} } }`;
+}
+function code() {
+  const P = $('figur').value || 'A';
+  return `// Mimik der Figur ${P}, erzeugt vom Mimik-Editor; in animation.js:\n` +
+    `//   import { blinzeln, mimikZustand, mitBlinzeln } from '../../lib/mimik.js';\n` +
+    `//   const gesicht = mitBlinzeln(mimikZustand(GEO.mimik.${P}, t), blinzeln(t, '${P}'));\n` +
+    `mimik: {\n  ${P}: [\n${schluessel.map(([t, a]) => `    [${t.toFixed(2)}, ${alsObjekt(a)}],`).join('\n')}\n  ],\n},`;
+}
+
+$('ausdruck').addEventListener('change', (e) => { g = gesicht(e.target.value); zeichne(); });
+$('zuruecksetzen').addEventListener('click', () => { g = gesicht('neutral'); $('ausdruck').value = 'neutral'; zeichne(); });
+for (const id of ['profil', 'teilesatz', 'blinzeln', 'figur']) $(id).addEventListener('change', zeichne);
+$('t').addEventListener('input', zeichne);
+$('dauer').addEventListener('input', () => { $('t').max = $('dauer').value; zeichne(); });
+$('setzen').addEventListener('click', () => {
+  const t = Number($('t').value);
+  const name = Object.keys(AUSDRUECKE).find((n) => JSON.stringify(gesicht(n)) === JSON.stringify(g));
+  schluessel = schluessel.filter((k) => Math.abs(k[0] - t) > 0.01).concat([[t, name ?? gesicht(g)]]).sort((a, b) => a[0] - b[0]);
+  $('meldung').textContent = `Schlüssel bei ${t.toFixed(1)} s gesetzt`;
+  zeichne();
+});
+$('entfernen').addEventListener('click', () => {
+  const t = Number($('t').value);
+  const vorher = schluessel.length;
+  schluessel = schluessel.filter((k) => Math.abs(k[0] - t) > 0.01);
+  if (!schluessel.length) schluessel = [[0, 'neutral']];
+  $('meldung').textContent = vorher === schluessel.length ? `Kein Schlüssel bei ${t.toFixed(1)} s` : `Schlüssel bei ${t.toFixed(1)} s entfernt`;
+  zeichne();
+});
+$('schluessel').addEventListener('click', (e) => {
+  const i = e.target.dataset?.i;
+  if (i === undefined) return;
+  const [t, a] = schluessel[Number(i)];
+  $('t').value = t;
+  g = gesicht(a);
+  zeichne();
+});
+$('kopieren').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('code').value); $('meldung').textContent = 'Code kopiert'; }
+  catch { $('code').select(); $('meldung').textContent = 'Kopieren nicht erlaubt; Text ist markiert'; }
+});
+zeichne();
+</script>
+</body>
+</html>

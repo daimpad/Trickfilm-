@@ -1,6 +1,8 @@
 // ERZEUGT von tools/remotion.js aus szenen/; nicht von Hand ändern (node tools/remotion.js vorbereiten)
 import * as scene0 from '../../szenen/DEMO-01-buero/scene.js';
 import * as zeitfunktion0 from '../../szenen/DEMO-01-buero/animation.js';
+import * as scene1 from '../../szenen/MIMIK-01-buero/scene.js';
+import * as zeitfunktion1 from '../../szenen/MIMIK-01-buero/animation.js';
 
 type Spec = { fps: number; width: number; height: number; duration: number };
 export type SzeneImPort = {
@@ -13,8 +15,10 @@ export type SzeneImPort = {
 
 export const SZENEN: SzeneImPort[] = [
   { id: 'DEMO-01-buero', film: 'demo', beginn: 0, scene: scene0, zeitfunktion: zeitfunktion0 },
+  { id: 'MIMIK-01-buero', film: 'mimik', beginn: 0, scene: scene1, zeitfunktion: zeitfunktion1 },
 ];
 
 export const FILME: { film: string; szenen: string[] }[] = [
   { film: 'demo', szenen: ['DEMO-01-buero'] },
+  { film: 'mimik', szenen: ['MIMIK-01-buero'] },
 ];
