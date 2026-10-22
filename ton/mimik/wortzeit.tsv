@@ -1,4 +1,4 @@
-# ERZEUGT von tools/wortzeit.ts aus texte/ und ton/messung.json; nicht von Hand ändern
+# ERZEUGT von tools/wortzeit.ts aus texte/ und ton/<film>/messung.json; nicht von Hand ändern
 absatz	szene	nr	wort	t_szene_s	bild	t_film_s
 absatz-01	MIMIK-01-buero	1	Ein	1.100	33	1.100
 absatz-01	MIMIK-01-buero	2	Antrag	1.302	39	1.302

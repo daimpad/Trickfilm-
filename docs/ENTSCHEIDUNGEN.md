@@ -171,3 +171,15 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Werkzeug | Mimik-Editor im Browser (`npm run mimik`) | entschieden von Regie |
 | Demo | zweite Fassung `MIMIK-01-buero` mit eigener Mischung; die abgenommene Demo bleibt | entschieden von Regie |
 | Spezifikation als JS-Modul statt JSON | damit Prototyp, Node und Remotion sie ohne Build lesen | entschieden vom Leitstand |
+
+## 2026-10-22 · Abnahme und Nacharbeit
+
+| Frage | Entscheidung | Urheber |
+|---|---|---|
+| Umfang der Nacharbeit | alle Befunde der zweiten Abnahme in einem Pull Request | entschieden von Regie |
+| Nachschlageseite | `docs/BAUSTEINE.md`, erzeugt aus der Bibliothek (`npm run bausteine`), im Prüflauf verglichen | entschieden vom Leitstand |
+| Messung der Stimme | je Film in `ton/<film>/messung.json` statt einer gemeinsamen Datei, damit Szenen-Sitzungen verschiedener Filme nicht kollidieren | entschieden vom Leitstand |
+| Skalieren von Requisiten | `opts.massstab` um den Bezugspunkt; Anker und Rahmen rechnen mit, bewegliche Teile bleiben in den Maßen der Requisite | entschieden vom Leitstand |
+| Erlaubte Werte im Brief | Haltung und Gefühle prüft der Build gegen `lib/spielweise.js` | entschieden vom Leitstand |
+| Szene verwerfen | `npm run szene:entfernen` nur mit `--ja`; echte Aufnahmen und Absätze eines geteilten Films hält der Lauf an | entschieden vom Leitstand |
+| Laute in der Sprache | Hinweis aus den Wortzeiten, kein Befund; ob ein Laut verschoben wird, entscheidet die Regie | entschieden vom Leitstand |

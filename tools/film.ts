@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { alleSzenen, ladeSzene } from '../lib/build.js';
 import { szenenFolge } from '../lib/ton/zeitleiste.js';
-import { MESSUNG, register, type Absatz } from './stimme.js';
+import { messungPfad, register, type Absatz } from './stimme.js';
 
 export type Messung = { szene: string; roh_s: number; start_s: number; ende_s: number; laenge_s: number; lufs_i: number; true_peak_dbtp: number };
 export type SzeneImFilm = { id: string; start: number; dauer: number; fps: number; ordner: string; quelltext: string };
@@ -24,7 +24,8 @@ export async function ladeFilm(film: string): Promise<{ szenen: SzeneImFilm[]; a
     ordner: geladen[i]!.ordner,
     quelltext: readFileSync(join(geladen[i]!.ordner, 'animation.js'), 'utf8'),
   }));
-  const messung = existsSync(MESSUNG) ? (JSON.parse(readFileSync(MESSUNG, 'utf8')).filme?.[film] ?? {}) : {};
+  const pfad = messungPfad(film);
+  const messung = existsSync(pfad) ? (JSON.parse(readFileSync(pfad, 'utf8')).absaetze ?? {}) : {};
   const absaetze = (await register(film)).map((a) => {
     const szeneImFilm = szenen.find((s) => s.id === a.szene);
     if (!szeneImFilm) throw new Error(`Film „${film}“: ${a.id} gehört zu ${a.szene}, die Szene fehlt`);

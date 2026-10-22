@@ -3,7 +3,7 @@
 //   --stub       Platzhalter (Sinuston in geplanter Länge) für jeden Absatz ohne eigene Aufnahme
 //   --plan       was über den ElevenLabs-Connector zu erzeugen ist (JSON); generiert wird erst nach „ja, generieren“
 //   --ablegen    eine heruntergeladene Generierung als Absatz übernehmen (fremde Daten, nur ffmpeg liest sie)
-//   messen       hörbare Strecke, Länge, Lautheit und True Peak jedes Absatzes nach ton/messung.json
+//   messen       hörbare Strecke, Länge, Lautheit und True Peak jedes Absatzes nach ton/<film>/messung.json
 // Eine eigene Aufnahme (Datei ohne Eintrag im Manifest) bleibt immer stehen.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -15,7 +15,8 @@ import { einstellungenVon, type Einstellungen } from './stimmklon.js';
 import { sprechtext } from './stolperstellen.js';
 
 const WURZEL = join(import.meta.dirname, '..');
-export const MESSUNG = join(WURZEL, 'ton', 'messung.json');
+// Messung je Film, damit parallele Szenen-Sitzungen verschiedener Filme keine gemeinsame Datei teilen.
+export const messungPfad = (film: string) => join(WURZEL, 'ton', film, 'messung.json');
 const CREDITS_JE_ZEICHEN: Record<string, number> = { eleven_multilingual_v2: 1, eleven_v3: 1, eleven_flash_v2_5: 0.5 };
 
 export type Absatz = { id: string; szene: string; text: string };
@@ -99,9 +100,9 @@ function ablegen(film: string, absaetze: Absatz[], e: Einstellungen, id: string,
   console.log(`${id}: abgelegt (${(x.length / 48000).toFixed(2)} s) → ton/${film}/${id}.wav`);
 }
 
-/** Messung aller Absätze eines Films nach ton/messung.json; mit pruefenNur nur vergleichen. */
+/** Messung aller Absätze eines Films nach ton/<film>/messung.json; mit pruefenNur nur vergleichen. */
 export async function messen(film: string, absaetze: Absatz[], pruefenNur = false): Promise<number> {
-  const alt = existsSync(MESSUNG) ? JSON.parse(readFileSync(MESSUNG, 'utf8')) : { _erzeugt: '', filme: {} };
+  const ziel = messungPfad(film);
   const neu: Record<string, unknown> = {};
   for (const a of absaetze) {
     const p = absatzDatei(WURZEL, film, a.id);
@@ -111,19 +112,17 @@ export async function messen(film: string, absaetze: Absatz[], pruefenNur = fals
     }
     neu[a.id] = { szene: a.szene, ...vermesseAbsatz(dekodiere(p)) };
   }
-  const gesamt = { _erzeugt: 'ERZEUGT von tools/stimme.ts messen; nicht von Hand ändern', filme: { ...alt.filme, [film]: neu } };
-  const text = JSON.stringify(gesamt, null, 2) + '\n';
+  const text = JSON.stringify({ _erzeugt: 'ERZEUGT von tools/stimme.ts messen; nicht von Hand ändern', absaetze: neu }, null, 2) + '\n';
   if (pruefenNur) {
-    const vorher = existsSync(MESSUNG) ? readFileSync(MESSUNG, 'utf8') : '';
-    if (JSON.stringify(JSON.parse(vorher || '{}').filme?.[film] ?? null) !== JSON.stringify(neu)) {
-      console.error(`FEHLER ton/messung.json ist für ${film} veraltet (npm run stimme -- ${film} messen)`);
+    if ((existsSync(ziel) ? readFileSync(ziel, 'utf8') : '') !== text) {
+      console.error(`FEHLER ton/${film}/messung.json ist veraltet (npm run stimme -- ${film} messen)`);
       return 1;
     }
     console.log(`${film}: Messung aktuell`);
     return 0;
   }
-  mkdirSync(join(WURZEL, 'ton'), { recursive: true });
-  writeFileSync(MESSUNG, text);
+  mkdirSync(join(WURZEL, 'ton', film), { recursive: true });
+  writeFileSync(ziel, text);
   for (const [id, m] of Object.entries(neu)) console.log(`${id}: ${JSON.stringify(m)}`);
   return 0;
 }

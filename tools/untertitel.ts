@@ -18,7 +18,7 @@ async function main() {
   const einheiten = untertitel(
     gemessen.map((a) => ({ text: a.text, szeneStart: a.beginn, szeneEnde: a.szeneImFilm.start + a.szeneImFilm.dauer, messung: a.messung })),
   );
-  const text = webvtt(einheiten, 'tools/untertitel.ts aus texte/ und ton/messung.json');
+  const text = webvtt(einheiten, 'tools/untertitel.ts aus texte/ und ton/<film>/messung.json');
   const ziel = join(WURZEL, 'ton', film, 'untertitel.vtt');
   if (schalter === '--pruefen') {
     if ((existsSync(ziel) ? readFileSync(ziel, 'utf8') : '') !== text) {

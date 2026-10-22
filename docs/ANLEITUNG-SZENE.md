@@ -16,7 +16,7 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 
 ## Planen
 
-1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage` (fünf Dateien mit `abweichungen.md`), setzt `id` und `film`, erzeugt `sfx-cues.json` und zieht `remotion/src/szenen.ts` nach. Danach baut die Szene, und `npm run pruefen` bleibt grün. Der Film heißt in der ID groß (`ABNAHME`), in Dateinamen klein (`texte/abnahme.ts`, `ton/abnahme/`).
+1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage` (fünf Dateien mit `abweichungen.md`), setzt `id` und `film`, erzeugt `sfx-cues.json` und zieht `remotion/src/szenen.ts` nach. Für einen neuen Film legt er Register und Lesefassung mit der Passage der Vorlage an und lässt die Stimmkette mit Platzhalter laufen. Danach baut die Szene, und `npm run pruefen` bleibt grün. Verwerfen: `npm run szene:entfernen -- <ID>` nennt, was ginge, mit `--ja` geschieht es; echte Aufnahmen entfernt der Lauf nie. Der Film heißt in der ID groß (`ABNAHME`), in Dateinamen klein (`texte/abnahme.ts`, `ton/abnahme/`).
 2. **Brief** (`brief.yaml`): Passage wörtlich aus dem Sprechtext, These und Pointe in je einem Satz, Figuren mit Charakterkarte (wahlweise `mimik: an`, siehe `docs/MIMIK.md`), Requisiten, Beats mit Figur, Aktion, Gefühl und dem Wort, auf das sie fallen. Beschriftungen höchstens 40 Zeichen. Fachliches nur aus dem Sprechtext.
 3. **Dauer:** Ohne Aufnahme 15 Zeichen je Sekunde plus 10–15 % Luft, `dauer_geschaetzt: true`. Mit Aufnahme die gemessene Länge (siehe Vertonen).
 
@@ -55,10 +55,11 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 
 | Was | Wo |
 |---|---|
-| Requisiten | Bild aller Requisiten: `npm run requisiten` → `lib/props/KATALOG.png`. Im Code `requisite('<name>').markup(id, pos, farben, opts)`; `pos` ist der Bezugspunkt in Weltkoordinaten, bewegliche Teile tragen IDs `<id>-<teil>` (`requisite(name).ids(id)` nennt sie), die `sceneApply` setzt. |
+| Alles auf einen Blick | `docs/BAUSTEINE.md`, erzeugt von `npm run bausteine`: Requisiten mit Größe, Ankern und beweglichen Teilen, Figuren mit Gelenken, Cues mit Ereignistypen, erlaubte Werte im Brief, Funktionen der Bibliothek |
+| Requisiten | Bild aller Requisiten: `npm run requisiten` → `lib/props/KATALOG.png`. Im Code `requisite('<name>').markup(id, pos, farben, { massstab })`; `pos` ist der Bezugspunkt in Weltkoordinaten, `massstab` skaliert um ihn, Anker und Rahmen rechnen mit. Bewegliche Teile tragen IDs `<id>-<teil>` (`requisite(name).ids(id)` nennt sie), die `sceneApply` setzt. |
 | Figuren | Archetypen und Rig-Funktionen in `docs/FIGUREN.md`, Gesicht in `docs/MIMIK.md` |
-| Geräusche | Cue-IDs und Ereignistypen in `lib/sfx/katalog.yaml` und `docs/GERAEUSCHE.md` (Tabelle der Erkennungen) |
-| Spielweise | `lib/spielweise.js`: `charakter`, `atmen`, `konzentriert`, `genervt`, `ueberrascht`, `erleichtert`, `stolz`, `ratlos`, `tippen`, `fussWippen` |
+| Geräusche | Cue-IDs und Ereignistypen in `docs/BAUSTEINE.md`, Ablauf in `docs/GERAEUSCHE.md` |
+| Spielweise | `lib/spielweise.js`: `charakter`, `atmen`, `konzentriert`, `genervt`, `ueberrascht`, `erleichtert`, `stolz`, `ratlos`, `tippen`, `fussWippen`; erlaubte Haltungen und Gefühle prüft der Build |
 | Beispiel | `szenen/DEMO-01-buero` zeigt jeden Baustein einmal: Greifen, Gehen, Requisiten mit beweglichen Teilen (Drucker, Blatt), Geräusche, Stimme mit Einsatz; `szenen/MIMIK-01-buero` dazu Mimik |
 
 ## Wenn etwas scheitert

@@ -49,7 +49,7 @@ Der Zustand eines Rigs steht im Figurenrahmen: Blick nach rechts, Winkel vorwär
 | `fuss(state, bein, ziel)` | Bein zu einem Knöchelziel, Knie nach vorn; Grundlage des Gehens |
 | `pruefeReichweite(state)` | Handziele außer Reichweite mit Abstand; der Build meldet sie mit Bild |
 | `posen` (frontal) | Haltungen, die IK nicht liefert, etwa vor dem Körper halten |
-| `gelenke(state)` | Weltpunkte der Gelenke, etwa für Gehaltenes oder Geräuschquellen (`A.armF.hand.y`) |
+| `gelenke(state)` | Weltpunkte der Gelenke und die Kopfmitte `kopf`, etwa für Gehaltenes, Blickziele oder Geräuschquellen (`A.armF.hand.y`) |
 
 - **Greifen:** Hände als Schlüsselposen in der Zeitfunktion, dann `greife()`. Ruhelage hängender Arme über Winkel, IK nur zum Greifen. Gehaltenes steht relativ zur Hand.
 - **Gehen:** feste Fußpunkte am Boden, der Schwungfuß geht in flachem Bogen von Punkt zu Punkt, die Beine folgen über `fuss()`; die Hüfte fährt an und ab und senkt sich nur so weit, wie die Beinlänge verlangt. Winkelkurven allein lassen den Standfuß rutschen (siehe `docs/SERIE.md`).

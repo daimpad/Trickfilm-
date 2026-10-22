@@ -1,6 +1,6 @@
 WEBVTT
 
-NOTE ERZEUGT von tools/untertitel.ts aus texte/ und ton/messung.json; nicht von Hand ändern
+NOTE ERZEUGT von tools/untertitel.ts aus texte/ und ton/<film>/messung.json; nicht von Hand ändern
 
 1
 00:00:01.100 --> 00:00:05.097

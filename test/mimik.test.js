@@ -56,3 +56,14 @@ test('Mimik: Gesicht nur mit mimik: true im Markup, jeder Ausdruck in jeder Ansi
     assert.ok(!r.apply('A', r.defaults).some(([id]) => id.startsWith('A-auge')), name);
   }
 });
+
+test('Kopfmitte: gelenke() nennt kopf, er folgt Nacken und Kopfdrehung', () => {
+  for (const [name, r] of Object.entries(RIGS)) {
+    const g = r.gelenke(r.defaults);
+    assert.ok(Number.isFinite(g.kopf?.x) && Number.isFinite(g.kopf?.y), name);
+    assert.ok(g.kopf.y < g.nacken.y, `${name}: Kopf über dem Nacken`);
+    const gedreht = r.gelenke({ ...r.defaults, head: (r.defaults.head ?? 0) + 30 });
+    assert.notDeepEqual(gedreht.kopf, g.kopf, `${name}: Kopf dreht mit`);
+    assert.deepEqual(gedreht.nacken, g.nacken, name);
+  }
+});
