@@ -19,6 +19,14 @@ export const STIMMEN: Record<string, Einstellungen> = {
     aehnlichkeit: 0.75,
     tempo: 1.0,
   },
+  // Zweite Fassung der Demo mit Mimik: dieselbe Stimme und dieselbe Aufnahme (Take 2).
+  mimik: {
+    stimme: { name: 'Damian', voice_id: 'fCNfpvOaXD7yZQS7MduU' },
+    modell: 'eleven_multilingual_v2',
+    stabilitaet: 0.5,
+    aehnlichkeit: 0.75,
+    tempo: 1.0,
+  },
 };
 
 export function einstellungenVon(film: string): Einstellungen {

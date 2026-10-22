@@ -186,6 +186,16 @@ export const PROMPTS = {
     titel: 'Posen-Editor öffnen',
     text: 'Erzeuge den Posen-Editor für {ID}, Figur {FIGUR} (npm run editor -- --szene {ID} --figur {FIGUR}), und sag mir, wo die Datei liegt.',
   },
+  'werkzeug/mimik': {
+    gruppe: 'Werkzeuge',
+    titel: 'Mimik-Editor öffnen',
+    text: 'Erzeuge den Mimik-Editor (npm run mimik) und sag mir, wo die Datei liegt. Figur {FIGUR} in {ID} soll ein Gesicht tragen: setz im Brief mimik: an und in scene.js mimik: true.',
+  },
+  'werkzeug/mimik-code': {
+    gruppe: 'Werkzeuge',
+    titel: 'Mimik übernehmen',
+    text: 'Hier ist der Code aus dem Mimik-Editor für Figur {FIGUR}:\n[Code einfügen]\nTrag ihn in szenen/{ID}/geometry.js ein, lies ihn in animation.js mit mimikZustand() und blinzeln(), baue neu und zeig mir Standbilder der Köpfe an den Schlüsseln.',
+  },
   'werkzeug/posen-code': {
     gruppe: 'Werkzeuge',
     titel: 'Posen übernehmen',

@@ -241,6 +241,7 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
   <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z"/></symbol>
   <symbol id="i-stift" viewBox="0 0 24 24"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M14.5 5.5l3 3"/></symbol>
   <symbol id="i-figur" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v7M12 14l-3.5 6.5M12 14l3.5 6.5M12 9l-5 3M12 9l5-2.5"/></symbol>
+  <symbol id="i-gesicht" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9 10v.5M15 10v.5M8.5 14.5c1.8 2 5.2 2 7 0"/></symbol>
   <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 3.5h4v2a2 2 0 1 0 4 0h2.5V10h-2a2 2 0 1 0 0 4h2v6.5H14v-2a2 2 0 1 0-4 0v2H3.5V14h2a2 2 0 1 0 0-4h-2V3.5z"/></symbol>
   <symbol id="i-kopfhoerer" viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.5" height="6.5" rx="1.5"/><rect x="16.5" y="14" width="4.5" height="6.5" rx="1.5"/></symbol>
   <symbol id="i-idee" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
@@ -328,7 +329,7 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
 <!-- ===================================================================== Werkzeuge -->
 <section class="ansicht bereich" id="werkzeuge" data-titel="Werkzeuge">
   <h2 tabindex="-1">Werkzeuge</h2>
-  <p class="einleitung">Vier Werkzeuge laufen hier im Browser, ohne Installation. Die Hörprobe braucht das Repository auf dem eigenen Rechner; wie man es einrichtet, steht unter <a href="#anleitungen/einrichten">Einrichten</a>.</p>
+  <p class="einleitung">Fünf Werkzeuge laufen hier im Browser, ohne Installation. Die Hörprobe braucht das Repository auf dem eigenen Rechner; wie man es einrichtet, steht unter <a href="#anleitungen/einrichten">Einrichten</a>.</p>
   <ul class="kacheln">
     <li class="kachel">
       <span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-kopieren"/></svg></span>
@@ -353,6 +354,14 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
       <p>Eine Figur greifen und stellen, Schlüsselposen setzen und als Code übernehmen.</p>
       <p class="wann"><strong>Wann:</strong> beim Schreiben der Bewegung.</p>
       <div class="aktionen"><a class="knopf" href="editor/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a class="knopf hell" href="#werkzeuge/posen-editor">Erklärung</a></div>
+    </li>
+    <li class="kachel">
+      <span class="blase"><svg class="icon" aria-hidden="true"><use href="#i-gesicht"/></svg></span>
+      <h3>Mimik-Editor</h3>
+      <span class="ort-tag"><svg class="icon" aria-hidden="true"><use href="#i-browser"/></svg>Im Browser</span>
+      <p>Augen, Brauen und Mund einstellen, Ausdrücke vergleichen, Schlüssel als Code übernehmen.</p>
+      <p class="wann"><strong>Wann:</strong> wenn Figuren im Brief <code>mimik: an</code> tragen.</p>
+      <div class="aktionen"><a class="knopf" href="mimik/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a class="knopf hell" href="#werkzeuge/mimik-editor">Erklärung</a></div>
     </li>
     <li class="kachel">
       <span class="blase himmel"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg></span>
@@ -412,7 +421,7 @@ iframe { width: 100%; aspect-ratio: 16 / 11; border: 0; background: var(--st-sur
 
 <section class="ansicht" id="werkzeuge/posen-editor" data-bereich="werkzeuge" data-titel="Posen-Editor">
   <h2 tabindex="-1">Posen-Editor</h2>
-  <p class="querverweis"><a href="editor/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen, Schritt 5</a></p>
+  <p class="querverweis"><a href="editor/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen, Schritt 5</a><a href="#werkzeuge/mimik-editor"><svg class="icon" aria-hidden="true"><use href="#i-gesicht"/></svg>Mimik-Editor</a></p>
   <p class="einleitung">Hier stellt man eine Figur direkt auf der Bühne, statt Winkel einzutippen.</p>
   <ul class="liste">
     <li><strong>Griffe:</strong> Die Hüfte verschiebt die ganze Figur, Rumpf und Kopf neigen sich, Hände und Füße folgen ihrem Ziel.</li>
@@ -436,6 +445,35 @@ export const POSEN_A = { archetyp: 'stehend-profil', torso: [[0, 0], [1, 17.1]],
 // animation.js
 const A = posenZustand(rig('stehend-profil'), POSEN_A, t);</code></pre>
     <p>Zwischen den Schlüsseln wird weich verbunden. Arme mit Handzielen laufen über <code>greife()</code>, damit der Build ihre Reichweite prüft.</p>
+  </div>
+</section>
+
+<section class="ansicht" id="werkzeuge/mimik-editor" data-bereich="werkzeuge" data-titel="Mimik-Editor">
+  <h2 tabindex="-1">Mimik-Editor</h2>
+  <p class="querverweis"><a href="mimik/index.html"><svg class="icon" aria-hidden="true"><use href="#i-extern"/></svg>Öffnen</a><a href="#werkzeuge/posen-editor"><svg class="icon" aria-hidden="true"><use href="#i-figur"/></svg>Posen-Editor</a><a href="#anleitungen/szene"><svg class="icon" aria-hidden="true"><use href="#i-film"/></svg>Szene bauen</a></p>
+  <p class="einleitung">Figuren tragen wahlweise ein Gesicht: Punktaugen, Brauen und Mund, gerechnet aus wenigen Zahlen. Ohne <code>mimik: an</code> im Brief bleibt der Kopf ohne Gesicht.</p>
+  <ul class="liste">
+    <li><strong>Regler:</strong> Blick, Lid, Winkel und Höhe der Brauen, Krümmung, Breite und Öffnung des Munds.</li>
+    <li><strong>Ausdrücke:</strong> neutral, konzentriert, freude, erleichtert, staunen, zweifel, ärger, müde als Ausgangspunkt.</li>
+    <li><strong>Zwei Größen:</strong> groß im Profil und frontal, klein in Bühnengröße und bei 960 px Breite; was klein verschwindet, trägt im Film nicht.</li>
+    <li><strong>Schlüssel:</strong> auf der Zeitleiste setzen, mit Blinzeln ansehen; der Editor schreibt daraus den Code für die Szene.</li>
+  </ul>
+  <h3>Mit Claude</h3>
+  {{FELDER:ID,FIGUR}}
+  <ol class="schritte">
+    <li><strong>Öffnen:</strong> den Editor erzeugen lassen.
+      {{PROMPT:werkzeug/mimik}}</li>
+    <li><span class="hand">Von Hand</span> Ausdrücke einstellen, Schlüssel setzen und den Code kopieren.</li>
+    <li><strong>Übernehmen:</strong> den Code in die Szene tragen lassen.
+      {{PROMPT:werkzeug/mimik-code}}</li>
+  </ol>
+  <div class="technik">
+    <p><code>npm run mimik</code> erzeugt den Editor. Im Brief trägt die Figur <code>mimik: an</code>, in <code>scene.js</code> <code>rig.markup(…, { mimik: true })</code>.</p>
+<pre><code>// geometry.js
+mimik: { A: [[0, 'neutral'], [3.9, 'erleichtert'], [8.1, 'staunen']] },
+// animation.js
+A.gesicht = mitBlinzeln(mimikZustand(GEO.mimik.A, t), blinzeln(t, 'A'));</code></pre>
+    <p>Der Build meldet ein Gesicht ohne <code>mimik: an</code> und Augen, die bei 960 px unter 2 px fallen.</p>
   </div>
 </section>
 

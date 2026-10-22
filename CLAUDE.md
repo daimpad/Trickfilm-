@@ -63,7 +63,7 @@ Werkzeuge, die noch nicht gebaut sind, melden über `tools/noch-nicht.js`, in we
 - Kein Flackern: höchstens drei Hell-Dunkel-Wechsel je Sekunde.
 - Lesetakt: Standzeit ≥ `lesezeitFrames(zeichen)` = (Zeichen / 12) · 30 + 45 Frames.
 - Schrift Arial, in der Cloud Liberation Sans mit denselben Maßen; nie Webfonts. Ausnahme nur für die Webseite: vier Schriften unter SIL OFL liegen in `site/schriften/`, nie aus dem Netz; im Film nie (entschieden von Regie, 2026-10-20).
-- Figuren ohne Gesichter; Emotion aus Haltung, Tempo, Anlauf, Überschwingen, Pausen. Der Witz liegt in der Situation, nie in der Person; keine Stereotype.
+- Figuren ohne Gesichter, außer mit `mimik: an` im Brief: dann ein reduziertes Gesicht aus `lib/mimik.js` (Punktaugen, Brauen, Mund; nichts, was Herkunft, Alter oder Geschlecht zuschreibt), siehe `docs/MIMIK.md` (entschieden von Regie, 2026-10-22). Emotion auch dann aus Haltung, Tempo, Anlauf, Überschwingen, Pausen. Der Witz liegt in der Situation, nie in der Person; keine Stereotype.
 
 ## Arbeitsweise
 
@@ -94,6 +94,7 @@ Werkzeuge, die noch nicht gebaut sind, melden über `tools/noch-nicht.js`, in we
 - Video (`npm run video -- <ID|alle>`): Bilder als PNG an ffmpeg, H.264 mit BT.709-Matrix, Ton aus der Mischung des Films, Untertitel als Spur; jede Datei misst `tools/lieferung.js` (Spuren, Lautheit, True Peak, Farbe gegen ein Standbild, sha256) nach `out/lieferung.tsv`. Ein Video ohne Befund ist die Bedingung jeder Lieferung (2026-10-21).
 - Remotion: `remotion/src/szenen.ts` erzeugt `node tools/remotion.js vorbereiten` aus `szenen/`; eine Komposition je Szene (ID der Szene) und ein Master je Film (`Film-<film>`). Das Markup wird zur Laufzeit zu JSX gelesen, der Zustand kommt aus denselben Modulen wie im Prototyp, der Ton ist die Mischung des Films. `npm run remotion:paritaet -- <ID>` vergleicht Standbilder an den Zeiten des Kontaktbogens; eine sichtbare Abweichung ist ein Portfehler (2026-10-21).
 - Galerie (`npm run galerie [-- <film>]`): alle Szenen nach Film und Kapitel mit eingebettetem Prototyp, als Ordner und ZIP unter `out/galerie/`. Seiten für Dritte tragen `noindex, nofollow` und gehen durch `tools/nichtoeffentlich.ts`; die Wortliste liegt nur örtlich in `nichtoeffentlich.local.txt`, schlägt sie an, entsteht keine Seite (2026-10-21).
+- Mimik: Gesicht nur über `rig.markup(…, { mimik: true })` und `mimik: an` im Brief, Ausdrücke als Schlüssel in `geometry.js`, gelesen mit `mimikZustand()` und `blinzeln()` aus `lib/mimik.js`; der Sitz je Archetyp steht in `lib/mimik-spezifikation.js`, nicht in der Rig-Spezifikation. Der Mimik-Editor (`npm run mimik`) gibt die Schlüssel als Code aus (2026-10-22).
 - Posen-Editor (`npm run editor`): erzeugt `out/editor/posen-editor.html`; sein Code (Schlüsselposen) gehört nach `geometry.js` und wird mit `posenZustand()` aus `lib/posen.js` gelesen.
 
 ## Ohne Rückfrage geschieht nicht

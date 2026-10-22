@@ -4,7 +4,7 @@ Werkstatt für KI-gestützte Trickfilme mit Vertonung und Geräuschen. Bewegung 
 
 Eine leicht lesbare Übersicht aller Funktionen mit Prototyp, Posen-Editor und Teile-Werkstatt zum Ausprobieren: **https://daimpad.github.io/trickfilm/** (bei jedem Merge neu gebaut).
 
-Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md). Wer beginnt, liest [`docs/SERIE.md`](docs/SERIE.md) und dann [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md). Fachdokumente: [`FIGUREN.md`](docs/FIGUREN.md), [`GERAEUSCHE.md`](docs/GERAEUSCHE.md), [`STIMME.md`](docs/STIMME.md), [`ZEICHNUNGEN-KI.md`](docs/ZEICHNUNGEN-KI.md), [`LIZENZEN.md`](docs/LIZENZEN.md).
+Die Regeln stehen in [`CLAUDE.md`](CLAUDE.md), die Entscheidungen in [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md). Wer beginnt, liest [`docs/SERIE.md`](docs/SERIE.md) und dann [`docs/ANLEITUNG-SZENE.md`](docs/ANLEITUNG-SZENE.md). Fachdokumente: [`FIGUREN.md`](docs/FIGUREN.md), [`GERAEUSCHE.md`](docs/GERAEUSCHE.md), [`STIMME.md`](docs/STIMME.md), [`MIMIK.md`](docs/MIMIK.md), [`ZEICHNUNGEN-KI.md`](docs/ZEICHNUNGEN-KI.md), [`LIZENZEN.md`](docs/LIZENZEN.md).
 
 ## Schnellstart
 

@@ -19,6 +19,7 @@
     "szene:vorschau": "node tools/szene-vorschau.js",
     "szene:protokoll": "node lib/protokoll.js",
     "editor": "node tools/posen-editor.js",
+    "mimik": "node tools/mimik-editor.js",
     "teile": "node tools/teile-werkstatt.js",
     "requisiten": "node tools/requisiten-katalog.js",
     "figuren:erzeugen": "node tools/figuren-erzeugen.js",

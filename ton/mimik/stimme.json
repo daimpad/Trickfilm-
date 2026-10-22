@@ -1,0 +1,15 @@
+{
+  "_erzeugt": "ERZEUGT von tools/stimme.ts; nicht von Hand ändern",
+  "absaetze": {
+    "absatz-01": {
+      "quelle": "elevenlabs",
+      "pruefsumme": "6f9d1a3b920ca385",
+      "modell": "eleven_multilingual_v2",
+      "stimme": {
+        "name": "Damian",
+        "voice_id": "fCNfpvOaXD7yZQS7MduU"
+      },
+      "generierung": "YUCLfralRqZm6NS0qvLz"
+    }
+  }
+}
