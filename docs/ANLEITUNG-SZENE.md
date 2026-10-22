@@ -16,7 +16,7 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 
 ## Planen
 
-1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage` und setzt `id` und `film`. Danach liegen vier Dateien im Ordner, die schon bauen.
+1. **Anlegen:** `npm run szene:neu -- <FILM>-<NN>-<slug>` kopiert `szenen/_vorlage` (fünf Dateien mit `abweichungen.md`), setzt `id` und `film`, erzeugt `sfx-cues.json` und zieht `remotion/src/szenen.ts` nach. Danach baut die Szene, und `npm run pruefen` bleibt grün. Der Film heißt in der ID groß (`ABNAHME`), in Dateinamen klein (`texte/abnahme.ts`, `ton/abnahme/`).
 2. **Brief** (`brief.yaml`): Passage wörtlich aus dem Sprechtext, These und Pointe in je einem Satz, Figuren mit Charakterkarte (wahlweise `mimik: an`, siehe `docs/MIMIK.md`), Requisiten, Beats mit Figur, Aktion, Gefühl und dem Wort, auf das sie fallen. Beschriftungen höchstens 40 Zeichen. Fachliches nur aus dem Sprechtext.
 3. **Dauer:** Ohne Aufnahme 15 Zeichen je Sekunde plus 10–15 % Luft, `dauer_geschaetzt: true`. Mit Aufnahme die gemessene Länge (siehe Vertonen).
 
@@ -33,14 +33,14 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 
 ## Prüfen
 
-8. **Kontaktbogen:** `npm run szene:kontaktbogen -- <ID>`, jedes der neun Bilder ansehen: Liegt ein Ding falsch vor dem Rumpf? Greift ein Arm durch einen Tisch? Ist die Pointe bei 960 px lesbar? Danach `sichtung` im Brief setzen.
+8. **Kontaktbogen:** `npm run szene:kontaktbogen -- <ID>`, jedes der neun Bilder ansehen: Liegt ein Ding falsch vor dem Rumpf? Greift ein Arm durch einen Tisch? Ist die Pointe bei 960 px lesbar? Danach `sichtung` im Brief setzen: je Punkt `ok` oder `offen`.
 9. **Prototyp:** `szenen/<ID>/dist/index.html` im Browser; Leertaste spielt, ←/→ gehen um ein Bild, Sprungmarken führen zu den Beats. Ein Video zum Weitergeben baut `npm run szene:vorschau -- <ID>`.
 10. **Protokoll:** `npm run szene:protokoll -- <ID>` schreibt `protokoll.tsv`, im selben Commit wie die Änderung.
 
 ## Vertonen
 
-11. **Geräusche:** im Brief unter `sfx` nur, welche Ereignisse klingen und wo die Größen im Zustand liegen; `npm run sfx:cues -- <ID> --stichprobe`. Einzelheiten in `docs/GERAEUSCHE.md`.
-12. **Stimme:** Register, Platzhalter oder Aufnahme, Messung, Einsatz, Wortzeiten, Untertitel, Mischung nach `docs/STIMME.md`. Nach der Messung `dauer_geschaetzt: false` und die Beats an die Wortzeiten legen; die Kommentare `„Wort“ (Bild)` prüft `npm run wortzeit -- <film> pruefen`.
+11. **Geräusche:** im Brief unter `sfx` nur, welche Ereignisse klingen und wo die Größen im Zustand liegen; `npm run sfx:cues -- <ID> --stichprobe` nach jeder Änderung der Bewegung (sonst meldet der Build eine veraltete Cue-Liste). Einzelheiten in `docs/GERAEUSCHE.md`.
+12. **Stimme:** Register (`texte/<film>.ts`, `docs/sprechtext/<film>.md`), Platzhalter oder Aufnahme, Messung, Einsatz, Wortzeiten, Untertitel, Mischung nach `docs/STIMME.md`. Ein neuer Film braucht dafür keinen Eintrag in den Werkzeugen; der Platzhalter läuft sofort. Mit Platzhalter bleibt der Brief bei der Schätzung (`datei: null`, `dauer_geschaetzt: true`); erst nach der Messung einer Aufnahme `datei`, `dauer_s`, `dauer_geschaetzt: false` setzen und die Beats an die Wortzeiten legen. Die Kommentare `„Wort“ (Bild)` tragen ihre Bildnummer erst, wenn gemessen ist (`npm run wortzeit -- <film> <ID> <Wort>`); `npm run wortzeit -- <film> pruefen` hält sie dagegen.
 13. **Anhören:** die Mischung im Vorschau-Video; Regie hört ab.
 
 ## Ausliefern
@@ -50,6 +50,16 @@ Eine Szene durchläuft fünf Phasen. Am Ende jeder Phase steht ein Halt: Sie geh
 16. **Galerie** für Prüfende: `npm run galerie -- <film>`, Ordner und ZIP unter `out/galerie/`.
 17. **Lieferzweig:** Renderergebnisse nie im Repository; soll eine Lieferung bei GitHub liegen, dann auf `git worktree add --orphan -b lieferung/<datum> <pfad>`.
 18. **Anhalten:** Status in höchstens fünf Zeilen: ID, Dauer, Pointe, offene Punkte, Pfad des Kontaktbogens oder Videos.
+
+## Nachschlagen
+
+| Was | Wo |
+|---|---|
+| Requisiten | Bild aller Requisiten: `npm run requisiten` → `lib/props/KATALOG.png`. Im Code `requisite('<name>').markup(id, pos, farben, opts)`; `pos` ist der Bezugspunkt in Weltkoordinaten, bewegliche Teile tragen IDs `<id>-<teil>` (`requisite(name).ids(id)` nennt sie), die `sceneApply` setzt. |
+| Figuren | Archetypen und Rig-Funktionen in `docs/FIGUREN.md`, Gesicht in `docs/MIMIK.md` |
+| Geräusche | Cue-IDs und Ereignistypen in `lib/sfx/katalog.yaml` und `docs/GERAEUSCHE.md` (Tabelle der Erkennungen) |
+| Spielweise | `lib/spielweise.js`: `charakter`, `atmen`, `konzentriert`, `genervt`, `ueberrascht`, `erleichtert`, `stolz`, `ratlos`, `tippen`, `fussWippen` |
+| Beispiel | `szenen/DEMO-01-buero` zeigt jeden Baustein einmal: Greifen, Gehen, Requisiten mit beweglichen Teilen (Drucker, Blatt), Geräusche, Stimme mit Einsatz; `szenen/MIMIK-01-buero` dazu Mimik |
 
 ## Wenn etwas scheitert
 

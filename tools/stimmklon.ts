@@ -29,9 +29,12 @@ export const STIMMEN: Record<string, Einstellungen> = {
   },
 };
 
+/** Ein Film ohne Eintrag läuft mit diesen Werten und ohne Stimme: Platzhalter, Messung und Mischung gehen, eine
+ * Generierung nicht. Vor einer Aufnahme wählt die Regie die Stimme, der Leitstand trägt den Film hier ein. */
+export const STANDARD: Einstellungen = { stimme: null, modell: 'eleven_multilingual_v2', stabilitaet: 0.5, aehnlichkeit: 0.75, tempo: 1.0 };
+
 export function einstellungenVon(film: string): Einstellungen {
-  const e = STIMMEN[film];
-  if (!e) throw new Error(`Stimme: keine Einstellungen für Film „${film}“ in tools/stimmklon.ts`);
+  const e = STIMMEN[film] ?? STANDARD;
   if (e.tempo < TEMPO_GRENZEN[0] || e.tempo > TEMPO_GRENZEN[1]) throw new Error(`Stimme: Tempo ${e.tempo} außerhalb ${TEMPO_GRENZEN.join('–')}`);
   return e;
 }
