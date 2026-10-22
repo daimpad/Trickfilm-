@@ -5,7 +5,7 @@ Jede Sitzung liest diese Datei zu Beginn. Hier steht, was mehr als eine Szene be
 ## Arbeitsteilung
 
 - **Leitstand:** ändert allein `lib/`, Tokens, Werkzeuge und `CLAUDE.md`; merged, baut jede Szene neu und sichtet die Kontaktbögen.
-- **Szenen-Sitzung:** arbeitet in einem eigenen Git-Worktree, ändert nur `szenen/<ID>/` und meldet, was in der Bibliothek fehlt, statt es selbst zu bauen.
+- **Szenen-Sitzung:** arbeitet in einem eigenen Git-Worktree, ändert nur `szenen/<ID>/`, für ihren Film das Register (`texte/<film>.ts`, `docs/sprechtext/<film>.md`) und, über die Werkzeuge, dessen erzeugte Dateien (`ton/<film>/`, `remotion/src/szenen.ts`); was in der Bibliothek fehlt, meldet sie, statt es selbst zu bauen.
 - Erzeugte Dateien werden bei Konflikten nie gemischt: Fassung von `main` nehmen, Programm laufen lassen.
 
 ## Bild und Bewegung

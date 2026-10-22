@@ -1,7 +1,7 @@
 id: _vorlage                          # <FILM>-<NN>-<slug>; npm run szene:neu ersetzt id und film
 film: VORLAGE
 sprechtext:
-  datei: null                         # ton/<FILM>/absatz-NN.wav, sobald eine Aufnahme gemessen ist
+  datei: null                         # ton/<film>/absatz-NN.wav (Film klein), sobald eine Aufnahme gemessen ist
   passage: "Sie füllt das Formular aus und schickt es ab. Das System bestätigt."
   dauer_s: 4.5
   dauer_geschaetzt: true              # 15 Zeichen/s, solange keine Aufnahme gemessen ist

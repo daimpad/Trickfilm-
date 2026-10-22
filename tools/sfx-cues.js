@@ -14,6 +14,17 @@ import { standbild } from '../lib/snapshot.js';
 import { bildVonHtml } from '../lib/browser.js';
 import { FARBEN, SCHRIFT } from '../tokens/tokens.js';
 
+/** Wörter der Szene mit Zeit in der Szene aus ton/<film>/wortzeit.tsv; null, solange es keine Wortzeiten gibt. */
+function woerterVon(sz) {
+  const pfad = join(import.meta.dirname, '..', 'ton', String(sz.brief.film ?? '').toLowerCase(), 'wortzeit.tsv');
+  if (!existsSync(pfad)) return null;
+  const zeilen = readFileSync(pfad, 'utf8').split('\n').filter((z) => z && !z.startsWith('#'));
+  const kopf = zeilen.shift().split('\t');
+  const i = (n) => kopf.indexOf(n);
+  const woerter = zeilen.map((z) => z.split('\t')).filter((s) => s[i('szene')] === sz.id).map((s) => ({ wort: s[i('wort')], t: Number(s[i('t_szene_s')]) }));
+  return woerter.length ? woerter : null;
+}
+
 /** Cue-Liste einer geladenen Szene; null, wenn der Brief keine Geräusche vorsieht. */
 export function cuesFuer(sz, katalog = leseKatalog()) {
   const sfx = sz.brief.sfx;
@@ -21,7 +32,7 @@ export function cuesFuer(sz, katalog = leseKatalog()) {
   const A = sz.animation;
   const figuren = Object.fromEntries((sz.brief.figuren ?? []).map((f) => [f.prefix, rig(f.rig)]));
   const ereignisse = computeEvents({ computeState: A.computeState, dauer: A.SPEC.duration, fps: A.SPEC.fps, quellen: sfx.quellen ?? {}, beats: A.BEATS, figuren });
-  const r = erzeugeCues({ szene: sz.id, sfx, ereignisse, katalog, beats: A.BEATS, dauer: A.SPEC.duration, fps: A.SPEC.fps });
+  const r = erzeugeCues({ szene: sz.id, sfx, ereignisse, katalog, beats: A.BEATS, dauer: A.SPEC.duration, fps: A.SPEC.fps, woerter: woerterVon(sz) });
   return { ...r, ereignisse, figuren, text: cueDatei({ szene: sz.id, fps: A.SPEC.fps, dauer: A.SPEC.duration, cues: r.cues }) };
 }
 

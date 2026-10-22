@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { leseKatalog, pruefeKatalog } from '../lib/sfx/katalog.js';
 import { computeEvents, erkenne, wert } from '../lib/events.js';
-import { erzeugeCues, waehleVariante } from '../lib/sfx/cues.js';
+import { erzeugeCues, lautHinweise, waehleVariante } from '../lib/sfx/cues.js';
 import { momentanMax, RATE, truePeak } from '../lib/sfx/lautheit.js';
 import { bearbeite, einsaetze, teile } from '../lib/sfx/bearbeiten.js';
 import { dekodiere, messeMitFfmpeg, schreibeWav } from '../lib/sfx/ffmpeg.js';
@@ -281,4 +281,21 @@ test('Ablegen: prüft Ton, nummeriert Varianten, schreibt Herkunft, legt nichts 
   } finally {
     rmSync(d, { recursive: true, force: true });
   }
+});
+
+test('Laute: in Sprechpausen still, in der Sprache gemeldet, ohne Wortzeiten als ungeprüft genannt', () => {
+  const w = [
+    { wort: 'Der', t: 1.0 },
+    { wort: 'Drucker', t: 1.3 },
+    { wort: 'staunt.', t: 1.8 },
+    { wort: 'Dann', t: 2.6 },
+    { wort: 'Ruhe.', t: 3.0 },
+  ];
+  const l = (t) => [{ cue: 'laut-erstaunt', t }];
+  assert.deepEqual(lautHinweise(l(0.5), w), [], 'vor dem ersten Wort');
+  assert.deepEqual(lautHinweise(l(2.2), w), [], 'nach Satzende');
+  assert.deepEqual(lautHinweise(l(3.6), w), [], 'nach dem letzten Wort');
+  assert.match(lautHinweise(l(1.5), w)[0], /fällt in die Sprache \(nach „Drucker“/);
+  assert.match(lautHinweise(l(1.9), w)[0], /fällt in die Sprache/, 'zu dicht am Satzende');
+  assert.match(lautHinweise(l(1.5), [])[0], /nicht geprüft/);
 });

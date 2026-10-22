@@ -43,6 +43,11 @@ test('Build findet Handziel außer Reichweite, Beat-Abweichung, NaN und fremde F
 
   const farbe = await gestoert('farbe', { 'brief.yaml': (s) => s.replace('akzent1: "#2F7032"', 'akzent1: "#123456"') });
   assert.ok(farbe.befunde.some((b) => b.text.includes('keine Farbe der Tokens')));
+
+  const werte = await gestoert('werte', {
+    'brief.yaml': (s) => s.replace('haltung: konzentriert', 'haltung: laessig').replace('gefuehlsbogen: [konzentriert, erleichtert]', 'gefuehlsbogen: [konzentriert, froh]').replace('gefuehl: erleichtert }', 'gefuehl: gluecklich }'),
+  });
+  for (const w of ['haltung „laessig“', 'Gefühl „froh“', 'Gefühl „gluecklich“']) assert.ok(werte.befunde.some((b) => b.art === 'brief' && b.text.includes(w)), w);
 });
 
 test('Bündel löst mehrzeilige Imports und export { … } auf und lehnt Pakete ab', () => {

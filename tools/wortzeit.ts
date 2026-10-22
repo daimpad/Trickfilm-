@@ -56,7 +56,7 @@ async function main() {
   }
 
   const tsv =
-    '# ERZEUGT von tools/wortzeit.ts aus texte/ und ton/messung.json; nicht von Hand ändern\n' +
+    '# ERZEUGT von tools/wortzeit.ts aus texte/ und ton/<film>/messung.json; nicht von Hand ändern\n' +
     SPALTEN.join('\t') +
     '\n' +
     zeilen.map((z) => [z.absatz, z.szene, z.nr, z.wort, z.t.toFixed(3), z.bild, z.tFilm.toFixed(3)].join('\t')).join('\n') +

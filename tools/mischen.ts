@@ -81,7 +81,7 @@ async function main() {
   const ergebnis = { i: integriert(mix), tp: truePeak(mix), spracheI: integriert(sprache) };
   const f = (v: number) => (Number.isFinite(v) ? v.toFixed(1) : String(v));
   const protokoll =
-    '# ERZEUGT von tools/mischen.ts aus ton/messung.json, den Cue-Listen und den Geräuschen; nicht von Hand ändern\n' +
+    '# ERZEUGT von tools/mischen.ts aus ton/<film>/messung.json, den Cue-Listen und den Geräuschen; nicht von Hand ändern\n' +
     ['art', 'id', 'lufs_vorher', 'db', 'lufs_nachher', 'abweichung_db'].join('\t') +
     '\n' +
     gemessen.map((a, k) => ['absatz', a.id, f(a.messung.lufs_i), f(plan.absaetze[k]!.db), f(plan.absaetze[k]!.nach), f(plan.absaetze[k]!.abweichung)].join('\t')).join('\n') +
