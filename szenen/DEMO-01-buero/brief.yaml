@@ -50,7 +50,7 @@ sfx:                                  # welche Ereignisse klingen und wo die Gr�
     geraet: [ { pfad: drucker.laeuft, beat: drucken, requisite: drucker } ]
     aufsetzen: [ { pfad: einlegen.y, beat: ablegen, figur: B, requisite: ablagekasten } ]
   stumm: [schritt]                    # B kommt leise; das Tippen trägt den Anfang
-  laute: [ { beat: staunen, versatz_s: 0.3, cue: laut-erstaunt, figur: B } ]
+  laute: [ { beat: staunen, versatz_s: 0.3, cue: laut-erstaunt, figur: B, am_wort: true } ]   # Reaktion auf „staunt“, gewollt in der Sprache (entschieden von Regie, 2026-10-22)
   stichprobe: [klick, abheben, aufsetzen]
 beschriftungen: { links: "Antrag", mitte: "", rechts: "Ausdruck" }
 textaequivalent: "Eine Person am Schreibtisch tippt einen Antrag und schickt ihn ab. Ein Blatt fliegt vom Bildschirm in hohem Bogen zum Drucker. Eine zweite Person, die dort schon wartet, nimmt den Ausdruck, staunt und legt ihn in einen Ablagekasten im Regal."

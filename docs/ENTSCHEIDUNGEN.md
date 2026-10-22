@@ -183,3 +183,4 @@ Jede Entscheidung mit Datum und Urheber. Spätere Entscheidungen werden unten an
 | Erlaubte Werte im Brief | Haltung und Gefühle prüft der Build gegen `lib/spielweise.js` | entschieden vom Leitstand |
 | Szene verwerfen | `npm run szene:entfernen` nur mit `--ja`; echte Aufnahmen und Absätze eines geteilten Films hält der Lauf an | entschieden vom Leitstand |
 | Laute in der Sprache | Hinweis aus den Wortzeiten, kein Befund; ob ein Laut verschoben wird, entscheidet die Regie | entschieden vom Leitstand |
+| Laut „erstaunt“ in `DEMO-01-buero` und `MIMIK-01-buero` | bleibt 0,22 s nach „staunt:“, als Reaktion am Wort; im Brief `am_wort: true` | entschieden von Regie |
