@@ -283,7 +283,7 @@ test('Ablegen: prüft Ton, nummeriert Varianten, schreibt Herkunft, legt nichts 
   }
 });
 
-test('Laute: in Sprechpausen still, in der Sprache gemeldet, ohne Wortzeiten als ungeprüft genannt', () => {
+test('Laute: in Sprechpausen still, in der Sprache gemeldet, ohne Wortzeiten als ungeprüft genannt, am_wort hält zurück', async () => {
   const w = [
     { wort: 'Der', t: 1.0 },
     { wort: 'Drucker', t: 1.3 },
@@ -298,4 +298,6 @@ test('Laute: in Sprechpausen still, in der Sprache gemeldet, ohne Wortzeiten als
   assert.match(lautHinweise(l(1.5), w)[0], /fällt in die Sprache \(nach „Drucker“/);
   assert.match(lautHinweise(l(1.9), w)[0], /fällt in die Sprache/, 'zu dicht am Satzende');
   assert.match(lautHinweise(l(1.5), [])[0], /nicht geprüft/);
+  const r = cuesFuer(await ladeSzene('DEMO-01-buero'));
+  assert.ok(!r.hinweise.some((h) => h.includes('laut-erstaunt')), 'am_wort: true hält den Hinweis zurück');
 });

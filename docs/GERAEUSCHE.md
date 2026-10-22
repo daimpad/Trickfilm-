@@ -48,7 +48,7 @@ Die Variante aus einem Vorrat wählt ein Hash über Szene, Typ, Cue und laufende
 
 ## Mischung
 
-Im Prototyp ist die Geräuschspur ungeduckt: der lauteste Cue bei 0 dB, die übrigen nach `gain_db` relativ dazu. In der Endmischung (`npm run mischen -- <film>`, siehe `docs/STIMME.md`) liegt der Geräuschbus so, dass seine größte Momentanlautheit 12 dB unter der Sprache steht, und wird unter Sprache um weitere 6 dB geduckt (30 ms Ansprechen, 150 ms Rückstellen). Ein Laut steht in einer Sprechpause: vor dem ersten Wort, 0,25 bis 0,85 s nach einem Satzzeichen oder ab 0,5 s nach dem letzten Wort. `sfx:cues` prüft das gegen `ton/<film>/wortzeit.tsv` und nennt einen Laut in der Sprache als Hinweis; ohne Wortzeiten sagt er, dass nicht geprüft ist.
+Im Prototyp ist die Geräuschspur ungeduckt: der lauteste Cue bei 0 dB, die übrigen nach `gain_db` relativ dazu. In der Endmischung (`npm run mischen -- <film>`, siehe `docs/STIMME.md`) liegt der Geräuschbus so, dass seine größte Momentanlautheit 12 dB unter der Sprache steht, und wird unter Sprache um weitere 6 dB geduckt (30 ms Ansprechen, 150 ms Rückstellen). Ein Laut steht in einer Sprechpause: vor dem ersten Wort, 0,25 bis 0,85 s nach einem Satzzeichen oder ab 0,5 s nach dem letzten Wort. `sfx:cues` prüft das gegen `ton/<film>/wortzeit.tsv` und nennt einen Laut in der Sprache als Hinweis; ohne Wortzeiten sagt er, dass nicht geprüft ist. Fällt ein Laut gewollt auf ein Wort, trägt er im Brief `am_wort: true` und wird nicht gehalten.
 
 ## Typische Fehler
 
