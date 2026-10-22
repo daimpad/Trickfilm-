@@ -8,7 +8,7 @@ Die Erzählung entsteht absatzweise; jeder Absatz gehört zu einer Szene und beg
 
 ## Ablauf
 
-1. **Register** (`texte/<film>.ts`) und **Lesefassung** (`docs/sprechtext/<film>.md`) sind gleich; jeder Absatz ist wörtlich die Passage `sprechtext.passage` im Brief seiner Szene. Ein Test hält alle drei gleich. Stimme und Einstellungen je Film stehen in `tools/stimmklon.ts` (Tempo 0,8–1,2), Aussprachehilfen in `tools/stolperstellen.ts`.
+1. **Register** (`texte/<film>.ts`) und **Lesefassung** (`docs/sprechtext/<film>.md`) sind gleich; jeder Absatz ist wörtlich die Passage `sprechtext.passage` im Brief seiner Szene. Ein Test hält alle drei gleich. Stimme und Einstellungen je Film stehen in `tools/stimmklon.ts` (Tempo 0,8–1,2), Aussprachehilfen in `tools/stolperstellen.ts`. Ein Film ohne Eintrag läuft mit Standardwerten und ohne Stimme: Platzhalter, Messung, Wortzeiten, Untertitel und Mischung gehen sofort. Erst vor einer Aufnahme wählt die Regie die Stimme, und der Leitstand trägt den Film ein.
 2. **Prüfen** (`npm run stimme -- <film>`): Absätze, Zeichen, Stand jeder Aufnahme (fehlt, eigen, veraltet), geschätzte Credits. Ohne Netz.
 3. **Platzhalter** (`npm run stimme -- <film> --stub`): ein Ton in der geschätzten Länge (15 Zeichen/s), damit die ganze Kette ohne Kosten läuft.
 4. **Generieren**: `npm run stimme -- <film> --plan` gibt die Parameter für den ElevenLabs-Connector aus; generiert wird erst nach Kostenfreigabe und „ja, generieren“, ein laufender Aufruf wird nie wiederholt. Heruntergeladen wird in ein eigenes, leeres Verzeichnis; `npm run stimme -- <film> --ablegen <absatz> <datei> --generierung <id>` prüft die Datei und legt sie nach `ton/<film>/<absatz>.wav`.
